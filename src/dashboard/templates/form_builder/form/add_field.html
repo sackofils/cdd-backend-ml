@@ -1,0 +1,28 @@
+{% extends 'layouts/base.html' %}
+{% load static i18n custom_tags %}
+{% load bootstrap4 static i18n %}
+
+<div class="modal fade" id="add-form-field-dialog" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">{% translate 'Modal Title' %}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="{% translate 'Close' %}">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body">
+                <p>Modal body text goes here </p>
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{% translate 'Close' %}</button>
+                <button type="button" class="btn btn-primary">{% translate 'Save' %}</button>
+            </div>
+        </div>
+    </div>
+</div>

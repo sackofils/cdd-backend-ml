@@ -1,0 +1,171 @@
+{% extends 'layouts/base.html' %}
+{% load static i18n custom_tags %}
+{% load bootstrap4 static i18n %}
+
+{% block content %}
+<form action="" class="container" method="post" id="task_form">
+    {% csrf_token %}
+
+    <!-- Main Form Start -->
+    <div class="card">
+        <!-- Form Title -->
+        <div class="card-header card-header-secondary">
+            <h4 class="card-title">{% translate 'Update Form' %}</h4>
+        </div>
+
+        <!-- Form Body -->
+        {% for field in form %}
+            <div class="form-group card-body">
+                {% bootstrap_field field show_label=True %}
+
+                {% comment %}
+                    <label for="">{{ field.label }}</label>
+                    {% if field.field.required %}
+                        <span style="color: red;" class="required">*</span>
+                    {% endif %}
+                    
+                    {{ field }}
+
+                    {% if field.help_text %}
+                        <small style="color: grey;">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <p style="color: red">{{ error }}</p>
+                    {% endfor %}
+                {% endcomment %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Main Form End -->
+
+    <!-- Inline form for FormFields start -->
+
+    <!-- EXPLAINING with named_formsets.form_fields as formset -->
+    <!-- Note: named_formsets is used in get_context_data function in views.py -->
+    <!-- Note: here form_fields is our FormFieldFormSet name, used in get_named_formsets function in views.py -->
+    {% with named_formsets.form_fields as formset %}
+        {{ formset.management_form }}
+
+        <script type="text/html" id="form_fields-template"> //id="inlineformsetname-template"            
+            <tr id="form_fields-__prefix__" class="hide_all"> //id="inlineformsetname-__prefix__"
+                {% for fields in formset.empty_form.hidden_fields %}
+                    {{ fields }}
+                {% endfor %}
+
+                {% for fields in formset.empty_form.visible_fields %}
+                    <td>{{ fields }}</td>
+                {% endfor %}
+            </tr>
+        </script>
+
+        <div class="table-responsive card mt-4">
+            <div class="card-header card-header-secondary">
+                <h4 class="card-title">{% translate 'Fields' %}</h4>
+            </div>
+
+            <table class="table card-body text-left">
+                <thead class="text-secondary">
+                    {% for formss in formset %}
+                        {% if forloop.counter == 1 %}
+                            {% for field in formss.visible_fields %}
+                                <th>
+                                    {{ field.label_tag }}
+                                    {% if field.field.required %}
+                                        <span style="color: red">*</span>
+                                    {% endif %}
+                                </th>                         
+                            {% endfor %}
+                        {% endif %}
+                        <th>
+                            {% comment %} for action {% endcomment %}
+                        </th>    
+                    {% endfor %}                    
+                </thead>
+                <tbody id="form_fields">
+                    <!-- formset non_form errors -->
+                    {% for error in formset.non_form_errors %}
+                        <span style="color: red">{{ error }}</span>
+                    {% endfor %}
+
+                    {% for formss in formset %}
+                        {{ formss.management_form }}
+                        <tr id="form_field-{{ forloop.counter }}" class="hide_all">
+                            {{ formss.id }}
+                            {% for field in formss.visible_fields %}
+                                <td>                                    
+                                    {% bootstrap_field field show_label=False %}
+
+                                    {% comment %}
+                                     {{field}}
+                                        {% for error in field.errors %}
+                                            <span style="color: red;">{{ error }}</span>
+                                        {% endfor %}
+                                     {% endcomment %}                                   
+
+                                    {% comment %} {{ field.DELETE }} {% endcomment %}
+                                </td>
+                            {% endfor %}
+                            {% comment %} for delete {% endcomment %}
+                            
+                            <td>
+                            {% if formss.instance.pk %}
+                                {% comment %}
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal{{formss.instance.pk}}">
+                                    {% translate 'DELETE' %}
+                                </button>
+                                {% endcomment %}
+                            </td>
+                                <!-- Modal -->
+                                <div class="modal fade" id="modal{{formss.instance.pk}}" tabindex="-1" role="dialog" aria-labelledby="modalLabel{{formss.instance.pk}}" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="modalLabel{{formss.instance.pk}}">{% translate 'Delete this field?'%}</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="{% translate 'Close'%}">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <a href="{% url 'dashboard:form_builder:delete_form_field' formss.instance.pk %}" type="button" class="btn btn-primary">{% translate 'Yes, Delete' %}</a>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">{% translate 'Close' %}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </tr>                        
+                    {% endfor %}
+                </tbody>                
+            </table>
+            <a href="#" id="add-formfield-button" class="btn btn-secondary add-form-field">{% translate 'Add More'%}</a>
+        </div>
+    {% endwith %}
+
+    <!-- inline FormFields form end -->
+    <div class="form-group">
+        <button type="submit" class="btn btn-secondary btn-block">{% translate 'Submit' %}</button>
+    </div>
+
+    <!-- Inline form for FormFields end-->
+</form>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+<script>
+    $(document).ready(function() {
+        // when user clicks add more btn of form fields
+        $(".add-form-field").click(function(ev){
+            ev.preventDefault();
+            var count = $('#form_fields').children().length;
+            var tplMarkup = $('#form_fields-template').html();
+            var compiledTpl = tplMarkup.replace(/__prefix__/g, count);
+            $('#form_fields').append(compiledTpl);
+
+            // update form count
+            $("#id_form_fields-TOTAL_FORMS").attr('value', count+1);
+        });
+    });
+</script>
+
+{% endblock content %}

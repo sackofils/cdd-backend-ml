@@ -1,0 +1,374 @@
+{% load static i18n custom_tags %}
+
+
+{% comment %} <div class="card">
+    <div class="card-body">
+        <span class="text-bold-family fs17">{% translate 'Tasks completed' %}: &nbsp;</span>
+        <span class="fs17 text-primary">{{ total_tasks_completed }}</span>
+            &nbsp; &nbsp; &nbsp; | &nbsp; &nbsp; &nbsp; 
+        <span class="text-bold-family fs17">{% translate 'Tasks uncompleted' %}: &nbsp;</span>
+        <span class="fs17 text-primary">{{ total_tasks_uncompleted }}</span>
+            &nbsp; &nbsp; &nbsp; | &nbsp; &nbsp; &nbsp; 
+        <span class="text-bold-family fs17">{% translate 'Percentage of the tasks completed' %}: &nbsp;</span>
+        <span class="fs17 text-primary">{{ percentage_tasks_completed|floatformat:"2" }} %</span>
+    </div>
+</div> {% endcomment %}
+<div class="card">
+    <div class="card-body table-responsive">
+        <table id="table" class="table">
+            <thead>
+            <tr>
+                <th>{% translate 'N°' %}</th>
+                <th>{% translate 'Village' %}</th>
+                <th>{% translate 'Completed' %}</th>
+                <th>{% translate 'Uncompleted' %}</th>
+                <th>{% translate 'Percentage' %}</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for Village, infos in dict_administrative_levels_with_infos.items %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ Village }}</td>
+                    {% for key, value in infos.items %}
+                        {% if key == "percentage_tasks_completed" %}
+                        <td>{{ value|floatformat:"2"  }}%</td>
+                        {% else %}
+                        <td>{{ value }}</td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+                {% if dict_administrative_levels_with_infos|length > 1 %}
+                <tr>
+                    <td colspan="2"><b>Total</b></td>
+                    <td><b>{{ total_tasks_completed }}</b></td>
+                    <td><b>{{ total_tasks_uncompleted }}</b></td>
+                    <td><b>{{ percentage_tasks_completed|floatformat:"2" }}%</b></td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+{% for task in tasks %}
+    <div class="card-item" data-toggle="modal" data-target="#card-item-task-{{ forloop.counter }}" style="cursor: pointer;" >
+        <div class="row">
+            <div class="col-sm-7">
+                <div class="phase-title">
+                    <span style="color: white;" class="btn {% if task.completed %}badge-completed{% else %}badge-pending{% endif %}">{{ task.phase_order }}.{{ task.activity_order }}.{{ task.order }}</span> {{ task.name }}
+                </div>
+                <div class="phase-title mt-3 mb-2">
+                    {{ task.administrative_level_name }}, {% translate 'Phase' %}: {{ task.phase_name }},
+                    {% translate 'Activity' %}: {{ task.activity_name }}
+                </div>
+                <div class="border-separator"></div>
+                
+                <div class="text-bold-family mt-2 mb-2">
+                    {% if task.attachments|length != 0 %}
+                        {% translate "Attachments" %}
+                    {% else %}
+                        {% translate "No attachments" %}
+                    {% endif %}
+                </div>
+                
+                {% for attachment in task.attachments %}
+                    {% if attachment.cloud_url %}
+                        <a class="link-attachment mt-2" href="{{ attachment.cloud_url }}"
+                           target="_blank">
+                            <i class="fas fa-paperclip mr-2"></i>
+                            {{ attachment.name }}
+                        </a>
+                    {% else %}
+                        <i class="fas fa-paperclip mr-2"></i>
+                        {{ attachment.name }}
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="col-sm-3">
+                <div class="badge-closed-at">
+                    <i class="far fa-calendar-alt text-warning"></i>
+                    {% translate 'Completed on' %}:
+                    {{ task.completed_date|default:'-' }}
+                </div>
+                <div class="badge-closed-at mt-1">
+                    {% if task.completed and task.attachments %}
+                        <i class="fas fa-check success-color"></i>
+                    {% elif task.completed and not task.attachments %}
+                        <i class="fas fa-exclamation-triangle warning-color"></i>
+                    {% else %}
+                        <i class="fas fa-clock gray-color"></i>
+                    {% endif %}
+                    {% translate 'Proof of completion' %}
+                </div>
+            </div>
+            <div class="col-sm-2 text-right">
+                {% if task.completed %}
+                    <div class="status-badge badge-completed">
+                        {% translate 'Completed' %}
+                    </div>
+                {% else %}
+                    <div class="status-badge badge-pending">
+                        {% translate 'Pending' %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal  modal-dialog-centered -->
+    <div class="modal fade" id="card-item-task-{{ forloop.counter }}" tabindex="-1" role="dialog"
+        aria-labelledby="UploadTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    {{ task.name }} 
+                </h5>
+                <div class="col-sm-2 text-right">
+                {% if task.completed %}
+                    <div class="status-badge badge-completed">
+                        {% translate 'Completed' %}
+                    </div>
+                {% else %}
+                    <div class="status-badge badge-pending">
+                        {% translate 'Pending' %}
+                    </div>
+                {% endif %}
+            </div>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                
+                    {% comment %} {% with task|structureTheFields as fields %}
+                    {% for field, value in fields.items %}
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">{{ field }}</label>
+                            <div class="col-sm-9">
+                                <input type="text" readonly value="{% if value %}{{ value }}{% else %}-{% endif %}" class="form-control" />
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    {% endfor %}
+                    {% endwith %} {% endcomment %}
+
+                    {% with task|structureTheFieldsLabels as liste %}
+                    {% for fields in liste %}
+                        {% for field, dicts in fields.items %}
+                            {% if dicts.value|checkType:'dict' %}
+                                <div class="fieldset"><fieldset>
+                                    <legend>{{ dicts.name }}</legend>
+                                    <div class="content">
+                                    {% for k, v in dicts.value.items %}
+                                        {% if v.value|checkType:'dict' %}
+                                        <div><fieldset>
+                                            <legend>{{ v.name }}</legend>
+                                            <div class="content">
+                                                {% for k1, v1 in v.value.items %}
+                                                    {% if v1.value|checkType:'dict' %}
+                                                    <div><fieldset>
+                                                        <legend>{{ v1.name }}</legend>
+                                                        <div class="content">
+                                                        {% for k2, v2 in v1.value.items %}
+                                                            <div class="form-group row">
+                                                                <label class="col-sm-3 col-form-label">{{ v2.name }}</label>
+                                                                <div class="col-sm-9">
+                                                                    <input type="text" readonly value="{% if v2.value %}{{ v2.value }}{% else %}-{% endif %}" class="form-control" />
+                                                                </div>
+                                                                <div class="clearfix"></div>
+                                                            </div>
+                                                        {% endfor %}
+                                                        </div>
+                                                    </fieldset></div>
+                                                    {% elif v1.value|checkType:'list' %}
+                                                    <div class="fieldset"><fieldset>
+                                                        <legend>{{ v1.name }}</legend>
+                                                        <div class="content">
+                                                        {% for item2 in v1.value %}
+                                                        <div><fieldset>
+                                                            <legend>{{ forloop.counter }}</legend>
+                                                            <div class="content">
+                                                            {% for field2, dicts2 in item2.items %}
+                                                                <div class="form-group row">
+                                                                    <label class="col-sm-3 col-form-label">{{ dicts2.name|structureTheWords }}</label>
+                                                                    <div class="col-sm-9">
+                                                                        <input type="text" readonly value="{% if dicts2.value %}{{ dicts2.value }}{% else %}-{% endif %}" class="form-control" />
+                                                                    </div>
+                                                                    <div class="clearfix"></div>
+                                                                </div>
+                                                            {% endfor %}
+                                                            </div>
+                                                        </fieldset></div>
+                                                        {% endfor %}
+                                                        </div>
+                                                    </fieldset></div>
+                                                    {% else %}
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-3 col-form-label">{{ v1.name }}</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="text" readonly value="{% if v1.value %}{{ v1.value }}{% else %}-{% endif %}" class="form-control" />
+                                                        </div>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        </fieldset></div>
+                                        {% elif v.value|checkType:'list' %}
+                                        <div class="fieldset"><fieldset>
+                                            <legend>{{ v.name }}</legend>
+                                            <div class="content">
+                                            {% for item0 in v.value %}
+                                                <div><fieldset>
+                                                    <legend>{{ forloop.counter }}</legend>
+                                                    <div class="content">
+                                                    {% for field0, dicts0 in item0.items %}
+                                                        <div class="form-group row">
+                                                            <label class="col-sm-3 col-form-label">{{ dicts0.name|structureTheWords }}</label>
+                                                            <div class="col-sm-9">
+                                                                <input type="text" readonly value="{% if dicts0.value %}{{ dicts0.value }}{% else %}-{% endif %}" class="form-control" />
+                                                            </div>
+                                                            <div class="clearfix"></div>
+                                                        </div>
+                                                    {% endfor %}
+                                                    </div>
+                                                </fieldset></div>
+                                            {% endfor %}
+                                            </div>
+                                        </fieldset></div>
+                                        {% else %}
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label">{{ v.name }}</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" readonly value="{% if v.value %}{{ v.value }}{% else %}-{% endif %}" class="form-control" />
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        {% endif %}
+                                            
+                                    {% endfor %}
+                                    </div>
+                                </fieldset></div>
+                            {% elif dicts.value|checkType:'list' %}
+                                <div class="fieldset"><fieldset>
+                                    <legend>{{ dicts.name }}</legend>
+                                    <div class="content">
+                                    {% for item in dicts.value %}
+                                        <div><fieldset>
+                                            <legend>{{ forloop.counter }}</legend>
+                                            <div class="content">
+                                            {% for field1, dicts1 in item.items %}
+                                                <div class="form-group row">
+                                                    <label class="col-sm-3 col-form-label">{{ dicts1.name|structureTheWords }}</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" readonly value="{% if dicts1.value %}{{ dicts1.value }}{% else %}-{% endif %}" class="form-control" />
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            {% endfor %}
+                                            </div>
+                                        </fieldset></div>
+                                    {% endfor %}
+                                    </div>
+                                </fieldset></div>
+                            {% else %}
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">{{ dicts.name }}</label>
+                                <div class="col-sm-9">
+                                    <input type="text" readonly value="{% if dicts.value %}{{ dicts.value }}{% else %}-{% endif %}" class="form-control" />
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                    {% endwith %}
+
+
+                    
+
+                    {% if task.attachments %}
+                    {% for attach in task.attachments %}
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">{{ attach.name }}</label>
+                            <div class="col-sm-9 attach-file">
+                                {% if attach.attachment.uri %}
+                                    {% if "file:///data" in attach.attachment.uri %}
+                                        <p><i class="fas fa-paperclip mr-2"></i>{% translate 'Not synchronized' %}</p>
+                                    {% elif ".pdf" in attach.attachment.uri or ".docx" in attach.attachment.uri or ".doc" in attach.attachment.uri %}
+                                        <a href="{{ attach.attachment.uri|imgAWSS3Filter }}" target="_blank" >
+                                            <iframe src="{{ attach.attachment.uri|imgAWSS3Filter }}" width="250" height="300"></iframe>
+                                        </a>
+                                    {% else %}
+                                        <a href="{{ attach.attachment.uri|imgAWSS3Filter }}" target="_blank" >
+                                        <!-- class="btn btn-primary" data-toggle="modal" 
+                                        data-target="#item-attach-{{ forloop.counter }}" -->
+                                            <img src="{{ attach.attachment.uri|imgAWSS3Filter }}" width="200" height="200" />
+                                        </a>
+                                    {% endif %}
+                                {% else %}
+                                    <p><i class="fas fa-paperclip mr-2"></i>{% translate 'Not present' %}</p>
+                                {% endif %}
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    {% endfor %}
+                    {% endif %}
+
+                </div>
+            </div>
+
+
+            
+            </div>
+        </div>
+    </div>
+    <!-- End Modal -->
+    
+
+
+    {% comment %} {% for attach in task.attachments %}{% if attach.attachment.uri %}
+    <!-- Modal -->
+    <div class="modal fade" id="item-attach-{{ forloop.counter }}" tabindex="-2" role="dialog"
+        aria-labelledby="attach" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+                <a href="{{ attach.attachment.uri|imgAWSS3Filter }}" class="btn btn-primary" target="_blank" >
+                    <img src="{{ attach.attachment.uri|imgAWSS3Filter }}" width="700" height="700" />
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- End Modal -->
+    {% endif %}{% endfor %} {% endcomment %}
+
+{% empty %}
+    <div class="text-center">
+        {% translate 'No tasks found' %}
+    </div>
+{% endfor %}
+
+
+
+<script>
+    try{
+        total_tasks = parseInt("{{ total_tasks }}");
+    }catch(e){
+        console.log(e);
+    }
+    
+</script>

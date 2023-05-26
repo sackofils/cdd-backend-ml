@@ -1,0 +1,24 @@
+{% extends 'layouts/base.html' %}
+{% load bootstrap4 static i18n %}
+
+{% block content %}
+
+<h1 class="bootstrap4">Delete Project</h1>
+<div class="row">
+  <div class="col-md-12">             
+      <div class="card">
+        <h3>Are you sure you want to delete the Project: {{ project }}?</h3>  
+        <form action="" method="POST">
+          {% csrf_token %}
+          <div class="card-footer">
+            <button  type="submit" class="btn btn-danger btn-sm rounded-xl" value="Delete">
+                {% translate "Delete" %}
+            </button>
+        </div> 
+        </form>
+      </div>
+  </div>
+</div>
+
+
+{% endblock %}

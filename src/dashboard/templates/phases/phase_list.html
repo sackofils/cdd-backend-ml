@@ -1,0 +1,95 @@
+{% load static i18n custom_tags %}
+
+
+<div class="card">
+    <div class="card-body table-responsive">
+        <table id="table" class="table">
+            <thead>
+            <tr>
+                <th>{% translate 'Order' %}</th>
+                <th>{% translate 'Name' %}</th>                
+                <th width="50%">{% translate 'Action' %}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for phase in phases %}
+                <tr>
+                    <td>{{ phase.order }}</td>
+                    <td>{{ phase.name }}</td>                    
+                    <td>
+                        
+                        {% if user.is_superuser or user|has_group:"Admin" %}
+                        <a href="{% url 'dashboard:phases:phase_Detail' phase.pk %}"
+                            class="btn btn-primary btn-xs" title="{% translate 'View' %}">
+                            <span class="_web">View</span>
+                            <span class="_mobile"><i class="fa fa-eye"></i></span>
+                        </a>
+                        <a href="{% url 'dashboard:phases:update' phase.pk %}"
+                            class="btn btn-primary btn-xs" title="{% translate 'Edit' %}">
+                            <span class="_web">Edit</span>
+                            <span class="_mobile"><i class="fa fa-edit"></i></span>
+                        </a>
+                        <a href="{% url 'dashboard:phases:MoveUp' phase.pk %}"
+                            class="btn btn-primary btn-xs" title="{% translate 'Move Up' %}">
+                            <span class="_web">Move Up</span>
+                            <span class="_mobile"><i class="fa fa-arrow-up"></i></span>
+                        </a>                        
+                        <a href="{% url 'dashboard:phases:MoveDown' phase.pk %}"
+                            class="btn btn-primary btn-xs" title="{% translate 'Move Down' %}">
+                            <span class="_web">Move Down</span>
+                            <span class="_mobile"><i class="fa fa-arrow-down"></i></span>
+                        </a>
+                        <a href="{% url 'dashboard:phases:delete' phase.pk %}"
+                            class="btn btn-sm btn-danger" title="{% translate 'Delete' %}">
+                            <span class="_web">Delete</span>
+                            <span class="_mobile"><i class="fa fa-trash"></i></span>
+                        </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+        $(document).ready(function () {
+            {% get_current_language as lang %}
+
+            let table = $('#table').DataTable({
+                language: {
+                    url: '{% static 'AdminLTE/plugins/datatables/locale/lang.json' %}'.replace('lang', '{{ lang }}')
+                },
+                dom: "ltipr",
+                columnDefs: [
+                    {
+                        targets: 4,
+                        orderable: false,
+                        searchable: false,
+                    }
+                ],
+                lengthMenu: [100, 200, 300],
+                pageLength: 100,
+                order: [[0, 'asc']]
+            });
+            $('#search').on('keyup', function () {
+                table.search($(this).val()).draw();
+            });                  
+                       
+
+        });
+        saveOrderingButton.addEventListener('click', saveOrdering);
+    function saveOrdering() {
+         const rows = document.getElementById("groups").querySelectorAll('tr');
+         let ids = [];
+         for (let row of rows) {
+             ids.push(row.dataset.lookup);
+        }
+        formInput.value = ids.join(',');
+        orderingForm.submit();
+    }
+
+    </script>
+

@@ -1,0 +1,229 @@
+{% extends 'layouts/base.html' %}
+{% load static i18n bootstrap4 custom_tags %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            
+            {% if user.is_superuser or user|has_group:"Admin" %}
+            <div class="float-right mb-3">
+                <a href="{% url 'dashboard:facilitators:create' %}"
+                class="btn btn-primary btn-sm rounded-xl">
+                    <i class="fa fa-plus mr-2"></i>
+                    {% translate "Create Facilitator" %}
+                </a>
+            </div>
+            {% endif %}
+
+            <div class="clearfix"></div>
+             <div class="row facilitators-filter">
+                <div class="col-2">
+                    {% bootstrap_field form.region show_label=False %}
+                </div>
+                <div class="col-2">
+                    {% bootstrap_field form.prefecture show_label=False %}
+                </div>
+                <div class="col-2">
+                    {% bootstrap_field form.commune show_label=False %}
+                </div>
+                <div class="col-2">
+                    {% bootstrap_field form.canton show_label=False %}
+                </div>
+                <div class="col-2">
+                    {% bootstrap_field form.village show_label=False %}
+                </div>
+                <div class="col-2">
+                    <a class="btn fs12 text-bold-family text-primary pull-right p-0" style="margin-top: 8px;"
+                       id="clear_all_filters">
+                        {% translate "Clear all filters" %}
+                    </a>
+                </div>
+            </div>
+            
+            <div class="input-group mb-3 search-bar">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                </div>
+                <input class="form-control" id="search" placeholder="{% translate 'Search by name' %}...">
+            </div>
+
+            <div class="card">
+                <div class="card-body table-responsive">
+                    <div id="facilitators-list"></div>
+                </div>
+                <div class="overlay" id="spin">
+                    <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                </div>
+            </div>
+
+            {% comment %} <div class="card">
+                <div class="card-body table-responsive">
+                    <table id="table" class="table">
+                        <thead>
+                        <tr>
+                            <th width="30%">{% translate 'Name' %}</th>
+                            <th width="30%">{% translate 'Username' %}</th>
+                            <th width="10%">{% translate 'Type' %}</th>
+                            <th  width="30%" >{% translate 'Action' %}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for facilitator in facilitators %}
+                            <tr>
+                                <td>{{ facilitator.get_name }}</td>
+                                <td>{{ facilitator.username }}</td>
+                                <td>{{ facilitator.get_type|upper }}</td>
+                                <td>
+                                    <a href="{% url 'dashboard:facilitators:detail' facilitator.no_sql_db_name %}"
+                                       class="btn btn-primary btn-xs" title="{% translate 'See profile' %}">
+                                        <span class="_web">{% translate 'See profile' %}</span>
+                                        <span class="_mobile"><i class="fa fa-user"></i></span>
+                                    </a>
+                                    <a href="{% url 'dashboard:facilitators:update' facilitator.pk %}"
+                                       class="btn btn-primary btn-xs" title="{% translate 'See profile' %}">
+                                        <span class="_web">{% translate 'Edit profile' %}</span>
+                                        <span class="_mobile"><i class="fa fa-edit"></i></span>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div> {% endcomment %}
+
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    {{ block.super }}
+
+    {% comment %} <script type="text/javascript">
+        $(document).ready(function () {
+            {% get_current_language as lang %}
+
+            let table = $('#table').DataTable({
+                language: {
+                    url: '{% static 'AdminLTE/plugins/datatables/locale/lang.json' %}'.replace('lang', '{{ lang }}')
+                },
+                dom: "ltipr",
+                columnDefs: [
+                    {
+                        targets: 1,
+                        orderable: false,
+                        searchable: false,
+                    }
+                ],
+                lengthMenu: [10, 50, 100],
+                pageLength: 10,
+                order: [[0, 'desc']]
+            });
+            $('#search').on('keyup', function () {
+                table.search($(this).val()).draw();
+            });
+        });
+    </script> {% endcomment %}
+
+
+    <script type="text/javascript">
+        let ids = ["id_region", "id_prefecture", "id_commune", "id_canton", "id_village"]
+        var type_field = "";
+        let spin = $('#spin');
+        let facilitators = $('#facilitators-list');
+        let administrative_level = $('#id_administrative_level');
+        let id_region = $('#id_region');
+        let id_prefecture = $('#id_prefecture');
+        let id_commune = $('#id_commune');
+        let id_canton = $('#id_canton');
+        let id_village = $('#id_village');
+
+        function loadFacilitators(type_field="") {
+            spin.show();
+            $.ajax({
+                type: "GET",
+                url: "{% url 'dashboard:facilitators:facilitators_list' %}",
+                data: {
+                    id_region: id_region.val(),
+                    id_prefecture: id_prefecture.val(),
+                    id_commune: id_commune.val(),
+                    id_canton: id_canton.val(),
+                    id_village: id_village.val(),
+                    type_field: type_field,
+                    is_training: "{{ is_training }}",
+                    is_develop: "{{ is_develop }}"
+                },
+                success: function (response) {
+                    spin.hide();
+                    
+                    facilitators.html(response);
+                },
+                error: function (data) {
+                    spin.hide();
+                    alert(error_server_message + "Error " + data.status);
+                }
+            });
+        }
+
+        loadFacilitators();
+
+        $('.facilitators-filter input').on('change keyup', function () {
+            if (!$(this).val()) {
+                loadFacilitators();
+            }
+        });
+
+        $('.facilitators-filter select').on('change', function () {
+            type_field = "";
+            if($(this).attr('id') && $(this).val()){
+                type_field = $(this).attr('id').split('_')[1];
+                for(let i=0; i<ids.length; i++){
+                    if(!(ids[i]==$(this).attr('id'))){
+                        $("#"+ids[i]).val(null).trigger('change.select2');
+                    }
+                }
+            }
+            loadFacilitators(type_field);
+        });
+
+        $("#clear_all_filters").on("click", function () {
+            $('.facilitators-filter input').val('');
+            $('.facilitators-filter select').val(null).trigger('change.select2');
+            loadFacilitators();
+        });
+
+    </script>
+
+
+{% endblock %}
+
+{% block select2 %}
+    <script type="text/javascript">
+        $("#id_region").select2({
+            placeholder: "{% translate 'Region' %}",
+            allowClear: true
+        });
+        $("#id_prefecture").select2({
+            placeholder: "{% translate 'Prefecture' %}",
+            allowClear: true,
+        });
+        $("#id_commune").select2({
+            placeholder: "{% translate 'Commune' %}",
+            allowClear: true,
+        });
+         $("#id_canton").select2({
+            placeholder: "{% translate 'Canton' %}",
+            allowClear: true,
+        });
+         $("#id_village").select2({
+            placeholder: "{% translate 'Village' %}",
+            allowClear: true,
+        });
+
+        $('b[role="presentation"]').hide();
+        $('.select2-selection__arrow').append(
+            '<i class="fas fa-chevron-circle-down text-primary" style="margin-top:12px;"></i>');
+
+    </script>
+{% endblock select2 %}

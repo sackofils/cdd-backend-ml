@@ -1,0 +1,68 @@
+{% extends 'layouts/base.html' %}
+{% load static i18n bootstrap4 custom_tags %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+
+            {% if user.is_superuser or user|has_group:"Admin" %}
+                <div class="float-right mb-3">
+                    <a href="{% url 'dashboard:form_builder:create_form' %}"
+                        class="btn btn-primary btn-sm rounded-xl">
+                        <i class="fa fa-plus mr-2"></i>
+                        {% translate 'Create Form' %}
+                    </a>
+                </div>
+            {% endif %}    
+
+        <div class="clearfix"></div>
+
+        <div class="input-group mb-3 search-bar">
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-search"></i></span>
+            </div>
+            <input class="form-control" id="search" placeholder="{% translate 'Search by name' %}..." />
+        </div>
+
+        <div class="card">
+            <div class="card-body table-responsive">
+                <div id="forms-list"></div>
+            </div>
+            <div class="overlay" id="spin">
+                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+            </div>
+        </div>       
+    </div>  
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+    {{ block.super }}
+
+    <script type="text/javascript">
+        let spin = $("#spin");
+        let form_list = $("#forms-list");
+        function loadForms() {
+            spin.show();
+            $.ajax({
+                type: 'GET',
+                url: "{% url 'dashboard:form_builder:form_list' %}",
+                data: {
+
+                },
+                success: function(response){
+                    spin.hide();
+                    form_list.html(response);
+                },
+                error: function(data){
+                    spin.hide();
+                    alert(error_server_message + "Error " + data.status);
+                }
+            });
+        }
+
+        loadForms();
+
+    </script>
+{% endblock %}

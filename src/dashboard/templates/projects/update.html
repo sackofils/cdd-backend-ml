@@ -1,0 +1,47 @@
+{% extends 'layouts/base.html' %}
+{% load bootstrap4 static i18n %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+                       
+            <div class="card">
+                
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <label >{% translate "Name" %}</label>
+                    <input class="form-control" name="name" value="{{ project.name }}">
+                            </div>
+                            <div class="col-6">
+                                <label>{% translate "Description" %}</label>
+                                <input class="form-control" name="description" value="{{ project.description }}"><br>
+                            </div>
+                        </div>
+                        <div class="row">                            
+                            <div class="col-6">
+                                <label>{% translate "Couch ID" %}</label>
+                    <input class="form-control" name="couch_id" value="{{ project.couch_id }}" class="bootstrap4">
+                            </div>
+                        </div>
+                        <hr />                        
+                    </div>                     
+                    <div class="card-footer">
+                        <button  type="submit" class="btn btn-primary btn-sm rounded-xl" >
+                            {% translate "SAVE" %}
+                        </button>
+                    </div>                   
+                    </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+
+
+
+

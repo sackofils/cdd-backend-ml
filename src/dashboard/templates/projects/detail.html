@@ -1,0 +1,68 @@
+{% extends 'layouts/base.html' %}
+{% load bootstrap4 static i18n %}
+
+{% block content %}
+
+<style>
+.fieldset {
+    border: solid 2px gray;
+    margin-bottom: 10px !important;
+}
+.fieldset fieldset .content {
+    width: 95% !important;
+}
+.fieldset fieldset .content:last-of-type {
+    margin-left: auto;
+}
+fieldset {
+  background-color: #eeeeee;
+}
+
+legend {
+  background-color: gray;
+  color: white;
+  padding: 5px 10px;
+}
+
+input {
+  margin: 5px;
+}
+
+.attach-file a {
+    float: right !important;
+    margin-right: 45px !important;
+}
+.attach-file p {
+    margin-left: 15px !important;
+    margin-top: 8px !important;
+}
+</style>
+
+
+    <div class="row">
+        <div class="col-md-8">            
+            {% comment %} <div class="card">
+                <div class="card-body table-responsive">
+                    <table id="table" class="table">
+                        <thead>
+                            <tr>
+                                <th>{% translate 'Project Name' %}</th>
+                                <th>{% translate 'Description' %}</th>
+                                <th>{% translate 'Couch Id' %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <td>{{ project.name }}</td>
+                            <td>{{ project.description }}</td>
+                            <td>{{ project.couch_id }}</td>
+                        </tbody>
+                    </table>
+                </div>
+            </div> {% endcomment %}
+        </div>        
+    </div>
+    <hr />   
+{% endblock content %}
+
+
+

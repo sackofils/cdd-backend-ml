@@ -1,0 +1,47 @@
+{% extends 'layouts/base.html' %}
+{% load static i18n bootstrap4 custom_tags %}
+
+{% block content %}
+<div class="row"> 
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-8">
+                        <div class="col-8 text-left">
+                            <div class="fs28 lh35 text-primary text-bold-family mb-4" style="font-size: 16px !important;">
+                                 {% translate 'Task Detail' %}<br>
+                            </div>
+                        </div>
+                         <p style="font-size: 16px !important;"><strong>Name:</strong> {{ task.name }}</p>
+                         <p style="font-size: 16px !important;"><strong>Order:</strong> {{ task.order }}</p>
+                         <p style="font-size: 16px !important;"><strong>Description:</strong> {{ task.description }}</p>
+                         <p style="font-size: 16px !important;"><strong>Project:</strong> {{ task.activity.phase.project.name }}</p>
+                         <p style="font-size: 16px !important;"><strong>Phase:</strong> {{ task.activity.phase.name }}</p>
+                         <p style="font-size: 16px !important;"><strong>Activity:</strong> {{ task.activity.name }}</p>
+                         <p style="font-size: 16px !important;"><strong>Form:</strong> {{ task.form }}</p>
+                         <p style="font-size: 16px !important;"><strong>Couch Id:</strong> {{ task.couch_id }}</p>
+                    </div>
+                </div>       
+                {% if user.is_superuser or user|has_group:"Admin" %}
+                <div class="float-right mb-3">
+                    <a href="{% url 'dashboard:form_builder:create-form-type' task.pk %}" 
+                       class="btn btn-primary btn-sm rounded-xl">
+                       <i class="fa fa-plus mr-2"></i>
+                       Create Form
+                    </a>
+                </div>
+                <a href="{% url 'dashboard:tasks:task_detail' task.pk %}"
+                    class="btn btn-primary btn-xs"
+                    title="{% translate 'Refresh' %}">
+                    <span class="_web">{% translate 'Refresh' %}</span>
+                    <span class="_mobile"><i class="fa fa-eye"></i></span>
+                </a>
+                {% endif %}
+            </div>
+            
+        </div>
+        
+    </div>
+</div>
+{% endblock %}
