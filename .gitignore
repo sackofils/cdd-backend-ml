@@ -1,0 +1,11 @@
+
+.DS_Store
+.idea/cdd-backend.iml
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+src/.platform/nginx/conf.d/proxy.conf
+src/.pre-commit-config.yaml
+.idea/workspace.xml
