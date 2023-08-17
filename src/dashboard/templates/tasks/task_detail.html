@@ -2,7 +2,7 @@
 {% load static i18n bootstrap4 custom_tags %}
 
 {% block content %}
-<div class="row"> 
+<div class="row">
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
@@ -13,24 +13,31 @@
                                  {% translate 'Task Detail' %}<br>
                             </div>
                         </div>
-                         <p style="font-size: 16px !important;"><strong>Name:</strong> {{ task.name }}</p>
-                         <p style="font-size: 16px !important;"><strong>Order:</strong> {{ task.order }}</p>
-                         <p style="font-size: 16px !important;"><strong>Description:</strong> {{ task.description }}</p>
-                         <p style="font-size: 16px !important;"><strong>Project:</strong> {{ task.activity.phase.project.name }}</p>
-                         <p style="font-size: 16px !important;"><strong>Phase:</strong> {{ task.activity.phase.name }}</p>
-                         <p style="font-size: 16px !important;"><strong>Activity:</strong> {{ task.activity.name }}</p>
-                         <p style="font-size: 16px !important;"><strong>Form:</strong> {{ task.form }}</p>
-                         <p style="font-size: 16px !important;"><strong>Couch Id:</strong> {{ task.couch_id }}</p>
+                         <p style="font-size: 16px !important;"><strong>{% translate 'Name' %} :</strong> {{ task.name }}</p>
+                         <p style="font-size: 16px !important;"><strong>{% translate 'Order' %} :</strong> {{ task.order }}</p>
+                         <p style="font-size: 16px !important;"><strong>{% translate 'Description' %} :</strong> {{ task.description }}</p>
+                         <p style="font-size: 16px !important;"><strong>{% translate 'Project' %} :</strong> {{ task.activity.phase.project.name }}</p>
+                         <p style="font-size: 16px !important;"><strong>{% translate 'Phase' %} :</strong> {{ task.activity.phase.name }}</p>
+                         <p style="font-size: 16px !important;"><strong>{% translate 'Activity' %} :</strong> {{ task.activity.name }}</p>
+                         <p style="font-size: 16px !important;"><strong>{% translate 'Form' %} :</strong> {{ task.form_type }}</p>
+                         <p style="font-size: 16px !important;"><strong>{% translate 'Attachments' %} :</strong>
+                             {% for item in task.attachments.all %}
+                                <span class="badge badge-primary">{{ item }}</span>
+                             {% empty %}
+                             <span class="badge badge-primary">-</span>
+                             {% endfor %}
+                         </p>
+                         <p style="font-size: 16px !important;"><strong>{% translate 'Couch Id' %} :</strong> {{ task.couch_id }}</p>
                     </div>
-                </div>       
+                </div>
                 {% if user.is_superuser or user|has_group:"Admin" %}
-                <div class="float-right mb-3">
-                    <a href="{% url 'dashboard:form_builder:create-form-type' task.pk %}" 
+                <!-- <div class="float-right mb-3">
+                    <a href="{% url 'dashboard:form_builder:update_form' task.pk %}"
                        class="btn btn-primary btn-sm rounded-xl">
                        <i class="fa fa-plus mr-2"></i>
-                       Create Form
+                       {% translate 'Create Form' %}
                     </a>
-                </div>
+                </div> -->
                 <a href="{% url 'dashboard:tasks:task_detail' task.pk %}"
                     class="btn btn-primary btn-xs"
                     title="{% translate 'Refresh' %}">
@@ -39,9 +46,9 @@
                 </a>
                 {% endif %}
             </div>
-            
+
         </div>
-        
+
     </div>
 </div>
 {% endblock %}

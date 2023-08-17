@@ -132,13 +132,13 @@ def get_parent_administrative_level(administrative_levels_db, administrative_id)
     return parent
 
 def get_region_of_village_by_sql_id(administrative_levels_db, village_sql_id):
-    canton = get_parent_administrative_level(administrative_levels_db, village_sql_id)
-    if canton:
-        commune = get_parent_administrative_level(administrative_levels_db, canton['administrative_id'])
-        if commune:
-            prefecture = get_parent_administrative_level(administrative_levels_db, commune['administrative_id'])
-            if prefecture:
-                return get_parent_administrative_level(administrative_levels_db, prefecture['administrative_id'])
+    commune = get_parent_administrative_level(administrative_levels_db, village_sql_id)
+    if commune:
+        cercle = get_parent_administrative_level(administrative_levels_db, commune['administrative_id'])
+        if cercle:
+            return get_parent_administrative_level(administrative_levels_db, cercle['administrative_id'])
+            #if prefecture:
+            #    return get_parent_administrative_level(administrative_levels_db, prefecture['administrative_id'])
 
     return None
 

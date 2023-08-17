@@ -21,13 +21,10 @@
                     {% bootstrap_field form.region show_label=False %}
                 </div>
                 <div class="col-2">
-                    {% bootstrap_field form.prefecture show_label=False %}
+                    {% bootstrap_field form.cercle show_label=False %}
                 </div>
                 <div class="col-2">
                     {% bootstrap_field form.commune show_label=False %}
-                </div>
-                <div class="col-2">
-                    {% bootstrap_field form.canton show_label=False %}
                 </div>
                 <div class="col-2">
                     {% bootstrap_field form.village show_label=False %}
@@ -39,7 +36,7 @@
                     </a>
                 </div>
             </div>
-            
+
             <div class="input-group mb-3 search-bar">
                 <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fas fa-search"></i></span>
@@ -134,9 +131,8 @@
         let facilitators = $('#facilitators-list');
         let administrative_level = $('#id_administrative_level');
         let id_region = $('#id_region');
-        let id_prefecture = $('#id_prefecture');
+        let id_cercle = $('#id_cercle');
         let id_commune = $('#id_commune');
-        let id_canton = $('#id_canton');
         let id_village = $('#id_village');
 
         function loadFacilitators(type_field="") {
@@ -146,9 +142,8 @@
                 url: "{% url 'dashboard:facilitators:facilitators_list' %}",
                 data: {
                     id_region: id_region.val(),
-                    id_prefecture: id_prefecture.val(),
+                    id_cercle: id_cercle.val(),
                     id_commune: id_commune.val(),
-                    id_canton: id_canton.val(),
                     id_village: id_village.val(),
                     type_field: type_field,
                     is_training: "{{ is_training }}",
@@ -156,7 +151,7 @@
                 },
                 success: function (response) {
                     spin.hide();
-                    
+
                     facilitators.html(response);
                 },
                 error: function (data) {
@@ -204,16 +199,12 @@
             placeholder: "{% translate 'Region' %}",
             allowClear: true
         });
-        $("#id_prefecture").select2({
-            placeholder: "{% translate 'Prefecture' %}",
+        $("#id_cercle").select2({
+            placeholder: "{% translate 'Cercle' %}",
             allowClear: true,
         });
         $("#id_commune").select2({
             placeholder: "{% translate 'Commune' %}",
-            allowClear: true,
-        });
-         $("#id_canton").select2({
-            placeholder: "{% translate 'Canton' %}",
             allowClear: true,
         });
          $("#id_village").select2({

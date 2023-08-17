@@ -71,9 +71,20 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
                 <li class="nav-item">
                     <a href="{% url 'dashboard:form_builder:list' %}"
-                       class="nav-link {% if active_level1 == 'form_types' %}active{% endif %}">
-                        <i class="nav-icon fa fa-comment-alt"></i>
+                       class="nav-link {% if active_level1 == 'forms' %}active{% endif %}">
+                        <i class="nav-icon fa fa-wpforms"></i>
                         <p>List Forms</p>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
+                <li class="nav-item">
+                    <a href="{% url 'dashboard:attachment_type:list' %}"
+                       class="nav-link {% if active_level1 == 'attachments' %}active{% endif %}">
+                        <i class="nav-icon fa fa-paperclip"></i>
+                        <p>List Attachments</p>
                     </a>
                 </li>
             </ul>

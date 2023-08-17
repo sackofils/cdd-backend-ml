@@ -12,9 +12,8 @@ class DiagnosticsForm(forms.Form):
     task = forms.ChoiceField(label='')
 
     region = forms.ChoiceField(label='')
-    prefecture = forms.ChoiceField(label='')
+    cercle = forms.ChoiceField(label='')
     commune = forms.ChoiceField(label='')
-    canton = forms.ChoiceField(label='')
     village = forms.ChoiceField(label='')
 
 
@@ -34,7 +33,7 @@ class DiagnosticsForm(forms.Form):
             except Exception as exc:
                 pass
 
-        for label in ["region", "prefecture", "commune", "canton", "village"]:
+        for label in ["region", "cercle", "commune", "village"]:
             try:
                 administrative_level_choices = get_choices(
                     get_administrative_levels_by_type(administrative_levels_db, label.title()), 

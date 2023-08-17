@@ -1,0 +1,56 @@
+{% extends 'layouts/base.html' %}
+{% load static i18n bootstrap4 custom_tags %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="fs28 lh35 text-primary text-bold-family mb-4" style="font-size: 16px !important;">
+                     {% translate 'Form Detail' %}<br>
+                </div>
+                <p style="font-size: 16px !important;"><strong>Name:</strong> {{ object.name }}</p>
+                <p style="font-size: 16px !important;"><strong>Description:</strong> {{ object.description }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body table-responsive">
+                <div class="col-8 text-left">
+                    <div class="fs28 lh35 text-primary text-bold-family mb-4" style="font-size: 16px !important;">
+                         {% translate 'Task List' %}<br>
+                    </div>
+                </div>
+                <table id="table" class="table">
+                    <thead>
+                    <tr>
+                        <th>{% translate 'Name' %}</th>
+                        <th>{% translate 'Label' %}</th>
+                        <th>{% translate 'Field type' %}</th>
+                        <th>{% translate 'Help text' %}</th>
+                        <th>{% translate 'Required' %}</th>
+                        <th>{% translate 'Options' %}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for field in form_fields %}
+                        <tr>
+                            <td>{{ field.name }}</td>
+                            <td>{{ field.label }}</td>
+                            <td>{{ field.field_type }}</td>
+                            <td>{{ field.help_text }}</td>
+                            <td>{{ field.required }}</td>
+                            <td>{{ field.options }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

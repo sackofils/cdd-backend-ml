@@ -34,15 +34,16 @@
                                 {% bootstrap_field form.phone %}
                                 {% bootstrap_field form.sex %}
                             </div>
-                            <div class="col-6">
+                            <div class="col-6 custom-field">
                                 {% bootstrap_field form.username %}
                                 {% bootstrap_field form.password1 %}
                                 {% bootstrap_field form.password2 %}
                             </div>
                         </div>
+                        <hr>
                         <div class="row">
                             <div class="col-12">
-                                <label>{% trans "Add administrative levels" %}</label>
+                                <label class="text-primary">{% trans "Add administrative levels" %}</label>
                                 {% bootstrap_field form.administrative_level layout='horizontal' %}
                                 <div class="float-right">
                                     <a id="add" class="btn btn-primary btn-sm rounded-xl disabled">
@@ -84,6 +85,9 @@
 {% block select2 %}
     <script src="{% static 'js/dynamicRegionSelector.js' %}"></script>
     <script type="text/javascript">
+        $("#id_sex").select2({
+            allowClear: false
+        });
         $("#id_administrative_level").select2({
             placeholder: "{% translate 'Click to select location' %}",
             allowClear: true
@@ -93,4 +97,10 @@
             '<i class="fas fa-chevron-circle-down text-primary" style="margin-top:12px;"></i>');
 
     </script>
+
+<style>
+    .custom-field > .form-group:last-child {
+        margin-top: 60px !important;
+    }
+</style>
 {% endblock select2 %}

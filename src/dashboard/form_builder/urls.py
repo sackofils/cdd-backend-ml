@@ -6,9 +6,10 @@ from dashboard.form_builder import views
 app_name = 'form_builder'
 urlpatterns = [
     path('', views.FormTypeListView.as_view(), name='list'),
+    path('<int:pk>', views.FormTypeDetailView.as_view(), name='form_detail'),
     path('form-list/', views.FormTypeListTableView.as_view(), name='form_list'),
-    path('create-form/', views.CreateFormTypeView.as_view(), name='create_form'),    
-    path('update-form/<int:pk>', views.UpdateFormTypeView.as_view(), name='update_form'), 
+    path('create-form/', views.CreateFormTypeView.as_view(), name='create_form'),
+    path('update-form/<int:pk>', views.UpdateFormTypeView.as_view(), name='update_form'),
     path('delete-form/<int:pk>', views.UpdateFormTypeView.as_view(), name='delete_form'),
     path('form-fields/<int:id>', views.CreateFormTypeView.as_view(), name='list_form_fields'),
     path('delete-form-field/<int:pk>', views.delete_formfield, name='delete_form_field'),

@@ -4,7 +4,7 @@
 {% block content %}
     <div class="row">
         <div class="col-12">
-            
+
             {% if user.is_superuser or user|has_group:"Admin" %}
             <div class="float-right mb-3">
                 <a href="{% url 'dashboard:tasks:create' %}"
@@ -15,8 +15,8 @@
             </div>
             {% endif %}
 
-            <div class="clearfix"></div>             
-            
+            <div class="clearfix"></div>
+
             <div class="input-group mb-3 search-bar">
                 <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fas fa-search"></i></span>
@@ -55,7 +55,7 @@
                                 <td>{{ task.phase }}</td>
                                 <td>{{ task.activity }}</td>
                                 <td>{{ task.couch_id }}</td>
-                                <td>                                   
+                                <td>
                                     <a href="#"
                                        class="btn btn-primary btn-xs" title="{% translate 'Edit' %}">
                                         <span class="_web">Edit</span>
@@ -107,18 +107,18 @@
     <script type="text/javascript">
         var type_field = "";
         let spin = $('#spin');
-        let tasks = $('#tasks-list');       
+        let tasks = $('#tasks-list');
 
         function loadTasks(type_field="") {
             spin.show();
             $.ajax({
                 type: "GET",
                 url: "{% url 'dashboard:tasks:tasks_list' %}",
-                data: {                    
+                data: {
                 },
                 success: function (response) {
                     spin.hide();
-                    
+
                     tasks.html(response);
                 },
                 error: function (data) {
@@ -129,7 +129,7 @@
         }
 
         loadTasks();
-       
+
     </script>
 
 

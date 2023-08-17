@@ -19,7 +19,7 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-2">
-                                        <h2 class="text-primary text-bold">{% translate "Filter by" %}</h2>
+                                        <h5 class="text-primary text-bold">{% translate "Filter by" %}</h5>
                                     </div>
                                     {% for field in form %}
                                     <div class="col-2">
@@ -121,52 +121,27 @@ padding: 0;
         map.setMaxBounds(bounds);
 
         const geojson = {
-            'type': 'FeatureCollection',
-            'features': [
+            "type": "FeatureCollection",
+            "features": [
+            {% for info in region_info %}
                 {
-                    'type': 'Feature',
-                    'properties': {
-                        'message': 'Foo',
-                        'iconSize': [60, 60]
+                    "type": "Feature",
+                    "properties": {
+                        "message": "Foo",
+                        "iconSize": [60, 60]
                     },
-                    'geometry': {
-                        'type': 'Point',
-                        'coordinates': [0.496008, 10.417] //0.356008, 10.417
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [parseFloat({{ info.longitude }}), parseFloat({{ info.latitude }})]
                     },
-                    'id': "_savanes"
-                },
-                {
-                    'type': 'Feature',
-                    'properties': {
-                        'message': 'Bar',
-                        'iconSize': [60, 60]
-                    },
-                    'geometry': {
-                        'type': 'Point',
-                        'coordinates': [0.916667, 9.66667]
-                    },
-                    'id': "_kara"
-                },
-                {
-                    'type': 'Feature',
-                    'properties': {
-                        'message': 'Baz',
-                        'iconSize': [60, 60]
-                    },
-                    'geometry': {
-                        'type': 'Point',
-                        'coordinates': [1.0033, 8.4833] //1.1333 8.9833
-                    },
-                    'id': "_centrale"
+                    "id": "_{{ info.name.lower }}"
                 }
+                {% if not forloop.last %},{% endif %}
+            {% endfor %}
             ]
         };
 
         map.on('load', function () {
-
-
-
-
             map.addLayer(
                 {
                     'id': 'country-boundaries',
@@ -184,13 +159,11 @@ padding: 0;
                 'country-label'
             );
 
-
             map.setFilter('country-boundaries', [
                 "in",
                 "iso_3166_1_alpha_3",
                 '{{ country_iso_code }}',
             ]);
-
 
             setTimeout(function () {
                 statistics_spin.hide();
@@ -259,9 +232,9 @@ padding: 0;
                         success: function (data) {
                             
                             if(data.search_by_locality){
-                                document.getElementById("_savanes").innerHTML = ``;
-                                document.getElementById("_kara").innerHTML = ``;
-                                document.getElementById("_centrale").innerHTML = ``;
+                            {% for info in region_info %}
+                                document.getElementById("_{{ info.name.lower }}").innerHTML = ``;
+                            {% endfor %}
                                 
                                 if(data.region){
                                     document.getElementById(("_"+data.region.toLowerCase())).innerHTML = (data.percentage_tasks_completed).toFixed(2)+"%";
@@ -331,9 +304,9 @@ padding: 0;
                         }
                     });
                 }else{
-                    document.getElementById("_savanes").innerHTML = ``;
-                    document.getElementById("_kara").innerHTML = ``;
-                    document.getElementById("_centrale").innerHTML = ``;
+                    {% for info in region_info %}
+                        document.getElementById("_{{ info.name.lower }}").innerHTML = ``;
+                    {% endfor %}
                     table.innerHTML = `
                     <thead>
                         <tr>

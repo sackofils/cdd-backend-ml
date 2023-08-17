@@ -1,3 +1,5 @@
+import json
+
 from django.views.generic import FormView, View as GenericView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from dashboard.mixins import PageMixin, AJAXRequestMixin, JSONResponseMixin
@@ -12,6 +14,7 @@ from dashboard.utils import (
 )
 from no_sql_client import NoSQLClient
 from authentication.models import Facilitator
+import json
 
 
 
@@ -39,8 +42,14 @@ class DashboardDiagnosticsCDDView(PageMixin, LoginRequiredMixin, FormView):
         context['en_bound'] = settings.DIAGNOSTIC_MAP_EN_BOUND
         context['country_iso_code'] = settings.DIAGNOSTIC_MAP_ISO_CODE
 
-        context['list_fields'] = ["phase", "activity", "task", "region", "prefecture", "commune", "canton", "village"]
-
+        context['list_fields'] = ["phase", "activity", "task", "region", "cercle", "commune", "village"]
+        nsc = NoSQLClient()
+        administrative_levels_db = nsc.get_db("administrative_levels")
+        regions = administrative_levels_db.get_query_result({
+            "administrative_level": 'Region'
+        })
+        region_info = [r for r in regions]
+        context['region_info'] = region_info
         return context
 
     def render_to_response(self, context, **response_kwargs):
@@ -82,58 +91,44 @@ class GetTasksDiagnosticsView(AJAXRequestMixin, LoginRequiredMixin, JSONResponse
         search_by_locality = False
         already_count_facilitator = False
         _region = None
-        regions = {
-            "SAVANES": {
+        regions = {}
+        region_docs = administrative_levels_db.get_query_result({"administrative_level": 'Region'})
+        for r in region_docs:
+            regions.update({
+                str(r['name']): {
                 "nbr_tasks": 0,
                 "nbr_tasks_completed": 0,
                 "percentage_tasks_completed": 0
-            }, 
-            "KARA":{
-                "nbr_tasks": 0,
-                "nbr_tasks_completed": 0,
-                "percentage_tasks_completed": 0
-            }, 
-            "CENTRALE":{
-                "nbr_tasks": 0,
-                "nbr_tasks_completed": 0,
-                "percentage_tasks_completed": 0
-            }
-        }
+                }
+            })
+        regions = dict(regions)
 
-        if _type in ["region", "prefecture", "commune", "canton", "village"]:
+        if _type in ["region", "cercle", "commune", "village"]:
             search_by_locality = True
-            liste_prefectures = []
+            liste_cercles = []
             liste_communes = []
-            liste_cantons = []
             administrative_levels = administrative_levels_db.all_docs(include_docs=True)['rows']
 
             if _type == "region":
                 region = get_all_docs_administrative_levels_by_type_and_administrative_id(administrative_levels, _type.title(), sql_id)
                 region = region[:][0]
-                _type = "prefecture"
-                liste_prefectures = get_all_docs_administrative_levels_by_type_and_parent_id(administrative_levels, _type.title(), region['administrative_id'])[:]
+                _type = "cercle"
+                liste_cercles = get_all_docs_administrative_levels_by_type_and_parent_id(administrative_levels, _type.title(), region['administrative_id'])[:]
                     
-            if _type == "prefecture":
-                if not liste_prefectures:
-                    liste_prefectures = get_all_docs_administrative_levels_by_type_and_administrative_id(administrative_levels, _type.title(), sql_id)[:]
+            if _type == "cercle":
+                if not liste_cercles:
+                    liste_cercles = get_all_docs_administrative_levels_by_type_and_administrative_id(administrative_levels, _type.title(), sql_id)[:]
                 _type = "commune"
-                for prefecture in liste_prefectures:
-                    [liste_communes.append(elt) for elt in get_all_docs_administrative_levels_by_type_and_parent_id(administrative_levels, _type.title(), prefecture['administrative_id'])[:]]
+                for cercle in liste_cercles:
+                    [liste_communes.append(elt) for elt in get_all_docs_administrative_levels_by_type_and_parent_id(administrative_levels, _type.title(), cercle['administrative_id'])[:]]
 
             if _type == "commune":
                 if not liste_communes:
                     liste_communes = get_all_docs_administrative_levels_by_type_and_administrative_id(administrative_levels, _type.title(), sql_id)[:]
-                _type = "canton"
-                for commune in liste_communes:
-                    [liste_cantons.append(elt) for elt in get_all_docs_administrative_levels_by_type_and_parent_id(administrative_levels, _type.title(), commune['administrative_id'])[:]]
-
-            if _type == "canton":
-                if not liste_cantons:
-                    liste_cantons = get_all_docs_administrative_levels_by_type_and_administrative_id(administrative_levels, _type.title(), sql_id)[:]
                 _type = "village"
-                for canton in liste_cantons:
-                    [liste_villages.append(elt) for elt in get_all_docs_administrative_levels_by_type_and_parent_id(administrative_levels, _type.title(), canton['administrative_id'])[:]]
-            
+                for commune in liste_communes:
+                    [liste_villages.append(elt) for elt in get_all_docs_administrative_levels_by_type_and_parent_id(administrative_levels, _type.title(), commune['administrative_id'])[:]]
+
             if _type == "village":
                 if not liste_villages:
                     liste_villages = get_all_docs_administrative_levels_by_type_and_administrative_id(administrative_levels, _type.title(), sql_id)[:]

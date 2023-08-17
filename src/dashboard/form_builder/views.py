@@ -17,36 +17,53 @@ from django.contrib import messages
 from authentication.permissions import (
     CDDSpecialistPermissionRequiredMixin, SuperAdminPermissionRequiredMixin,
     AdminPermissionRequiredMixin
-    )
+)
+
 
 class FormTypeListView(PageMixin, LoginRequiredMixin, generic.ListView):
     model = FormType
     queryset = FormType.objects.all()
+    active_level1 = "forms"
     template_name = 'form_builder/form/list.html'
     context_object_name = 'forms'
     title = gettext_lazy('Forms')
     breadcrumb = [{
-            'url': '',
-            'title': title
-        }]
-    
+        'url': '',
+        'title': title
+    }]
+
     def get_queryset(self):
         return super().get_queryset()
-    
+
     # def get_context_data(self, **kwargs):
     #     context = super().get_context_data(**kwargs)
     #     # context['form'] = FormTypeForm()
     #     return context
 
+
+class FormTypeDetailView(LoginRequiredMixin, generic.DetailView):
+    active_level1 = "forms"
+    template_name = 'form_builder/detail.html'
+    queryset = FormType.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'form_fields': FormField.objects.filter(form=self.object)
+        })
+        return context
+
+
 class FormTypeListTableView(LoginRequiredMixin, generic.ListView):
     template_name = 'form_builder/form/form_list.html'
     context_object_name = 'forms'
 
-    def get_results(self):        
+    def get_results(self):
         return list(FormType.objects.all())
 
     def get_queryset(self):
         return self.get_results()
+
 
 # class FormTypeListView_OLD(PageMixin, LoginRequiredMixin, generic.ListView):
 #     model = FormType
@@ -58,10 +75,10 @@ class FormTypeListTableView(LoginRequiredMixin, generic.ListView):
 #             'url': '',
 #             'title': title
 #         }]
-    
+
 #     def get_queryset(self):
 #         return super().get_queryset()
-    
+
 #     def get_context_data(self, **kwargs):
 #         context = super().get_context_data(**kwargs)
 #         context['form'] = FormTypeForm()
@@ -73,18 +90,20 @@ class FormFieldListView(PageMixin, LoginRequiredMixin, generic.ListView):
     template_name = 'form_builder/form_field/list.html'
     context_object_name = 'forms'
     title = gettext_lazy('Form Types')
+    active_level1 = "forms"
     breadcrumb = [{
-            'url': '',
-            'title': title
-        }]
-    
+        'url': '',
+        'title': title
+    }]
+
     def get_queryset(self):
         return super().get_queryset()
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = FormTypeForm()
         return context
+
 
 class FormTypeInline():
     """
@@ -92,13 +111,13 @@ class FormTypeInline():
     """
     form_class = FormTypeForm
     model = FormType
-    template_name = 'form_builder/form/create.html'
+    template_name = 'form_builder/form/create_update.html'
 
     def form_valid(self, form):
         named_formsets = self.get_named_formsets()
         if not all((x.is_valid() for x in named_formsets.values())):
             return self.render_to_response(self.get_context_data(form=form))
-        
+
         self.object = form.save()
 
         # for every formset, attempt to find a specific formset save function. If not found, just save
@@ -109,21 +128,23 @@ class FormTypeInline():
             else:
                 formset.save()
         return redirect("dashboard:form_builder:list")
-    
+
     def formset_form_fields_valid(self, formset):
         """
         Hook for custom formset saving. It is useful if you have multiple formsets
         So in case you have another formset, just declare another formset_{FORMSET}_valid method
         """
         form_fields = formset.save(commit=False)
-        # add this 2 lines, if you have can_delete=True parameter 
+        # add this 2 lines, if you have can_delete=True parameter
         # set in inlineformset_factory func
         for obj in formset.deleted_objects:
             obj.delete()
-        for form_field in form_fields:
+        for i, form_field in enumerate(form_fields):
             # assign parent
+            form_field.order = i + 1
             form_field.form = self.object
             form_field.save()
+
 
 class CreateFormTypeView(FormTypeInline, PageMixin, LoginRequiredMixin, AdminPermissionRequiredMixin, generic.FormView):
     """
@@ -131,20 +152,20 @@ class CreateFormTypeView(FormTypeInline, PageMixin, LoginRequiredMixin, AdminPer
     https://www.imagescape.com/blog/multipage-forms-django/
     https://www.letscodemore.com/blog/django-inline-formset-factory-with-examples/
     """
-    template_name = 'form_builder/form/create.html'
-    title = gettext_lazy("Create Form Type")
+    template_name = 'form_builder/form/create_update.html'
+    title = gettext_lazy("Create Form")
     active_level1 = "forms"
     form_class = FormTypeForm
     success_url = reverse_lazy('dashboard:form_builder:list')
     breadcrumb = [{
         'url': reverse_lazy('dashboard:form_builder:list'),
-        'title': gettext_lazy('Form Types')
+        'title': gettext_lazy('Forms')
     },
-    {
-        'url': '',
-        'title': title
-    }]
-    
+        {
+            'url': '',
+            'title': title
+        }]
+
     def get_context_data(self, **kwargs):
         # we need to overwrite get_context_data
         # to make sure that our formset is rendered
@@ -193,6 +214,7 @@ class CreateFormTypeView(FormTypeInline, PageMixin, LoginRequiredMixin, AdminPer
     #     my_form.save()
     #     return super().form_valid(my_form)
 
+
 class CreateFormTypeView_OLD(PageMixin, LoginRequiredMixin, AdminPermissionRequiredMixin, generic.FormView):
     """
     See https://swapps.com/blog/working-with-nested-forms-with-django/
@@ -208,21 +230,21 @@ class CreateFormTypeView_OLD(PageMixin, LoginRequiredMixin, AdminPermissionRequi
         'url': reverse_lazy('dashboard:form_builder:form_list'),
         'title': gettext_lazy('Forms')
     },
-    {
-        'url': '',
-        'title': title
-    }]
-    
+        {
+            'url': '',
+            'title': title
+        }]
+
     def get_context_data(self, **kwargs):
         # we need to overwrite get_context_data
         # to make sure that our formset is rendered
         data = super().get_context_data(**kwargs)
-        FormFieldSet = inlineformset_factory(FormType, FormField, fields=['name',])
+        FormFieldSet = inlineformset_factory(FormType, FormField, fields=['name', ])
         if self.request.POST:
             data['fields'] = FormFieldSet(self.request.POST)
         else:
             data['fields'] = FormFieldSet()
-        return data # super().get_context_data(**kwargs)
+        return data  # super().get_context_data(**kwargs)
 
     def form_valid(self, form):
         context = self.get_context_data()
@@ -247,9 +269,11 @@ class CreateFormTypeView_OLD(PageMixin, LoginRequiredMixin, AdminPermissionRequi
         form_type.save()
         return super().form_valid(form)
 
-class UpdateFormTypeView(FormTypeInline, PageMixin, LoginRequiredMixin, AdminPermissionRequiredMixin, generic.UpdateView):
+
+class UpdateFormTypeView(FormTypeInline, PageMixin, LoginRequiredMixin, AdminPermissionRequiredMixin,
+                         generic.UpdateView):
     model = FormType
-    template_name = 'form_builder/form/update.html'
+    template_name = 'form_builder/form/create_update.html'
     title = gettext_lazy('Edit Form')
     active_level1 = 'forms'
     form_class = UpdateFormTypeForm
@@ -257,10 +281,10 @@ class UpdateFormTypeView(FormTypeInline, PageMixin, LoginRequiredMixin, AdminPer
         'url': reverse_lazy('dashboard:form_builder:list'),
         'title': gettext_lazy('Forms')
     },
-    {
-        'url': '',
-        'title': title
-    }]
+        {
+            'url': '',
+            'title': title
+        }]
 
     def get_context_data(self, **kwargs):
         ctx = super(UpdateFormTypeView, self).get_context_data(**kwargs)
@@ -272,9 +296,10 @@ class UpdateFormTypeView(FormTypeInline, PageMixin, LoginRequiredMixin, AdminPer
         If there are multiple formsets, you would extend the dictionary
         """
         return {
-            'form_fields': FormFieldFormSet(self.request.POST or None, self.request.FILES or None, instance=self.object, prefix="form_fields")
+            'form_fields': FormFieldFormSet(self.request.POST or None, self.request.FILES or None, instance=self.object,
+                                            prefix="form_fields")
         }
-        
+
 
 class UpdateFormTypeView_OLD(PageMixin, LoginRequiredMixin, AdminPermissionRequiredMixin, generic.UpdateView):
     model = FormType
@@ -286,10 +311,12 @@ class UpdateFormTypeView_OLD(PageMixin, LoginRequiredMixin, AdminPermissionRequi
         'url': reverse_lazy('dashboard:form_builder:list_form'),
         'title': gettext_lazy('Forms')
     },
-    {
-        'url': '',
-        'title': title
-    }]
+        {
+            'url': '',
+            'title': title
+        }]
+
+
 # class FormTypeMixin:
 #     doc = None
 #     obj = None

@@ -5,26 +5,26 @@
         <table id="table" class="table">
             <thead>
                 <tr>
-                    <th>{% translate 'Form Name' %}</th>
-                    <th>{% translate 'Description' %}</th>
-                    <!-- <th>{% comment %} {% translate 'Couch Id' %} {% endcomment %}</th> -->
+                    <th>{% translate 'Name' %}</th>
+                    <th>{% translate 'Type' %}</th>
+                    <th>{% translate 'Order' %}</th>
                     <th width="20%">{% translate 'Action' %}</th>
                 </tr>
             </thead>
             <tbody>
-                {% for form in forms %}
+                {% for attachment in attachments %}
                     <tr>
-                        <td>{{ form.name }}</td>
-                        <td>{{ form.description }}</td>
-                        <!-- <td>{{ form.couch_id }}</td> -->
+                        <td>{{ attachment.name }}</td>
+                        <td>{{ attachment.file_type }}</td>
+                        <td>{{ attachment.order }}</td>
                         <td>
                             {% if user.is_superuser or user|has_group:"Admin" %}
-                                <a href="{% url 'dashboard:form_builder:update_form' form.pk %}"
+                                <a href="{% url 'dashboard:attachment_type:update' attachment.pk %}"
                                     class="btn btn-primary btn-xs" title="{% translate 'Edit' %}">
                                     <span class="_web">{% translate 'Edit' %}</span>
                                     <span class="_mobile"><i class="fa fa-edit"></i></span>
                                 </a>
-                                <a href="{% url 'dashboard:form_builder:delete_form' form.pk %}"
+                                <a href="{% url 'dashboard:attachment_type:delete' attachment.pk %}"
                                     class="btn btn-danger btn-sx" title="{% translate 'Delete' %}">
                                     <span class="_web">{% translate 'Delete' %}</span>
                                     <span class="_mobile"><i class="fa fa-trash"></i></span>

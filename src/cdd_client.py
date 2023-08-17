@@ -35,8 +35,8 @@ class CddClient:
             "administrative_level": adm_obj.type,
             "type": "administrative_level",
             "parent_id": parent,
-            "latitude": float(adm_obj.latitude),
-            "longitude": float(adm_obj.longitude),
+            "latitude": float(adm_obj.latitude) if adm_obj.latitude else None,
+            "longitude": float(adm_obj.longitude) if adm_obj.longitude else None,
         }
         self.nsc.create_document(self.adm_db, data)
         new = self.adm_db.get_query_result(
@@ -54,12 +54,10 @@ class CddClient:
 
         # Sync Region
         self.iterate_administrative_level(administrative_levels, "Region")
-        # Sync Prefecture
-        self.iterate_administrative_level(administrative_levels, "Prefecture")
+        # Sync Cercle
+        self.iterate_administrative_level(administrative_levels, "Cercle")
         # Sync Commune
         self.iterate_administrative_level(administrative_levels, "Commune")
-        # Sync Canton
-        self.iterate_administrative_level(administrative_levels, "Canton")
         # Sync Village
         self.iterate_administrative_level(administrative_levels, "Village")
 

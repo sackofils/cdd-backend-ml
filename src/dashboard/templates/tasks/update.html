@@ -4,9 +4,9 @@
 {% block content %}
     <div class="row">
         <div class="col-md-12">
-                       
+
             <div class="card">
-                
+
                 <form method="post">
                     {% csrf_token %}
 
@@ -15,18 +15,19 @@
                             <div class="col-6">
                                 {% bootstrap_field form.name %}
                                 {% bootstrap_field form.description %}
+                                {% bootstrap_field form.form_type %}
+                                {% bootstrap_field form.attachments %}
                             </div>
-                        </div> 
-                    </div>                     
+                        </div>
+                    </div>
                     <div class="card-footer">
                         <button  type="submit" class="btn btn-primary btn-sm rounded-xl" >
                             {% translate "SAVE" %}
                         </button>
-                    </div>                   
+                    </div>
                     </form>
             </div>
         </div>
     </div>
 
 {% endblock content %}
-
