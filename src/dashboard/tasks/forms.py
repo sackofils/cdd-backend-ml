@@ -18,7 +18,7 @@ class TaskForm(forms.Form):
     #order = forms.IntegerField()
     #form = forms.JSONField(required=False)
     form_type = forms.ModelChoiceField(label=_("Form"), queryset=FormType.objects.distinct())
-    attachments = forms.ModelMultipleChoiceField(label=_("Attachments"), queryset=AttachmentType.objects.distinct())
+    attachments = forms.ModelMultipleChoiceField(label=_("Attachments"), queryset=AttachmentType.objects.distinct(), required=False)
 
     def _post_clean(self):
         super()._post_clean()
@@ -46,7 +46,7 @@ class UpdateTaskForm(forms.ModelForm):
     #form = forms.JSONField(required=False)
     #order = forms.IntegerField()
     form_type = forms.ModelChoiceField(label=_("Form"), queryset=FormType.objects.distinct())
-    attachments = forms.ModelMultipleChoiceField(label=_("Attachments"), queryset=AttachmentType.objects.distinct())
+    attachments = forms.ModelMultipleChoiceField(label=_("Attachments"), queryset=AttachmentType.objects.distinct(), required=False)
 
     def clean(self):
         return super().clean()

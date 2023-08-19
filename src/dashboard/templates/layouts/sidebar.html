@@ -51,7 +51,7 @@
                     <a href="{% url 'dashboard:projects:list' %}"
                        class="nav-link {% if active_level1 == 'projects' %}active{% endif %}">
                         <i class="nav-icon fa fa-comment-alt"></i>
-                        <p>Projects</p>
+                        <p>{% translate "Projects" %}</p>
                     </a>
                 </li>
             </ul>
@@ -62,7 +62,7 @@
                     <a href="{% url 'dashboard:phases:list' %}"
                        class="nav-link {% if active_level1 == 'phases' %}active{% endif %}">
                         <i class="nav-icon fa fa-comment-alt"></i>
-                        <p>List Phases</p>
+                        <p>{% translate "List Phases" %}</p>
                     </a>
                 </li>
             </ul>
@@ -73,7 +73,7 @@
                     <a href="{% url 'dashboard:form_builder:list' %}"
                        class="nav-link {% if active_level1 == 'forms' %}active{% endif %}">
                         <i class="nav-icon fa fa-wpforms"></i>
-                        <p>List Forms</p>
+                        <p>{% translate "List Forms" %}</p>
                     </a>
                 </li>
             </ul>
@@ -84,7 +84,7 @@
                     <a href="{% url 'dashboard:attachment_type:list' %}"
                        class="nav-link {% if active_level1 == 'attachments' %}active{% endif %}">
                         <i class="nav-icon fa fa-paperclip"></i>
-                        <p>List Attachments</p>
+                        <p>{% translate "List Attachments" %}</p>
                     </a>
                 </li>
             </ul>

@@ -8,6 +8,7 @@ from django.contrib.auth import get_user_model
 from django.forms.models import model_to_dict
 from rest_framework import serializers
 from dashboard.attachment_type import FILE_TYPES
+from collections import defaultdict
 
 
 # Create your models here.
@@ -88,6 +89,7 @@ class Phase(models.Model):
             "description": self.description,
             "order": self.order,
             "capacity_attachments": [],
+            "support_attachments": False,
             "project_id": self.project.couch_id,
             "sql_id": self.id,
             "form": form_fields
@@ -148,6 +150,7 @@ class Activity(models.Model):
             "description": self.description,
             "order": self.order,
             "capacity_attachments": [],
+            "support_attachments": False,
             "project_id": self.phase.project.couch_id,
             "phase_id": self.phase.couch_id,
             "total_tasks": self.total_tasks,
@@ -209,7 +212,17 @@ class Task(models.Model):
         # if self.form:
         # 	form = self.form
         form_fields = self.form_type.json_schema if self.form_type else None
-        attachments_json = [attachment.json_schema for attachment in self.attachments.all()] if self.attachments.all() else None
+        attachments_json = [attachment.json_schema for attachment in self.attachments.all()] if self.attachments.all() else []
+
+        # Ordered attachments list
+        attachments = []
+        index = 0
+        for attachment in attachments_json:
+            attachment['order'] = index
+            attachments.append(attachment)
+            index += 1
+        print("attachments", attachments)
+
         print('---')
         print(self.form_type)
         print(self.form_type.json_schema)
@@ -226,7 +239,8 @@ class Task(models.Model):
             "completed": False,
             "completed_date": "",
             "capacity_attachments": [],
-            "attachments": attachments_json,
+            "support_attachments": True if len(attachments) > 0 else False,
+            "attachments": attachments,
             "form": form_fields,
             "form_response": [],
             "sql_id": self.id
@@ -249,7 +263,6 @@ class Task(models.Model):
             doc = nsc_database[query_result[0]['_id']]
             nsc.update_doc(nsc_database, doc['_id'], docu)
             self.save()
-
         return self
 
 
@@ -335,6 +348,12 @@ class FormType(BaseModel):
             FieldTypeEnum.SELECT.value: "string",
         }
         fields = FormField.objects.filter(form=self)
+
+        groups = defaultdict(list)
+        for obj in fields:
+            groups[obj.page].append(obj)
+
+        fields = groups.values()
         dct = {
             "page": {
                 "type": "object",
@@ -345,33 +364,36 @@ class FormType(BaseModel):
                 "fields": {}
             }
         }
-        for fld in fields:
-            # if fld.field_type == FieldTypeEnum.PAGE_BREAK.value:
-            # 	"""@TODO. Handle paging"""
-            # 	continue
-            dct["options"]["fields"][fld.name] = {
-                "label": fld.label,
-                "help": fld.help_text or "",
-                "i18n": {
-                    "optional": "",
-                    "required": "*"
-                }
-            }
-
-            if fld.field_type == FieldTypeEnum.SELECT.value:
-                # For select fields, populate options
-                dct["page"]["properties"][fld.name] = {
-                    "type": type_mapping[fld.field_type],
-                    "enum": '"' + '","'.join(fld.options.splitlines()) + '"'
-                }
-            else:
-                dct["page"]["properties"][fld.name] = {
-                    "type": type_mapping[fld.field_type]
+        result = []
+        for group in fields:
+            for fld in group:
+                # if fld.field_type == FieldTypeEnum.PAGE_BREAK.value:
+                # 	"""@TODO. Handle paging"""
+                # 	continue
+                dct["options"]["fields"][fld.name] = {
+                    "label": fld.label,
+                    "help": fld.help_text or "",
+                    "i18n": {
+                        "optional": "",
+                        "required": "*"
+                    }
                 }
 
-            if fld.required:
-                dct["page"]["required"].append(fld.name)
-        return dct
+                if fld.field_type == FieldTypeEnum.SELECT.value:
+                    # For select fields, populate options
+                    dct["page"]["properties"][fld.name] = {
+                        "type": type_mapping[fld.field_type],
+                        "enum": '"' + '","'.join(fld.options.splitlines()) + '"'
+                    }
+                else:
+                    dct["page"]["properties"][fld.name] = {
+                        "type": type_mapping[fld.field_type]
+                    }
+
+                if fld.required:
+                    dct["page"]["required"].append(fld.name)
+            result.append(dct)
+        return result
 
     json_schema = property(_get_json_schema)
     json_data = property(_get_json_data)
@@ -417,7 +439,7 @@ class AttachmentType(BaseModel):
     def _get_json_schema(self):
         file_type = 'image/*'
         if self.file_type == 'Document':
-            file_type = '.xlsx,.xls,.doc,.docx,.ppt,.pptx,.txt,.pdf'
+            file_type = 'application/*'
 
         dct = {
             "attachment": None,

@@ -12,12 +12,12 @@ from process_manager.models import Phase, Activity, Project, Task
 from dashboard.tasks.forms import TaskForm, UpdateTaskForm
 from dashboard.mixins import AJAXRequestMixin, PageMixin, JSONResponseMixin
 from no_sql_client import NoSQLClient
+from dashboard.utils import orderedAttachmentList
 
 from authentication.permissions import (
     CDDSpecialistPermissionRequiredMixin, SuperAdminPermissionRequiredMixin,
     AdminPermissionRequiredMixin
 )
-
 
 class TaskListView(PageMixin, LoginRequiredMixin, generic.ListView):
     model = Task
@@ -93,7 +93,7 @@ class CreateTaskFormView(PageMixin, LoginRequiredMixin, AdminPermissionRequiredM
             form=form_fields,
             form_type=form_type,
             attachments=attachments,
-            attachments_json=attachments_json
+            attachments_json=orderedAttachmentList(attachments_json)
         )
         task.save()
         return super().form_valid(form)
@@ -201,13 +201,14 @@ class UpdateTaskView(PageMixin, LoginRequiredMixin, AdminPermissionRequiredMixin
         task.form_type = form_type
         task.attachments.set(attachments)
         task.form = form_fields
-        task.attachments_json = attachments_json
+        task.attachments_json = orderedAttachmentList(attachments_json)
         task.save()
         doc = {
             "name": data['name'],
             "description": data['description'],
             "form": task.form,
             "attachments": task.attachments_json,
+            "support_attachments": True if len(task.attachments_json) else False,
             "sql_id": task.id
         }
         nsc = NoSQLClient()
@@ -244,9 +245,11 @@ class CreateTaskForm(PageMixin, LoginRequiredMixin, AdminPermissionRequiredMixin
         pk = self.kwargs['id']
         activity = Activity.objects.get(id=pk)
         form = []
-        attachments_json = []
+        # attachments_json = []
         # if data['form']:
         # form = data['form']
+        attachments = data['attachments']
+        attachments_json = [attachment.json_schema for attachment in attachments]
         task = Task(
             name=data['name'],
             description=data['description'],
@@ -256,7 +259,7 @@ class CreateTaskForm(PageMixin, LoginRequiredMixin, AdminPermissionRequiredMixin
             form=form,
             form_type=data['form_type'],
             attachments=data['attachments'],
-            attachments_json=attachments_json
+            attachments_json=orderedAttachmentList(attachments_json)
         )
         task_count = 0
         task_count = Task.objects.filter(activity_id=activity.id).all().count()

@@ -11,6 +11,15 @@ from cloudant.document import Document
 
 from administrativelevels import models as administrativelevels_models
 
+def orderedAttachmentList(json):
+    attachments = []
+    index = 0
+    for attachment in json:
+        attachment['order'] = index
+        attachments.append(attachment)
+        index += 1
+    return attachments
+
 def structure_the_words(word):
     return (" ").join(re.findall(r'[A-Z][^A-Z]*|[^A-Z]+', word)).lower().capitalize()
     

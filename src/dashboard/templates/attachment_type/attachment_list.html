@@ -7,7 +7,6 @@
                 <tr>
                     <th>{% translate 'Name' %}</th>
                     <th>{% translate 'Type' %}</th>
-                    <th>{% translate 'Order' %}</th>
                     <th width="20%">{% translate 'Action' %}</th>
                 </tr>
             </thead>
@@ -16,7 +15,6 @@
                     <tr>
                         <td>{{ attachment.name }}</td>
                         <td>{{ attachment.file_type }}</td>
-                        <td>{{ attachment.order }}</td>
                         <td>
                             {% if user.is_superuser or user|has_group:"Admin" %}
                                 <a href="{% url 'dashboard:attachment_type:update' attachment.pk %}"
