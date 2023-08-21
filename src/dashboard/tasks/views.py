@@ -258,9 +258,10 @@ class CreateTaskForm(PageMixin, LoginRequiredMixin, AdminPermissionRequiredMixin
             activity=activity,
             form=form,
             form_type=data['form_type'],
-            attachments=data['attachments'],
             attachments_json=orderedAttachmentList(attachments_json)
         )
+        if data['attachments']:
+            task.attachments.set(data['attachments'])
         task_count = 0
         task_count = Task.objects.filter(activity_id=activity.id).all().count()
         orderNew = task_count + 1

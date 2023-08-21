@@ -224,8 +224,8 @@ class Task(models.Model):
         print("attachments", attachments)
 
         print('---')
-        print(self.form_type)
-        print(self.form_type.json_schema)
+        # print(self.form_type)
+        # print(self.form_type.json_schema)
         data = {
             "type": "task",
             "project_id": self.activity.phase.project.couch_id,
