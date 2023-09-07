@@ -19,7 +19,7 @@
                          <p style="font-size: 16px !important;"><strong>{% translate 'Project' %} :</strong> {{ task.activity.phase.project.name }}</p>
                          <p style="font-size: 16px !important;"><strong>{% translate 'Phase' %} :</strong> {{ task.activity.phase.name }}</p>
                          <p style="font-size: 16px !important;"><strong>{% translate 'Activity' %} :</strong> {{ task.activity.name }}</p>
-                         <p style="font-size: 16px !important;"><strong>{% translate 'Form' %} :</strong> {{ task.form_type }}</p>
+                         <p style="font-size: 16px !important;"><strong>{% translate 'Form' %} :</strong> {{ task.form_type|default_if_none:task.form|default_if_none:'' }}</p>
                          <p style="font-size: 16px !important;"><strong>{% translate 'Attachments' %} :</strong>
                              {% for item in task.attachments.all %}
                                 <span class="badge badge-primary">{{ item }}</span>

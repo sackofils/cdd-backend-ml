@@ -13,13 +13,13 @@
                                  {% translate 'Activity Detail' %}<br>
                             </div>
                         </div>
-                         <p style="font-size: 16px !important;"><strong>Name:</strong> {{ activity.name }}</p>
-                         <p style="font-size: 16px !important;"><strong>Order:</strong> {{ activity.order }}</p>
-                         <p style="font-size: 16px !important;"><strong>Description:</strong> {{ activity.description }}</p>
-                         <p style="font-size: 16px !important;"><strong>Project:</strong> {{ activity.phase.project.name }}</p>
-                         <p style="font-size: 16px !important;"><strong>Phase:</strong> {{ activity.phase.name }}</p>
-                         <p style="font-size: 16px !important;"><strong>Total Task:</strong> {{ activity.total_tasks }}</p>
-                         <p style="font-size: 16px !important;"><strong>Couch Id:</strong> {{ activity.couch_id }}</p>
+                         <p style="font-size: 16px !important;"><strong>{% translate 'Name' %}:</strong> {{ activity.name }}</p>
+                         <p style="font-size: 16px !important;"><strong>{% translate 'Order' %}:</strong> {{ activity.order }}</p>
+                         <p style="font-size: 16px !important;"><strong>{% translate 'Description' %}:</strong> {{ activity.description }}</p>
+                         <p style="font-size: 16px !important;"><strong>{% translate 'Project' %}:</strong> {{ activity.phase.project.name }}</p>
+                         <p style="font-size: 16px !important;"><strong>{% translate 'Phase' %}:</strong> {{ activity.phase.name }}</p>
+                         <p style="font-size: 16px !important;"><strong>{% translate 'Total Task' %}:</strong> {{ activity.total_tasks }}</p>
+                         <p style="font-size: 16px !important;"><strong>{% translate 'Couch Id' %}:</strong> {{ activity.couch_id }}</p>
                     </div>
                 </div>
                 {% if user.is_superuser or user|has_group:"Admin" %}
@@ -27,12 +27,12 @@
                 <a href="{% url 'dashboard:tasks:create_task' activity.pk%}"
                 class="btn btn-primary btn-sm rounded-xl">
                     <i class="fa fa-plus mr-2"></i>
-                    Create Task
+                    {% translate 'Create Task' %}
                 </a>
             </div>
             <a href="{% url 'dashboard:activities:activity_Detail' activity.pk %}"   
                                     class="btn btn-primary btn-xs" title="{% translate 'Referesh' %}">
-                                    <span class="_web">Referesh</span>
+                                    <span class="_web">{% translate 'Referesh' %}</span>
                                     <span class="_mobile"><i class="fa fa-eye"></i></span>
                                 </a>
             {% endif %}                

@@ -13,11 +13,11 @@
                                  {% translate 'Phase Detail' %}<br>
                             </div>
                         </div>
-                         <p style="font-size: 16px !important;"><strong>Name:</strong> {{ phase.name }}</p>
-                         <p style="font-size: 16px !important;"><strong>Order:</strong> {{ phase.order }}</p>
-                         <p style="font-size: 16px !important;"><strong>Description:</strong> {{ phase.description }}</p>
-                         <p style="font-size: 16px !important;"><strong>Project:</strong> {{ phase.project.name }}</p>
-                         <p style="font-size: 16px !important;"><strong>Couch Id:</strong> {{ phase.couch_id }}</p>
+                         <p style="font-size: 16px !important;"><strong>{% translate 'Name' %}:</strong> {{ phase.name }}</p>
+                         <p style="font-size: 16px !important;"><strong>{% translate 'Order' %}:</strong> {{ phase.order }}</p>
+                         <p style="font-size: 16px !important;"><strong>{% translate 'Description' %}:</strong> {{ phase.description }}</p>
+                         <p style="font-size: 16px !important;"><strong>{% translate 'Project' %}:</strong> {{ phase.project.name }}</p>
+                         <p style="font-size: 16px !important;"><strong>{% translate 'Couch Id' %}:</strong> {{ phase.couch_id }}</p>
                     </div>
                 </div>
                 {% if user.is_superuser or user|has_group:"Admin" %}
@@ -25,12 +25,12 @@
                 <a href="{% url 'dashboard:activities:create_activity' phase.pk%}"
                 class="btn btn-primary btn-sm rounded-xl">
                     <i class="fa fa-plus mr-2"></i>
-                    Create Activity
+                    {% translate 'Create Activity' %}
                 </a>
             </div>
             <a href="{% url 'dashboard:phases:phase_Detail' phase.pk %}"
                             class="btn btn-primary btn-xs" title="{% translate 'Referesh' %}">
-                            <span class="_web">Referesh</span>
+                            <span class="_web">{% translate 'Referesh' %}</span>
                             <span class="_mobile"><i class="fa fa-eye"></i></span>
                         </a>
             {% endif %}

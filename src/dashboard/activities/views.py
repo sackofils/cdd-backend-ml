@@ -4,7 +4,7 @@ from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.shortcuts import get_object_or_404
 from django.urls import reverse, reverse_lazy
-from django.utils.translation import gettext_lazy
+from django.utils.translation import gettext_lazy as _
 from django.views import generic
 from datetime import datetime
 
@@ -24,7 +24,7 @@ class ActivityListView(PageMixin, LoginRequiredMixin, generic.ListView):
     queryset = Activity.objects.all()
     template_name = 'activities/list.html'
     context_object_name = 'activities'
-    title = gettext_lazy('Activities')
+    title = _('Activities')
     active_level1 = 'activities'
     breadcrumb = [
         {
@@ -56,14 +56,14 @@ class ActivityListTableView(LoginRequiredMixin, generic.ListView):
 
 class CreateActivityFormView(PageMixin, LoginRequiredMixin, AdminPermissionRequiredMixin, generic.FormView):
     template_name = 'activities/create.html'
-    title = gettext_lazy('Create Activity')
+    title = _('Create Activity')
     active_level1 = 'activities'
     form_class = ActivityForm
     success_url = reverse_lazy('dashboard:activities:list')
     breadcrumb = [
         {
             'url': reverse_lazy('dashboard:activities:list'),
-            'title': gettext_lazy('Phases')
+            'title': _('Phases')
         },
         {
             'url': '',
@@ -90,14 +90,14 @@ class CreateActivityFormView(PageMixin, LoginRequiredMixin, AdminPermissionRequi
 
 class CreateActivityForm(PageMixin, LoginRequiredMixin, AdminPermissionRequiredMixin, generic.FormView):
     template_name = 'activities/create_activity.html'
-    title = gettext_lazy('Create Activity')
+    title = _('Create Activity')
     active_level1 = 'activities'
     form_class = ActivityForm
     success_url = reverse_lazy('dashboard:activities:list')
     breadcrumb = [
         {
             'url': reverse_lazy('dashboard:activities:list'),
-            'title': gettext_lazy('Phases')
+            'title': _('Phases')
         },
         {
             'url': '',
@@ -160,14 +160,14 @@ def delete(request, id):
 class UpdateActivityView(PageMixin, LoginRequiredMixin, AdminPermissionRequiredMixin, generic.UpdateView):
     model = Activity
     template_name = 'activities/update.html'
-    title = gettext_lazy('Edit Activity')
+    title = _('Edit Activity')
     active_level1 = 'activities'
     form_class = UpdateActivityForm
     # success_url = reverse_lazy('dashboard:projects:list')
     breadcrumb = [
         {
             'url': reverse_lazy('dashboard:activities:list'),
-            'title': gettext_lazy('Activities')
+            'title': _('Activities')
         },
         {
             'url': '',

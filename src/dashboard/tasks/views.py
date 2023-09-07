@@ -7,6 +7,7 @@ from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext_lazy
 from django.views import generic
 from datetime import datetime
+import json
 
 from process_manager.models import Phase, Activity, Project, Task
 from dashboard.tasks.forms import TaskForm, UpdateTaskForm
@@ -77,11 +78,16 @@ class CreateTaskFormView(PageMixin, LoginRequiredMixin, AdminPermissionRequiredM
         # phase = Phase.objects.get(id = data['phase'])
         activity = Activity.objects.get(id=data['activity'])
         # form = []
-        # if data['form']:
-        #     form = data['form']
-        form_type = data['form_type']
+        form_fields = []
+        form_type = None
+        if data['type'] == 'jsonforms':
+            form_fields = json.loads(data['form'])
+        elif data['type'] == 'form':
+            form_type = data['form_type']
+            form_fields = form_type.json_schema if form_type else None
+
         attachments = data['attachments']
-        form_fields = form_type.json_schema if form_type else None
+        # form_fields = form_type.json_schema if form_type else None
         attachments_json = [attachment.json_schema for attachment in attachments]
         task = Task(
             name=data['name'],
@@ -192,8 +198,14 @@ class UpdateTaskView(PageMixin, LoginRequiredMixin, AdminPermissionRequiredMixin
         data = form.cleaned_data
 
         attachments = data['attachments']
-        form_type = data['form_type']
-        form_fields = form_type.json_schema if form_type else None  # Get JSON representation of the form
+        form_fields = []
+        form_type = None
+        if data['type'] == 'jsonforms':
+            form_fields = json.loads(data['form'])
+        elif data['type'] == 'form':
+            form_type = data['form_type']
+            form_fields = form_type.json_schema if form_type else None  # Get JSON representation of the form
+
         attachments_json = [attachment.json_schema for attachment in attachments]
         task = form.save(commit=False)
         task.name = data['name']
@@ -248,6 +260,16 @@ class CreateTaskForm(PageMixin, LoginRequiredMixin, AdminPermissionRequiredMixin
         # attachments_json = []
         # if data['form']:
         # form = data['form']
+
+        form_fields = []
+        form_type = None
+        if data['type'] == 'jsonforms':
+            form_fields = json.loads(data['form'])
+        elif data['type'] == 'form':
+            form_type = data['form_type']
+            form_fields = form_type.json_schema if form_type else None
+
+
         attachments = data['attachments']
         attachments_json = [attachment.json_schema for attachment in attachments]
         task = Task(
@@ -256,8 +278,8 @@ class CreateTaskForm(PageMixin, LoginRequiredMixin, AdminPermissionRequiredMixin
             project=activity.phase.project,
             phase=activity.phase,
             activity=activity,
-            form=form,
-            form_type=data['form_type'],
+            form=form_fields,
+            form_type=form_type,
             attachments_json=orderedAttachmentList(attachments_json)
         )
         if data['attachments']:
