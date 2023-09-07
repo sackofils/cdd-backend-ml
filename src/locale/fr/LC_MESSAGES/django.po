@@ -335,7 +335,7 @@ msgstr "Description"
 
 #: .\dashboard\tasks\forms.py:26 .\dashboard\tasks\forms.py:58
 msgid "Form link option"
-msgstr ""
+msgstr "Type de liaison du formulaire"
 
 #: .\dashboard\tasks\views.py:28 .\dashboard\tasks\views.py:67
 #: .\dashboard\tasks\views.py:146 .\dashboard\tasks\views.py:246

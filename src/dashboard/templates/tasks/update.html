@@ -52,6 +52,7 @@
                     form_type.select2('val', null);
                     form_type.select2();
                     form_type.parent().css('display', 'none');
+                    form.change();
                 } else if (selected === 'form') {
                     form.parent().css('display', 'none');
                     form_type.val('');

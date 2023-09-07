@@ -201,7 +201,7 @@ class UpdateTaskView(PageMixin, LoginRequiredMixin, AdminPermissionRequiredMixin
         form_fields = []
         form_type = None
         if data['type'] == 'jsonforms':
-            form_fields = json.loads(data['form'])
+            form_fields = data['form']
         elif data['type'] == 'form':
             form_type = data['form_type']
             form_fields = form_type.json_schema if form_type else None  # Get JSON representation of the form
