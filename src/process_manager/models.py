@@ -383,7 +383,7 @@ class FormType(BaseModel):
                     # For select fields, populate options
                     dct["page"]["properties"][fld.name] = {
                         "type": type_mapping[fld.field_type],
-                        "enum": '"' + '","'.join(fld.options.splitlines()) + '"'
+                        "enum": '[' + '","'.join(fld.options.splitlines()) + ']'
                     }
                 else:
                     dct["page"]["properties"][fld.name] = {
