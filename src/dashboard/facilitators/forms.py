@@ -109,10 +109,10 @@ class FacilitatorForm(forms.Form):
             "At least one administrative level is required."
         ),
     }
-    name = forms.CharField()
-    email = forms.EmailField(required=False)
-    phone = forms.CharField(required=False)
-    username = forms.CharField()
+    name = forms.CharField(label=_('Name'))
+    email = forms.EmailField(label=_('Email'), required=False)
+    phone = forms.CharField(label=_('Phone'), required=False)
+    username = forms.CharField(label=_('Username'))
     password1 = forms.CharField(
         label=_("Password"),
         strip=False,
@@ -127,7 +127,7 @@ class FacilitatorForm(forms.Form):
     )
     administrative_level = forms.ChoiceField()
     administrative_levels = forms.JSONField(label="", required=False)
-    sex = forms.ChoiceField(choices=(("M.", "M."), ("Mme", "Mme")))
+    sex = forms.ChoiceField(label=_('Sex'), choices=(("M.", "M."), ("Mme", "Mme")))
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
@@ -195,12 +195,12 @@ class UpdateFacilitatorForm(forms.ModelForm):
         ),
     }
 
-    email = forms.EmailField(required=False)
-    phone = forms.CharField(required=False)
-    name = forms.CharField(required=False)
+    email = forms.EmailField(label=_('Email'), required=False)
+    phone = forms.CharField(label=_('Phone'), required=False)
+    name = forms.CharField(label=_('Name'), required=False)
     administrative_level = forms.ChoiceField(required=False)
     administrative_levels = forms.JSONField(label="", required=False)
-    sex = forms.ChoiceField(choices=(("M.", "M."), ("Mme", "Mme")))
+    sex = forms.ChoiceField(label=_('Sex'), choices=(("M.", "M."), ("Mme", "Mme")))
 
     def clean(self):
         administrative_levels = self.cleaned_data["administrative_levels"]
