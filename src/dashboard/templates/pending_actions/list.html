@@ -1,0 +1,61 @@
+{% extends 'layouts/base.html' %}
+{% load static i18n bootstrap4 custom_tags %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+
+        <div class="clearfix"></div>
+        <div class="input-group mb-3 search-bar">
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-search"></i></span>
+            </div>
+            <input class="form-control" id="search" placeholder="{% translate 'Search by name' %}..."/>
+        </div>
+
+       <div class="card">
+            <div class="card-body table-responsive">
+                <div id="pending-actions-list"></div>
+            </div>
+            <div class="overlay" id="spin">
+                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block modals %}
+{% include 'common/edit-comment-dialog.html' %}
+{% endblock modals %}
+
+{% block javascript %}
+    {{ block.super }}
+    {% include 'common/js-workflow.html' %}
+    <script type="text/javascript">
+        let spin = $("#spin");
+        let pending_actions_list = $("#pending-actions-list");
+        function loadPendingActions() {
+            spin.show();
+            $.ajax({
+                type: 'GET',
+                url: "{% url 'dashboard:pending_actions:pending_actions_list' %}",
+                data: {
+
+                },
+                success: function(response){
+                    spin.hide();
+                    pending_actions_list.html(response);
+                },
+                error: function(data){
+                    spin.hide();
+                    alert(error_server_message + "Error " + data.status);
+                }
+            });
+        }
+
+        loadPendingActions();
+
+    </script>
+{% endblock %}

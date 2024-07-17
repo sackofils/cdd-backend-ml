@@ -25,7 +25,7 @@ class ActivityListView(PageMixin, LoginRequiredMixin, generic.ListView):
     template_name = 'activities/list.html'
     context_object_name = 'activities'
     title = _('Activities')
-    active_level1 = 'activities'
+    active_level1 = 'projects'
     breadcrumb = [
         {
             'url': '',
@@ -57,7 +57,7 @@ class ActivityListTableView(LoginRequiredMixin, generic.ListView):
 class CreateActivityFormView(PageMixin, LoginRequiredMixin, AdminPermissionRequiredMixin, generic.FormView):
     template_name = 'activities/create.html'
     title = _('Create Activity')
-    active_level1 = 'activities'
+    active_level1 = 'projects'
     form_class = ActivityForm
     success_url = reverse_lazy('dashboard:activities:list')
     breadcrumb = [
@@ -91,14 +91,14 @@ class CreateActivityFormView(PageMixin, LoginRequiredMixin, AdminPermissionRequi
 class CreateActivityForm(PageMixin, LoginRequiredMixin, AdminPermissionRequiredMixin, generic.FormView):
     template_name = 'activities/create_activity.html'
     title = _('Create Activity')
-    active_level1 = 'activities'
+    active_level1 = 'projects'
     form_class = ActivityForm
-    success_url = reverse_lazy('dashboard:activities:list')
+    # success_url = reverse_lazy('dashboard:activities:list')
     breadcrumb = [
-        {
-            'url': reverse_lazy('dashboard:activities:list'),
-            'title': _('Phases')
-        },
+        #{
+        #'url': reverse_lazy('dashboard:activities:list'),
+        #'title': _('Activities')
+        #},
         {
             'url': '',
             'title': title
@@ -161,14 +161,14 @@ class UpdateActivityView(PageMixin, LoginRequiredMixin, AdminPermissionRequiredM
     model = Activity
     template_name = 'activities/update.html'
     title = _('Edit Activity')
-    active_level1 = 'activities'
+    active_level1 = 'projects'
     form_class = UpdateActivityForm
     # success_url = reverse_lazy('dashboard:projects:list')
     breadcrumb = [
-        {
-            'url': reverse_lazy('dashboard:activities:list'),
-            'title': _('Activities')
-        },
+        # {
+        # 'url': reverse_lazy('dashboard:activities:list'),
+        # 'title': _('Activities')
+        # },
         {
             'url': '',
             'title': title

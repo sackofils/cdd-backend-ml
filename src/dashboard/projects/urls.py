@@ -12,4 +12,6 @@ urlpatterns = [
     #path('update/updaterecord/<int:id>', views.updaterecord, name='updaterecord'),
     # path('<slug:id>/', views.ProjectDetailView.as_view(), name='detail'),
     path('delete/<int:id>', views.delete, name='delete'),
+    # path('detail/<int:id>', views.ProjectPhaseListView.as_view(), name='project_phase_list'),
+    path('detail/<int:id>', views.project_detail_view, name='project_phase_list'),
 ]

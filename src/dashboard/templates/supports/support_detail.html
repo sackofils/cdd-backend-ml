@@ -1,0 +1,59 @@
+{% extends 'layouts/base.html' %}
+{% load static i18n bootstrap4 custom_tags %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-8">
+                        <div class="col-8 text-left">
+                            <div class="fs28 lh35 text-primary text-bold-family mb-4"
+                                 style="font-size: 16px !important;">
+                                {% translate 'Support Detail' %}<br>
+                            </div>
+                        </div>
+                        <p style="font-size: 16px !important;"><strong>{% translate 'Name' %}:</strong> {{ support.name }}</p>
+                        <p style="font-size: 16px !important;"><strong>{% translate 'Description' %}:</strong> {{ support.description }}</p>
+                        <p style="font-size: 16px !important;"><strong>{% translate 'File name' %}:</strong> {{ support.filename }}</p>
+                        <p style="font-size: 16px !important;"><strong>{% translate 'Content type' %}:</strong> {{ support.content_type }}</p>
+                        <p style="font-size: 16px !important;"><strong>{% translate 'Couch Id' %}:</strong> {{ support.id }}</p>
+                    </div>
+                </div>
+                {% if user.is_superuser or user|has_group:"Admin" %}
+                <div class="float-right mb-3">
+                    <a href="{% url 'dashboard:supports:update' support_id=support.id %}"
+                       class="btn btn-primary btn-sm rounded-xl">
+                        <i class="fa fa-edit mr-2"></i>
+                        {% translate 'Edit support' %}
+                    </a>
+                </div>
+                {% endif %}
+                <a href="{% url 'dashboard:supports:list' %}"
+                   class="btn btn-light btn-xs" title="{% translate 'Referesh' %}">
+                    <span class="_web">{% translate 'Back' %}</span>
+                    <span class="_mobile"><i class="fa fa-arrow-left"></i></span>
+                </a>
+            </div>
+
+        </div>
+        <div class="card">
+            <div class="card-body table-responsive">
+                <div class="col-8 text-left">
+                    <div class="fs28 lh35 text-primary text-bold-family mb-4" style="font-size: 16px !important;">
+                        {% translate 'Support file' %}<br>
+                    </div>
+                </div>
+                <div class="col-12">
+                    {% if support.content_type|is_pdf %}
+                        <iframe src="data:application/pdf;base64,{{ support.file }}" width="100%" height="700"></iframe>
+                    {% elif support.content_type|is_image %}
+                        <img src="data:{{ support.content_type }};base64,{{ support.file }}" alt="{{ support.filename }}" width="100%">
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -6,9 +6,12 @@
         <table id="table" class="table">
             <thead>
             <tr>
+                {% if user.is_superuser or user|has_group:"Admin" %}
+                <th width="10%">{% translate 'Organism' %}</th>
+                {% endif %}
                 <th width="27%">{% translate 'Name' %}</th>
                 <th width="27%">{% translate 'Username' %}</th>
-                <th width="10%">{% translate 'Type' %}</th>
+                <th width="10%">{% translate 'Villages' %}</th>
                 <th width="6%" title="{% translate 'Red: <10% ; Orange: <30% ; Purple: <50% ; Black: <70% ; Blue sky: <90% ; Blue: <100% ; Green: 100%' %}" >{% translate 'Percent' %}</th>
                 <th  width="30%" >{% translate 'Action' %}</th>
             </tr>
@@ -16,10 +19,18 @@
             <tbody>
             {% for facilitator in facilitators %}
                 <tr>
+                    {% if user.is_superuser or user|has_group:"Admin" %}
+                    <td>{{ facilitator.organism|default_if_none:'' }}</td>
+                    {% endif %}
                     <td>{{ facilitator.get_name_with_sex }}</td>
                     <td>{{ facilitator.username }}</td>
-                    <td>{{ facilitator.get_type|upper }}</td>
-                    <td><span id="facilitator-percent-{{ facilitator.no_sql_db_name }}" 
+                    <td>
+                        <strong id="facilitator-administrative-level-{{ facilitator.no_sql_db_name }}">
+                            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                        </strong>
+                    </td>
+                    <td>
+                        <span id="facilitator-percent-{{ facilitator.no_sql_db_name }}"
                          title="{% translate 'Red: <10% ; Orange: <30% ; Purple: <50% ; Black: <70% ; Blue sky: <90% ; Blue: <100% ; Green: 100%' %}" >
                             <i class="fas fa-2x fa-sync-alt fa-spin"></i>
                         </span>
@@ -30,7 +41,7 @@
                             <span class="_web">{% translate 'See profile' %}</span>
                             <span class="_mobile"><i class="fa fa-user"></i></span>
                         </a>
-                        {% if user.is_superuser or user|has_group:"Admin" %}
+                        {% if user.is_superuser or user|has_group:"Admin" or user|has_group:"CDDSpecialist" or user|has_group:"Evaluator"%}
                         <a href="{% url 'dashboard:facilitators:update' facilitator.pk %}"
                             class="btn btn-primary btn-xs" title="{% translate 'See profile' %}">
                             <span class="_web">{% translate 'Edit profile' %}</span>
@@ -45,6 +56,16 @@
     </div>
 </div>
 
+<!-- DataTables export files -->
+<script src="{% static 'AdminLTE/plugins/datatables-buttons/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'AdminLTE/plugins/datatables-buttons/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'AdminLTE/plugins/datatables-buttons/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'AdminLTE/plugins/datatables-buttons/js/buttons.colVis.min.js' %}"></script>
+
+<script src="{% static 'AdminLTE/plugins/cloudflare/ajax/libs/jszip/3.10.1/jszip.min.js' %}"></script>
+<script src="{% static 'AdminLTE/plugins/cloudflare/ajax/libs/pdfmake/0.1.53/pdfmake.min.js' %}"></script>
+<script src="{% static 'AdminLTE/plugins/cloudflare/ajax/libs/pdfmake/0.1.53/vfs_fonts.js' %}"></script>
+
 
 <script type="text/javascript">
         $(document).ready(function () {
@@ -54,16 +75,18 @@
                 language: {
                     url: '{% static 'AdminLTE/plugins/datatables/locale/lang.json' %}'.replace('lang', '{{ lang }}')
                 },
-                dom: "ltipr",
+                {% comment %} dom: "ltipr",
                 columnDefs: [
                     {
                         targets: 1,
                         orderable: false,
                         searchable: false,
                     }
-                ],
-                lengthMenu: [100, 200, 300],
-                pageLength: 100,
+                ],{% endcomment %}
+                dom: 'Blrtip',
+                buttons: [ 'copy', 'excel', 'pdf'],
+                lengthMenu: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+                pageLength: 10,
                 order: [[0, 'desc']]
             });
             $('#search').on('keyup', function () {
@@ -88,21 +111,16 @@
                 });
                 return true;
             }
-            function loadFacilitatorsPercent(liste){
-                $.ajax({
-                    type: "POST",
-                    url: "{% url 'dashboard:facilitators:facilitators_percent' %}",
-                    data: {
-                        csrfmiddlewaretoken: "{{ csrf_token }}",
-                        liste: liste
-                    },
-                    success: function (data) {
-                        for (const [key, value] of Object.entries(data)) {
-                            $('#facilitator-percent-'+key).html(value.toFixed(2));
-                        }
+            async function loadFacilitatorsAdministrativeLevelCount(id){
+                await $.ajax({
+                    type: "GET",
+                    url: "{% url 'dashboard:facilitators:facilitator_administrative_level' 'no_sql_db_name' %}".replace('no_sql_db_name', id.split("-")[3]),
+                    data: {},
+                    success: function (response) {
+                        $('#'+id).html(response);
                     },
                     error: function (data) {
-                        console.log(error_server_message + "Error " + data.status); 
+                        console.log(error_server_message + "Error " + data.status);
                     }
                 });
                 return true;
@@ -111,11 +129,15 @@
                 id = $(this).attr('id');
                 if(id && id.includes("facilitator-percent-")){
                     loadFacilitatorPercent(id);
-                    {% comment %} liste_ids_no_sql_db_name.push(id.split("-")[2]); {% endcomment %}
                 }
             });
-            {% comment %} loadFacilitatorsPercent(liste_ids_no_sql_db_name) {% endcomment %}
 
+            $('#table tr strong').each(function () {
+                id = $(this).attr('id');
+                if(id && id.includes("facilitator-administrative-level-")){
+                    loadFacilitatorsAdministrativeLevelCount(id);
+                }
+            });
         });
         
 

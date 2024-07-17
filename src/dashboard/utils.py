@@ -399,10 +399,11 @@ def create_task_all_facilitators(database, task_model, develop_mode=False, train
                 _fc_task['phase_name'] = task_model.phase.name
                 _fc_task['activity_name'] = task_model.activity.name
                 _fc_task['administrative_level_name'] = administrative_level['name']
-                if task_model.form:
-                    _fc_task['form'] = task_model.form
-                elif new_task.get("form"):
-                    _fc_task['form'] = new_task.get("form")
+                #if task_model.form:
+                #    _fc_task['form'] = task_model.form
+                #elif new_task.get("form"):
+                #    _fc_task['form'] = new_task.get("form")
+                _fc_task['form'] = new_task.get("form")
                 _fc_task['attachments'] = new_task.get("attachments")
                 _fc_task['order'] = task_model.order
                 _fc_task['sql_id'] = task_model.id #update doc by adding sql_id 

@@ -25,6 +25,30 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
                 <li class="nav-item">
+                    <a href="{% url 'dashboard:diagnostics:diagnostics' %}"
+                       class="nav-link {% if active_level1 == 'diagnostics' %}active{% endif %}">
+                        <i class="nav-icon fa fa-area-chart"></i>
+                        <p>{% translate "Diagnostics" %}</p>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        {% if user.is_superuser or user|has_group:"Admin" or user|has_group:"Coordinator" or user|has_group:"Supervisor" or user|has_group:"CDDSpecialist" %}
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
+                <li class="nav-item">
+                    <a href="{% url 'dashboard:pending_actions:list' %}"
+                       class="nav-link {% if active_level1 == 'pending_actions' %}active{% endif %}">
+                        <i class="nav-icon fa fa-clock-o"></i>
+                        <p>{% translate "Pending action" %}</p>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        {% endif %}
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
+                <li class="nav-item">
                     <a href="{% url 'dashboard:facilitators:list' %}"
                        class="nav-link {% if active_level1 == 'facilitators' %}active{% endif %}">
                         <i class="nav-icon fa fa-user-friends"></i>
@@ -33,29 +57,20 @@
                 </li>
             </ul>
         </nav>
-        
-        <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
-                <li class="nav-item">
-                    <a href="{% url 'dashboard:diagnostics:diagnostics' %}"
-                       class="nav-link {% if active_level1 == 'diagnostics' %}active{% endif %}">
-                        <i class="nav-icon fa fa-comment-alt"></i>
-                        <p>{% translate "Diagnostics" %}</p>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+        {% if user.is_superuser or user|has_group:"Admin" or user|has_group:"Coordinator" or user|has_group:"Supervisor" or user|has_group:"CDDSpecialist" %}
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
                 <li class="nav-item">
                     <a href="{% url 'dashboard:projects:list' %}"
                        class="nav-link {% if active_level1 == 'projects' %}active{% endif %}">
-                        <i class="nav-icon fa fa-comment-alt"></i>
+                        <i class="nav-icon fa fa-list"></i>
                         <p>{% translate "Projects" %}</p>
                     </a>
                 </li>
             </ul>
         </nav>
+        {% endif %}
+        <!--
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
                 <li class="nav-item">
@@ -78,18 +93,68 @@
                 </li>
             </ul>
         </nav>
+        -->
+        {% if user.is_superuser or user|has_group:"Admin" %}
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
+                <li class="nav-item">
+                    <a href="{% url 'dashboard:supports:list' %}"
+                       class="nav-link {% if active_level1 == 'supports' %}active{% endif %}">
+                        <i class="nav-icon fa fa-book"></i>
+                        <p>{% translate "Supports" %}</p>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        {% endif %}
+        {% if user.is_superuser or user|has_group:"Admin" %}
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
                 <li class="nav-item">
                     <a href="{% url 'dashboard:attachment_type:list' %}"
                        class="nav-link {% if active_level1 == 'attachments' %}active{% endif %}">
                         <i class="nav-icon fa fa-paperclip"></i>
-                        <p>{% translate "List Attachments" %}</p>
+                        <p>{% translate "Type Attachments" %}</p>
                     </a>
                 </li>
             </ul>
         </nav>
-
+        {% endif %}
+        {% if user.is_superuser or user|has_group:"Admin" %}
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
+                <li class="nav-item">
+                    <a href="{% url 'dashboard:organism_type:list' %}"
+                       class="nav-link {% if active_level1 == 'organism_type' %}active{% endif %}">
+                        <i class="nav-icon fa fa-building"></i>
+                        <p>{% translate "Organism Type" %}</p>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
+                <li class="nav-item">
+                    <a href="{% url 'dashboard:organisms:list' %}"
+                       class="nav-link {% if active_level1 == 'organisms' %}active{% endif %}">
+                        <i class="nav-icon fa fa-building"></i>
+                        <p>{% translate "Organism" %}</p>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
+                <li class="nav-item">
+                    <a href="{% url 'dashboard:authentication:users' %}"
+                       class="nav-link {% if active_level1 == 'users' %}active{% endif %}">
+                        <i class="nav-icon fa fa-users"></i>
+                        <p>{% translate "Users" %}</p>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        {% endif %}
         <nav class="toogle-sidebar-button">
             <ul class="nav nav-pills nav-sidebar flex-column">
                 <li class="nav-item">

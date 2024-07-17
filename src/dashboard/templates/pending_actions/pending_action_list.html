@@ -1,0 +1,89 @@
+{% load static i18n bootstrap4 custom_tags %}
+<div class="card">
+    <div class="card-header">
+        <h6>{% translate 'List of completed tasks awaiting review' %}</h6>
+    </div>
+    <div class="card-body table-responsive">
+        <div id="pending-action-list">
+            <div class="card">
+                <div class="card-body table-responsive">
+                    <table id="table" class="table">
+                        <thead>
+                        <tr>
+                            <th>{% translate 'Project' %}</th>
+                            <th>{% translate 'ADC' %}</th>
+                            <th>{% translate 'Village' %}</th>
+                            <th>{% translate 'Task' %}</th>
+                            <th width="20%">{% translate 'Status' %}</th>
+                            <th width="10%">{% translate 'Action' %}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in pending_actions %}
+                        <tr>
+                            <td>{{ item.project.name }}</td>
+                            <td>{{ item.facilitator.name }}</td>
+                            <td>{{ item.village }}</td>
+                            <td>{{ item.task.name }}</td>
+                            <td>
+                                <span>
+                                    {% if item.task.validated == False %}
+                                        <i class="fas fa-times warning-color"></i>
+                                        {% translate 'Task not validated' %}
+                                    {% elif item.task.validated is None %}
+                                        <i class="fas fa-exclamation-triangle warning-color"></i>
+                                        {% translate 'Unseen task' %}
+                                    {% endif %}
+                                </span>
+                            </td>
+                            <td>
+                                {% if user.is_superuser or user|has_group:"Admin" %}
+                                <a data-toggle="modal" data-target="#card-item-task-{{ item.task|get:'_id' }}"
+                                   class="btn btn-primary btn-xs" title="{% translate 'Edit' %}">
+                                    <span class="_web">{% translate 'Edit' %}</span>
+                                    <span class="_mobile"><i class="fa fa-eye"></i></span>
+                                </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block modals %}
+    {% for item in pending_actions %}
+        {% include 'common/task-detail-dialog.html' with task=item.task db_name=item.facilitator_db_name %}
+    {% endfor %}
+    {% include 'common/edit-comment-dialog.html' %}
+    {% include 'common/js-workflow.html' %}
+{% endblock modals %}
+<script type="text/javascript">
+    $(document).ready(function () {
+        {% get_current_language as lang %}
+
+        let table = $('#table').DataTable({
+            language: {
+                url: '{% static 'AdminLTE/plugins/datatables/locale/lang.json' %}'.replace('lang', '{{ lang }}')
+            },
+            dom: "ltipr",
+            columnDefs: [
+                {
+                    targets: 1,
+                    orderable: false,
+                    searchable: false,
+                }
+            ],
+            lengthMenu: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+            pageLength: 10,
+            order: [[0, 'desc']]
+        });
+        $('#search').on('keyup', function () {
+            table.search($(this).val()).draw();
+        });
+    });
+</script>

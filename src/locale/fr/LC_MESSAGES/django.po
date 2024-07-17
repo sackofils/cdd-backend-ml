@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-14 13:55+0000\n"
+"POT-Creation-Date: 2024-02-26 10:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,34 +35,34 @@ msgstr ""
 msgid "Default value: ChangeItNow[code]"
 msgstr "Valeur par défaut : ChangeItNow[code]"
 
-#: .\authentication\models.py:15
+#: .\authentication\models.py:47
 msgid "username"
 msgstr "nom d'utilisateur"
 
-#: .\authentication\models.py:16
+#: .\authentication\models.py:48
 msgid "password"
 msgstr "mot de passe"
 
-#: .\authentication\models.py:17
+#: .\authentication\models.py:49
 msgid "code"
 msgstr "code"
 
-#: .\authentication\models.py:18
+#: .\authentication\models.py:50
 msgid "active"
 msgstr "active"
 
-#: .\authentication\models.py:19 .\authentication\models.py:20
+#: .\authentication\models.py:51 .\authentication\models.py:52
 msgid "test mode"
 msgstr "mode test"
 
-#: .\authentication\models.py:190
+#: .\authentication\models.py:223
 msgid "Facilitator"
 msgstr "Animateur communautaire"
 
-#: .\authentication\models.py:191 .\dashboard\facilitators\views.py:37
+#: .\authentication\models.py:224 .\dashboard\facilitators\views.py:37
 #: .\dashboard\facilitators\views.py:286 .\dashboard\facilitators\views.py:521
-#: .\dashboard\facilitators\views.py:559
-#: .\dashboard\templates\layouts\sidebar.html:31
+#: .\dashboard\facilitators\views.py:561
+#: .\dashboard\templates\layouts\sidebar.html:53
 msgid "Facilitators"
 msgstr "ADC"
 
@@ -92,11 +92,11 @@ msgstr ""
 msgid "Must include \"username\" and \"password\"."
 msgstr "Doit inclure \"nom d'utilisateur\" et \"mot de passe\"."
 
-#: .\cdd\settings.py:142
+#: .\cdd\settings.py:145
 msgid "English"
 msgstr "Anglais"
 
-#: .\cdd\settings.py:143
+#: .\cdd\settings.py:146
 msgid "French"
 msgstr "Français"
 
@@ -105,13 +105,13 @@ msgid "An Activity with this name is already registered."
 msgstr ""
 "Un animateur communautaire portant ce nom d'utilisateur est déjà enregistré."
 
-#: .\dashboard\activities\forms.py:45 .\dashboard\tasks\forms.py:14
-#: .\dashboard\tasks\forms.py:32 .\dashboard\tasks\forms.py:64
+#: .\dashboard\activities\forms.py:45 .\dashboard\tasks\forms.py:29
+#: .\dashboard\tasks\forms.py:58
 #: .\dashboard\templates\tasks\task_detail.html:22
 msgid "Form"
 msgstr "Formulaire"
 
-#: .\dashboard\activities\views.py:27 .\dashboard\activities\views.py:170
+#: .\dashboard\activities\views.py:27
 msgid "Activities"
 msgstr "Activités"
 
@@ -120,9 +120,8 @@ msgstr "Activités"
 msgid "Create Activity"
 msgstr "Créer activité"
 
-#: .\dashboard\activities\views.py:66 .\dashboard\activities\views.py:100
-#: .\dashboard\phases\views.py:26 .\dashboard\phases\views.py:65
-#: .\dashboard\phases\views.py:217 .\dashboard\phases\views.py:293
+#: .\dashboard\activities\views.py:66 .\dashboard\phases\views.py:27
+#: .\dashboard\phases\views.py:313 .\dashboard\projects\views.py:282
 msgid "Phases"
 msgstr "Phase"
 
@@ -137,17 +136,21 @@ msgstr ""
 
 #: .\dashboard\attachment_type\forms.py:14
 #: .\dashboard\attachment_type\forms.py:43
-#: .\dashboard\facilitators\forms.py:112 .\dashboard\facilitators\forms.py:200
-#: .\dashboard\tasks\forms.py:24 .\dashboard\tasks\forms.py:56
+#: .\dashboard\facilitators\forms.py:112 .\dashboard\facilitators\forms.py:202
+#: .\dashboard\tasks\forms.py:24 .\dashboard\tasks\forms.py:53
 #: .\dashboard\templates\activities\activity_detail.html:16
-#: .\dashboard\templates\activities\activity_detail.html:58
+#: .\dashboard\templates\activities\activity_detail.html:63
 #: .\dashboard\templates\activities\activity_list.html:10
 #: .\dashboard\templates\attachment_type\attachment_list.html:8
-#: .\dashboard\templates\facilitators\facilitator_list.html:9
+#: .\dashboard\templates\authentication\users.html:37
+#: .\dashboard\templates\facilitators\facilitator_list.html:12
 #: .\dashboard\templates\form_builder\detail.html:30
+#: .\dashboard\templates\organism\organism_list.html:9
 #: .\dashboard\templates\phases\phase_detail.html:16
-#: .\dashboard\templates\phases\phase_detail.html:51
+#: .\dashboard\templates\phases\phase_detail.html:56
 #: .\dashboard\templates\phases\phase_list.html:10
+#: .\dashboard\templates\projects\project_detail.html:16
+#: .\dashboard\templates\projects\project_detail.html:55
 #: .\dashboard\templates\projects\update.html:16
 #: .\dashboard\templates\tasks\task_detail.html:16
 #: .\dashboard\templates\tasks\task_list.html:9
@@ -161,9 +164,9 @@ msgstr "Nom de la pièce jointe"
 
 #: .\dashboard\attachment_type\views.py:29
 #: .\dashboard\attachment_type\views.py:73
-#: .\dashboard\attachment_type\views.py:90 .\dashboard\tasks\forms.py:33
-#: .\dashboard\tasks\forms.py:65
-#: .\dashboard\templates\facilitators\task_list.html:73
+#: .\dashboard\attachment_type\views.py:90 .\dashboard\tasks\forms.py:30
+#: .\dashboard\tasks\forms.py:59
+#: .\dashboard\templates\facilitators\task_list.html:77
 #: .\dashboard\templates\tasks\task_detail.html:23
 msgid "Attachments"
 msgstr "Pièces jointes"
@@ -177,12 +180,35 @@ msgstr "Créer une pièce jointe"
 msgid "Edit Attachment"
 msgstr "Editer une pièce jointe"
 
-#: .\dashboard\authentication\forms.py:11 .\dashboard\facilitators\forms.py:113
-#: .\dashboard\facilitators\forms.py:198
+#: .\dashboard\authentication\forms.py:14 .\dashboard\facilitators\forms.py:113
+#: .\dashboard\facilitators\forms.py:200
+#: .\dashboard\templates\authentication\users.html:39
 #: .\dashboard\templates\facilitators\profile.html:66
 #: .\dashboard\templates\facilitators\update.html:41
+#: .\dashboard\templates\organism\organism_list.html:13
 msgid "Email"
 msgstr "E-mail"
+
+#: .\dashboard\authentication\views.py:59
+#: .\dashboard\authentication\views.py:78
+#: .\dashboard\authentication\views.py:104
+#: .\dashboard\authentication\views.py:150
+#: .\dashboard\templates\layouts\sidebar.html:133
+msgid "Users"
+msgstr "Utilisateurs"
+
+#: .\dashboard\authentication\views.py:71
+#: .\dashboard\templates\authentication\users.html:13
+msgid "Create User"
+msgstr "Ajouter un utilisateur"
+
+#: .\dashboard\authentication\views.py:100
+msgid "Update User"
+msgstr "Mettre à jour un utilisateur"
+
+#: .\dashboard\authentication\views.py:144
+msgid "Delete User"
+msgstr "Supprimer un utilisateur"
 
 #: .\dashboard\diagnostics\views.py:25
 msgid "diagnostics"
@@ -192,21 +218,24 @@ msgstr "diagnostics"
 msgid "The two password fields didn’t match."
 msgstr "Les deux champs du mot de passe ne correspondent pas."
 
-#: .\dashboard\facilitators\forms.py:106 .\dashboard\facilitators\forms.py:191
+#: .\dashboard\facilitators\forms.py:106 .\dashboard\facilitators\forms.py:193
 msgid "A facilitator with that username is already registered."
 msgstr ""
 "Un animateur communautaire portant ce nom d'utilisateur est déjà enregistré."
 
-#: .\dashboard\facilitators\forms.py:109 .\dashboard\facilitators\forms.py:194
+#: .\dashboard\facilitators\forms.py:109 .\dashboard\facilitators\forms.py:196
 msgid "At least one administrative level is required."
 msgstr "Au moins un niveau administratif est requis."
 
-#: .\dashboard\facilitators\forms.py:114 .\dashboard\facilitators\forms.py:199
+#: .\dashboard\facilitators\forms.py:114 .\dashboard\facilitators\forms.py:201
+#: .\dashboard\process_manager\views.py:150
+#: .\dashboard\templates\organism\organism_list.html:12
 msgid "Phone"
 msgstr "Téléphone"
 
 #: .\dashboard\facilitators\forms.py:115
-#: .\dashboard\templates\facilitators\facilitator_list.html:10
+#: .\dashboard\templates\authentication\users.html:38
+#: .\dashboard\templates\facilitators\facilitator_list.html:13
 msgid "Username"
 msgstr "Nom d'utilisateur"
 
@@ -218,7 +247,8 @@ msgstr "Confirmation du mot de passe"
 msgid "Enter the same password as before, for verification."
 msgstr "Entrez le même mot de passe que précédemment, pour vérification."
 
-#: .\dashboard\facilitators\forms.py:130 .\dashboard\facilitators\forms.py:203
+#: .\dashboard\facilitators\forms.py:130 .\dashboard\facilitators\forms.py:205
+#: .\dashboard\process_manager\views.py:151
 msgid "Sex"
 msgstr "Genre"
 
@@ -231,7 +261,7 @@ msgstr "Profil de l'Animateur"
 msgid "Create Facilitator"
 msgstr "Créer un Animateur"
 
-#: .\dashboard\facilitators\views.py:552
+#: .\dashboard\facilitators\views.py:554
 msgid "Edit Facilitator"
 msgstr "Editer l'Animateur"
 
@@ -244,7 +274,7 @@ msgstr ""
 msgid "Another form associated with the task is already defined"
 msgstr "Un autre formulaire associé à la tâche est déjà défini."
 
-#: .\dashboard\form_builder\forms.py:15 .\process_manager\models.py:314
+#: .\dashboard\form_builder\forms.py:15 .\process_manager\models.py:331
 msgid "Unique name for the Model"
 msgstr "Nom unique pour le modèle"
 
@@ -252,7 +282,7 @@ msgstr "Nom unique pour le modèle"
 msgid "Name of the form"
 msgstr "Nom du formulaire"
 
-#: .\dashboard\form_builder\forms.py:68 .\process_manager\models.py:315
+#: .\dashboard\form_builder\forms.py:68 .\process_manager\models.py:332
 msgid "Description of the form"
 msgstr "Description du formulaire"
 
@@ -292,60 +322,220 @@ msgstr "Formulaire supprimé avec succès"
 msgid "Allowed file size less than or equal to 2 MB"
 msgstr "Taille de fichier autorisée inférieure ou égale à 2 Mo"
 
-#: .\dashboard\phases\forms.py:11
+#: .\dashboard\organism\forms.py:10
+#, fuzzy
+#| msgid "A phase with this name is already registered."
+msgid "This organism name already exist."
+msgstr "Une phase portant ce nom est déjà enregistrée."
+
+#: .\dashboard\organism\views.py:30 .\dashboard\organism\views.py:93
+#: .\dashboard\templates\authentication\users.html:36
+#: .\dashboard\templates\facilitators\facilitator_list.html:10
+#: .\dashboard\templates\facilitators\profile.html:68
+#: .\dashboard\templates\layouts\sidebar.html:122
+msgid "Organism"
+msgstr "Organisme"
+
+#: .\dashboard\organism\views.py:70 .\dashboard\templates\organism\list.html:13
+msgid "Create Organism"
+msgstr "Créer un organisme"
+
+#: .\dashboard\organism\views.py:76
+msgid "Organisms"
+msgstr "Organismes"
+
+#: .\dashboard\organism\views.py:88
+msgid "Edit Organism"
+msgstr "Editer un Organism"
+
+#: .\dashboard\organism_type\forms.py:10
+msgid "This organism type name already exist."
+msgstr "Ce type d'organisme existe déjà."
+
+#: .\dashboard\organism_type\views.py:30 .\dashboard\organism_type\views.py:93
+#: .\dashboard\templates\layouts\sidebar.html:111
+msgid "Organism Type"
+msgstr "Types Organisme"
+
+#: .\dashboard\organism_type\views.py:70
+#: .\dashboard\templates\organism_type\list.html:13
+msgid "Create Organism Type"
+msgstr "Créer un type organisme"
+
+#: .\dashboard\organism_type\views.py:76
+msgid "Organism Types"
+msgstr "Types organismes"
+
+#: .\dashboard\organism_type\views.py:88
+msgid "Edit Organism type"
+msgstr "Editer un type organisme"
+
+#: .\dashboard\pending_actions\views.py:66
+msgid "Pending actions"
+msgstr "Actions encours"
+
+#: .\dashboard\phases\forms.py:12
 msgid "A phase with this name is already registered."
 msgstr "Une phase portant ce nom est déjà enregistrée."
 
-#: .\dashboard\phases\views.py:58
+#: .\dashboard\phases\views.py:65
+#: .\dashboard\templates\projects\project_detail.html:27
 msgid "Create Phase"
 msgstr "Créer une phase"
 
-#: .\dashboard\phases\views.py:210
+#: .\dashboard\phases\views.py:72
+#: .\dashboard\templates\activities\activity_detail.html:19
+#: .\dashboard\templates\pending_actions\pending_action_list.html:10
+#: .\dashboard\templates\phases\phase_detail.html:19
+#: .\dashboard\templates\tasks\task_detail.html:19
+#: .\dashboard\templates\tasks\task_list.html:11
+msgid "Project"
+msgstr "Projet"
+
+#: .\dashboard\phases\views.py:226
 msgid "Edit Phase"
 msgstr "Editer une phase"
 
-#: .\dashboard\phases\views.py:287
+#: .\dashboard\phases\views.py:233 .\dashboard\phases\views.py:309
+#: .\dashboard\projects\views.py:49 .\dashboard\projects\views.py:88
+#: .\dashboard\projects\views.py:120 .\dashboard\projects\views.py:200
+#: .\dashboard\projects\views.py:286
+#: .\dashboard\templates\layouts\sidebar.html:64
+msgid "Projects"
+msgstr "Projets"
+
+#: .\dashboard\phases\views.py:304
 #: .\dashboard\templates\phases\phase_detail.html:13
 msgid "Phase Detail"
 msgstr "Détail de la phase"
+
+#: .\dashboard\process_manager\views.py:140
+msgid "Title"
+msgstr "Titre de la fenêtre modal"
+
+#: .\dashboard\process_manager\views.py:140
+msgid "Task Invalided"
+msgstr "Tâche invalide"
+
+#: .\dashboard\process_manager\views.py:141
+msgid "Comment"
+msgstr "Commentaire"
+
+#: .\dashboard\process_manager\views.py:142
+#: .\dashboard\templates\activities\activity_detail.html:20
+#: .\dashboard\templates\facilitators\profile.html:291
+#: .\dashboard\templates\tasks\task_detail.html:20
+#: .\dashboard\templates\tasks\task_list.html:12
+msgid "Phase"
+msgstr "Phase"
+
+#: .\dashboard\process_manager\views.py:143
+#: .\dashboard\templates\facilitators\profile.html:295
+#: .\dashboard\templates\tasks\task_detail.html:21
+msgid "Activity"
+msgstr "Activité"
+
+#: .\dashboard\process_manager\views.py:144
+#: .\dashboard\templates\facilitators\profile.html:299
+#: .\dashboard\templates\pending_actions\pending_action_list.html:13
+msgid "Task"
+msgstr "Tâche"
+
+#: .\dashboard\process_manager\views.py:145
+#, fuzzy
+#| msgid "Project Name"
+msgid "Location Name"
+msgstr "Nom du projet"
+
+#: .\dashboard\process_manager\views.py:146
+msgid "Date"
+msgstr "Date"
+
+#: .\dashboard\process_manager\views.py:149
+msgid "Facilitator Name"
+msgstr "Nom de l'ADC"
+
+#: .\dashboard\process_manager\views.py:157
+msgid "Mail sent successfully"
+msgstr "Mail a été envoyé avec succès"
+
+#: .\dashboard\process_manager\views.py:159
+msgid "An error occurred while sending the email"
+msgstr "Une erreur est survenue lors de l'envoie du mail."
+
+#: .\dashboard\process_manager\views.py:174
+msgid "SMS sent successfully"
+msgstr "Le SMS a été envoyé avec succès"
+
+#: .\dashboard\process_manager\views.py:177
+msgid "An error occurred while sending the sms"
+msgstr "Une erreur est survenue lors de l'envoie du SMS."
+
+#: .\dashboard\process_manager\views.py:180
+#: .\dashboard\templates\common\edit-comment-dialog.html:82
+#: .\dashboard\templates\common\edit-comment-dialog.html:85
+#: .\dashboard\templates\common\task-detail-dialog.html:28
+msgid "Task validated"
+msgstr "Tâche validée"
+
+#: .\dashboard\process_manager\views.py:181
+#: .\dashboard\templates\common\edit-comment-dialog.html:94
+#: .\dashboard\templates\common\edit-comment-dialog.html:97
+#: .\dashboard\templates\common\task-detail-dialog.html:34
+msgid "Task not validated"
+msgstr "Tâche non validée"
+
+#: .\dashboard\process_manager\views.py:183
+msgid "The task isn't completed"
+msgstr "La tâche n'est pas achevée"
+
+#: .\dashboard\process_manager\views.py:186
+#: .\dashboard\process_manager\views.py:233
+msgid "An error has occurred..."
+msgstr "Une erreur est survenue..."
+
+#: .\dashboard\process_manager\views.py:230
+#, fuzzy
+#| msgid "Task Completed"
+msgid "Task completed"
+msgstr "Tâche achevée"
+
+#: .\dashboard\process_manager\views.py:231
+msgid "Task not completed"
+msgstr "Tâche non achevée"
 
 #: .\dashboard\projects\forms.py:13
 msgid "A project with this name is already registered."
 msgstr "Un projet portant ce nom est déjà enregistré."
 
-#: .\dashboard\projects\views.py:47 .\dashboard\projects\views.py:86
-#: .\dashboard\projects\views.py:110 .\dashboard\projects\views.py:189
-#: .\dashboard\templates\layouts\sidebar.html:54
-msgid "Projects"
-msgstr "Projets"
-
-#: .\dashboard\projects\views.py:79
+#: .\dashboard\projects\views.py:81
 msgid "Create Project"
 msgstr "Créer un Projet"
 
-#: .\dashboard\projects\views.py:103
+#: .\dashboard\projects\views.py:113
 msgid "Edit Project"
 msgstr "Editer le projet"
 
-#: .\dashboard\projects\views.py:183
+#: .\dashboard\projects\views.py:194
+#: .\dashboard\templates\projects\project_detail.html:13
 msgid "Project Detail"
 msgstr "Détail du projet"
 
-#: .\dashboard\tasks\forms.py:15 .\dashboard\tasks\forms.py:27
-#: .\dashboard\tasks\forms.py:59
-#, fuzzy
-#| msgid "Forms"
+#: .\dashboard\tasks\forms.py:15 .\dashboard\tasks\forms.py:28
+#: .\dashboard\tasks\forms.py:57
 msgid "JSON Forms"
-msgstr "Formulaires"
+msgstr "Formulaire JSON"
 
 #: .\dashboard\tasks\forms.py:21
 msgid "An Task with this name is already registered."
 msgstr "Une tâche portant ce nom est déjà enregistrée."
 
-#: .\dashboard\tasks\forms.py:25 .\dashboard\tasks\forms.py:57
+#: .\dashboard\tasks\forms.py:25 .\dashboard\tasks\forms.py:54
 #: .\dashboard\templates\activities\activity_detail.html:18
 #: .\dashboard\templates\form_builder\form\form_list.html:9
+#: .\dashboard\templates\organism_type\organism_list.html:9
 #: .\dashboard\templates\phases\phase_detail.html:18
+#: .\dashboard\templates\projects\project_detail.html:18
 #: .\dashboard\templates\projects\project_list.html:10
 #: .\dashboard\templates\projects\update.html:20
 #: .\dashboard\templates\tasks\task_detail.html:18
@@ -353,37 +543,50 @@ msgstr "Une tâche portant ce nom est déjà enregistrée."
 msgid "Description"
 msgstr "Description"
 
-#: .\dashboard\tasks\forms.py:26 .\dashboard\tasks\forms.py:58
-msgid "Form link option"
+#: .\dashboard\tasks\forms.py:26 .\dashboard\tasks\forms.py:55
+#: .\dashboard\templates\activities\activity_detail.html:64
+msgid "Duration"
+msgstr "Durée"
+
+#: .\dashboard\tasks\forms.py:27 .\dashboard\tasks\forms.py:56
+#, fuzzy
+#| msgid "Form link option"
+msgid "Form definition type"
 msgstr "Type de liaison du formulaire"
 
-#: .\dashboard\tasks\views.py:28 .\dashboard\tasks\views.py:67
-#: .\dashboard\tasks\views.py:146 .\dashboard\tasks\views.py:246
+#: .\dashboard\tasks\views.py:28
 msgid "Tasks"
 msgstr "Tâches"
 
-#: .\dashboard\tasks\views.py:60 .\dashboard\tasks\views.py:239
+#: .\dashboard\tasks\views.py:60 .\dashboard\tasks\views.py:247
 #: .\dashboard\templates\activities\activity_detail.html:30
 #: .\dashboard\templates\tasks\list.html:13
 msgid "Create Task"
 msgstr "Créer une Tâche"
 
-#: .\dashboard\tasks\views.py:139
+#: .\dashboard\tasks\views.py:145
 msgid "Edit Task"
 msgstr "Editer la Tâche"
 
 #: .\dashboard\templates\activities\activity_confirm_delete.html:15
-#: .\dashboard\templates\activities\activity_detail.html:98
+#: .\dashboard\templates\activities\activity_detail.html:105
 #: .\dashboard\templates\activities\activity_list.html:32
 #: .\dashboard\templates\attachment_type\attachment_list.html:26
 #: .\dashboard\templates\attachment_type\attachment_list.html:27
+#: .\dashboard\templates\authentication\users.html:64
+#: .\dashboard\templates\authentication\users.html:65
 #: .\dashboard\templates\form_builder\form\form_list.html:29
 #: .\dashboard\templates\form_builder\form\form_list.html:30
+#: .\dashboard\templates\organism\organism_list.html:34
+#: .\dashboard\templates\organism\organism_list.html:35
+#: .\dashboard\templates\organism_type\organism_list.html:26
+#: .\dashboard\templates\organism_type\organism_list.html:27
 #: .\dashboard\templates\phases\phase_confirm_delete.html:15
-#: .\dashboard\templates\phases\phase_detail.html:85
+#: .\dashboard\templates\phases\phase_detail.html:90
 #: .\dashboard\templates\phases\phase_list.html:43
 #: .\dashboard\templates\projects\project_confirm_delete.html:15
-#: .\dashboard\templates\projects\project_list.html:30
+#: .\dashboard\templates\projects\project_detail.html:89
+#: .\dashboard\templates\projects\project_list.html:35
 #: .\dashboard\templates\tasks\task_confirm_delete.html:15
 #: .\dashboard\templates\tasks\task_list.html:36
 #: .\dashboard\templates\tasks\task_list.html:37
@@ -395,37 +598,25 @@ msgid "Activity Detail"
 msgstr "Détail de l'Activité"
 
 #: .\dashboard\templates\activities\activity_detail.html:17
-#: .\dashboard\templates\activities\activity_detail.html:57
+#: .\dashboard\templates\activities\activity_detail.html:62
 #: .\dashboard\templates\activities\activity_list.html:9
 #: .\dashboard\templates\phases\phase_detail.html:17
-#: .\dashboard\templates\phases\phase_detail.html:50
+#: .\dashboard\templates\phases\phase_detail.html:55
 #: .\dashboard\templates\phases\phase_list.html:9
+#: .\dashboard\templates\projects\project_detail.html:17
+#: .\dashboard\templates\projects\project_detail.html:54
 #: .\dashboard\templates\tasks\task_detail.html:17
 msgid "Order"
 msgstr "Ordre"
 
-#: .\dashboard\templates\activities\activity_detail.html:19
-#: .\dashboard\templates\phases\phase_detail.html:19
-#: .\dashboard\templates\tasks\task_detail.html:19
-#: .\dashboard\templates\tasks\task_list.html:11
-msgid "Project"
-msgstr "Projet"
-
-#: .\dashboard\templates\activities\activity_detail.html:20
-#: .\dashboard\templates\facilitators\profile.html:289
-#: .\dashboard\templates\facilitators\task_list.html:66
-#: .\dashboard\templates\tasks\task_detail.html:20
-#: .\dashboard\templates\tasks\task_list.html:12
-msgid "Phase"
-msgstr "Phase"
-
 #: .\dashboard\templates\activities\activity_detail.html:21
-#: .\dashboard\templates\phases\phase_detail.html:52
+#: .\dashboard\templates\phases\phase_detail.html:57
 msgid "Total Task"
 msgstr "Nombre total de tâche"
 
 #: .\dashboard\templates\activities\activity_detail.html:22
 #: .\dashboard\templates\phases\phase_detail.html:20
+#: .\dashboard\templates\projects\project_detail.html:19
 #: .\dashboard\templates\projects\project_list.html:11
 #: .\dashboard\templates\tasks\task_detail.html:30
 #: .\dashboard\templates\tasks\task_list.html:14
@@ -433,64 +624,94 @@ msgid "Couch Id"
 msgstr "ID CouchDB"
 
 #: .\dashboard\templates\activities\activity_detail.html:34
-#: .\dashboard\templates\activities\activity_detail.html:35
+#: .\dashboard\templates\activities\activity_detail.html:39
+#: .\dashboard\templates\activities\activity_detail.html:40
 #: .\dashboard\templates\phases\phase_detail.html:32
-#: .\dashboard\templates\phases\phase_detail.html:33
+#: .\dashboard\templates\phases\phase_detail.html:37
+#: .\dashboard\templates\phases\phase_detail.html:38
+#: .\dashboard\templates\projects\project_detail.html:31
+#: .\dashboard\templates\projects\project_detail.html:36
+#: .\dashboard\templates\projects\project_detail.html:37
+#: .\dashboard\templates\tasks\task_detail.html:42
 msgid "Referesh"
 msgstr "Rafraîchir"
 
-#: .\dashboard\templates\activities\activity_detail.html:51
-#: .\dashboard\templates\facilitators\profile.html:141
+#: .\dashboard\templates\activities\activity_detail.html:35
+#: .\dashboard\templates\phases\phase_detail.html:33
+#: .\dashboard\templates\projects\project_detail.html:32
+#: .\dashboard\templates\tasks\task_detail.html:43
+msgid "Back"
+msgstr "Retour"
+
+#: .\dashboard\templates\activities\activity_detail.html:56
+#: .\dashboard\templates\facilitators\profile.html:143
 #: .\dashboard\templates\form_builder\detail.html:24
 msgid "Task List"
 msgstr "Liste des tâches"
 
-#: .\dashboard\templates\activities\activity_detail.html:59
+#: .\dashboard\templates\activities\activity_detail.html:65
 #: .\dashboard\templates\activities\activity_list.html:11
 #: .\dashboard\templates\attachment_type\attachment_list.html:10
-#: .\dashboard\templates\facilitators\facilitator_list.html:13
+#: .\dashboard\templates\authentication\users.html:43
+#: .\dashboard\templates\facilitators\facilitator_list.html:16
 #: .\dashboard\templates\form_builder\form\form_list.html:12
-#: .\dashboard\templates\phases\phase_detail.html:53
+#: .\dashboard\templates\organism\organism_list.html:14
+#: .\dashboard\templates\organism_type\organism_list.html:10
+#: .\dashboard\templates\pending_actions\pending_action_list.html:15
+#: .\dashboard\templates\phases\phase_detail.html:58
 #: .\dashboard\templates\phases\phase_list.html:11
+#: .\dashboard\templates\projects\project_detail.html:57
 #: .\dashboard\templates\projects\project_list.html:12
 #: .\dashboard\templates\tasks\task_list.html:15
 msgid "Action"
 msgstr "Action"
 
-#: .\dashboard\templates\activities\activity_detail.html:71
+#: .\dashboard\templates\activities\activity_detail.html:78
 #: .\dashboard\templates\activities\activity_list.html:22
-#: .\dashboard\templates\phases\phase_detail.html:65
+#: .\dashboard\templates\phases\phase_detail.html:70
 #: .\dashboard\templates\phases\phase_list.html:23
+#: .\dashboard\templates\projects\project_detail.html:69
+#: .\dashboard\templates\projects\project_list.html:25
 msgid "View"
 msgstr "Vue"
 
-#: .\dashboard\templates\activities\activity_detail.html:76
+#: .\dashboard\templates\activities\activity_detail.html:83
 #: .\dashboard\templates\activities\activity_list.html:27
 #: .\dashboard\templates\attachment_type\attachment_list.html:21
 #: .\dashboard\templates\attachment_type\attachment_list.html:22
+#: .\dashboard\templates\authentication\users.html:59
 #: .\dashboard\templates\form_builder\form\form_list.html:24
 #: .\dashboard\templates\form_builder\form\form_list.html:25
-#: .\dashboard\templates\phases\phase_detail.html:70
+#: .\dashboard\templates\organism\organism_list.html:29
+#: .\dashboard\templates\organism\organism_list.html:30
+#: .\dashboard\templates\organism_type\organism_list.html:21
+#: .\dashboard\templates\organism_type\organism_list.html:22
+#: .\dashboard\templates\pending_actions\pending_action_list.html:29
+#: .\dashboard\templates\pending_actions\pending_action_list.html:30
+#: .\dashboard\templates\phases\phase_detail.html:75
 #: .\dashboard\templates\phases\phase_list.html:28
-#: .\dashboard\templates\projects\project_list.html:25
+#: .\dashboard\templates\projects\project_detail.html:74
+#: .\dashboard\templates\projects\project_list.html:30
 #: .\dashboard\templates\tasks\task_list.html:31
 #: .\dashboard\templates\tasks\task_list.html:32
 msgid "Edit"
-msgstr ""
+msgstr "Editer"
 
-#: .\dashboard\templates\activities\activity_detail.html:81
-#: .\dashboard\templates\phases\phase_detail.html:75
+#: .\dashboard\templates\activities\activity_detail.html:88
+#: .\dashboard\templates\phases\phase_detail.html:80
 #: .\dashboard\templates\phases\phase_list.html:33
+#: .\dashboard\templates\projects\project_detail.html:79
 msgid "Move Up"
 msgstr "Monter"
 
-#: .\dashboard\templates\activities\activity_detail.html:86
-#: .\dashboard\templates\phases\phase_detail.html:80
+#: .\dashboard\templates\activities\activity_detail.html:93
+#: .\dashboard\templates\phases\phase_detail.html:85
 #: .\dashboard\templates\phases\phase_list.html:38
+#: .\dashboard\templates\projects\project_detail.html:84
 msgid "Move Down"
 msgstr "Descendre"
 
-#: .\dashboard\templates\activities\activity_detail.html:92
+#: .\dashboard\templates\activities\activity_detail.html:99
 msgid "Task Form"
 msgstr "Formulaire de Tâche"
 
@@ -498,22 +719,29 @@ msgstr "Formulaire de Tâche"
 #: .\dashboard\templates\activities\create_activity.html:40
 #: .\dashboard\templates\activities\update.html:23
 #: .\dashboard\templates\attachment_type\create_update.html:21
-#: .\dashboard\templates\facilitators\create.html:63
-#: .\dashboard\templates\facilitators\update.html:88
-#: .\dashboard\templates\phases\create.html:40
-#: .\dashboard\templates\phases\update.html:23
+#: .\dashboard\templates\authentication\create.html:41
+#: .\dashboard\templates\facilitators\create.html:64
+#: .\dashboard\templates\facilitators\update.html:89
+#: .\dashboard\templates\organism\create_update.html:27
+#: .\dashboard\templates\organism_type\create_update.html:21
+#: .\dashboard\templates\phases\create.html:39
+#: .\dashboard\templates\phases\update.html:22
 #: .\dashboard\templates\projects\create.html:40
 #: .\dashboard\templates\projects\update.html:34
 #: .\dashboard\templates\tasks\create.html:43
-#: .\dashboard\templates\tasks\create_task.html:42
-#: .\dashboard\templates\tasks\update.html:27
+#: .\dashboard\templates\tasks\create_task.html:44
+#: .\dashboard\templates\tasks\update.html:30
 msgid "SAVE"
 msgstr "ENREGISTRER"
 
 #: .\dashboard\templates\activities\list.html:15
 #: .\dashboard\templates\attachment_type\list.html:24
+#: .\dashboard\templates\authentication\users.html:25
 #: .\dashboard\templates\facilitators\list.html:44
 #: .\dashboard\templates\form_builder\form\list.html:24
+#: .\dashboard\templates\organism\list.html:24
+#: .\dashboard\templates\organism_type\list.html:24
+#: .\dashboard\templates\pending_actions\list.html:13
 #: .\dashboard\templates\phases\list.html:24
 #: .\dashboard\templates\projects\list.html:24
 #: .\dashboard\templates\tasks\list.html:24
@@ -521,13 +749,28 @@ msgid "Search by name"
 msgstr "Recherche par nom"
 
 #: .\dashboard\templates\attachment_type\attachment_list.html:9
-#: .\dashboard\templates\facilitators\facilitator_list.html:11
+#: .\dashboard\templates\facilitators\facilitator_list.html:14
+#: .\dashboard\templates\organism\organism_list.html:8
 msgid "Type"
 msgstr "Type"
 
 #: .\dashboard\templates\attachment_type\detail.html:10
 msgid "Attachment Detail"
 msgstr "Détail de la pièce jointe"
+
+#: .\dashboard\templates\authentication\create.html:62
+#, fuzzy
+#| msgid "Click to select location"
+msgid "Click to select organism"
+msgstr "Cliquez pour sélectionner un lieu"
+
+#: .\dashboard\templates\authentication\delete.html:32
+msgid "YOU'RE SURE TO DELETE THIS USER?"
+msgstr "ÊTES-VOUS SÛR DE SUPPRIMER CET UTILISATEUR ?"
+
+#: .\dashboard\templates\authentication\delete.html:38
+msgid "I'M SURE"
+msgstr "JE SUIS SÛR"
 
 #: .\dashboard\templates\authentication\login.html:17
 #: .\dashboard\templates\authentication\login.html:57
@@ -541,6 +784,15 @@ msgstr "DCC"
 #: .\dashboard\templates\authentication\login.html:48
 msgid "Log in to start your session"
 msgstr "Connectez-vous pour commencer votre session"
+
+#: .\dashboard\templates\authentication\users.html:40
+msgid "Group"
+msgstr "Groupe"
+
+#: .\dashboard\templates\authentication\users.html:60
+#: .\dashboard\templates\facilitators\facilitator_list.html:42
+msgid "Edit profile"
+msgstr "Editer le profil"
 
 #: .\dashboard\templates\common\400.html:10
 msgid "BAD REQUEST"
@@ -581,12 +833,88 @@ msgstr ""
 "Nous suivons ces erreurs automatiquement, mais si le problème persiste, "
 "n'hésitez pas à nous contacter.En attendant, essayez d'actualiser."
 
+#: .\dashboard\templates\common\edit-comment-dialog.html:8
+msgid "Please enter a comment"
+msgstr "Veuillez saisir un commentaire"
+
+#: .\dashboard\templates\common\edit-comment-dialog.html:14
+msgid "Add Comment"
+msgstr "Ajouter un commentaire"
+
+#: .\dashboard\templates\common\edit-comment-dialog.html:20
+#: .\dashboard\templates\common\edit-comment-dialog.html:114
+#: .\dashboard\templates\common\edit-comment-dialog.html:128
+msgid "Send"
+msgstr "Envoyer"
+
+#: .\dashboard\templates\common\edit-comment-dialog.html:58
+msgid "Please add a comment"
+msgstr "Veuillez ajouter un commentaire"
+
+#: .\dashboard\templates\common\edit-comment-dialog.html:61
+msgid "Sending..."
+msgstr "Envoi en cours..."
+
+#: .\dashboard\templates\common\edit-comment-dialog.html:79
+#: .\dashboard\templates\common\validation_invalidation.html:8
+#: .\dashboard\templates\common\validation_invalidation.html:21
+msgid "Mark as invalidated"
+msgstr "Marquée comme invalidée"
+
+#: .\dashboard\templates\common\edit-comment-dialog.html:91
+#: .\dashboard\templates\common\validation_invalidation.html:10
+msgid "Mark as validated"
+msgstr "Marquée comme validée"
+
+#: .\dashboard\templates\common\edit-comment-dialog.html:156
+#: .\dashboard\templates\common\task-detail-dialog.html:299
+msgid "Mark as uncompleted"
+msgstr "Marquée comme inachevée"
+
+#: .\dashboard\templates\common\edit-comment-dialog.html:161
+#: .\dashboard\templates\common\edit-comment-dialog.html:166
 #: .\dashboard\templates\common\progress_bar.html:6
+#: .\dashboard\templates\common\task-detail-dialog.html:17
 #: .\dashboard\templates\facilitators\task_list.html:24
-#: .\dashboard\templates\facilitators\task_list.html:112
-#: .\dashboard\templates\facilitators\task_list.html:137
+#: .\dashboard\templates\facilitators\task_list.html:116
+#: .\dashboard\templates\facilitators\task_list.html:141
 msgid "Completed"
 msgstr "Achevée"
+
+#: .\dashboard\templates\common\edit-comment-dialog.html:173
+#: .\dashboard\templates\common\task-detail-dialog.html:308
+msgid "Mark as completed"
+msgstr "Tâche achevée"
+
+#: .\dashboard\templates\common\edit-comment-dialog.html:178
+#: .\dashboard\templates\common\edit-comment-dialog.html:183
+#: .\dashboard\templates\common\task-detail-dialog.html:21
+#: .\dashboard\templates\facilitators\task_list.html:120
+#: .\dashboard\templates\facilitators\task_list.html:145
+msgid "Pending"
+msgstr "En attente"
+
+#: .\dashboard\templates\common\task-detail-dialog.html:37
+msgid "Unseen task"
+msgstr "Tâche non vue"
+
+#: .\dashboard\templates\common\task-detail-dialog.html:242
+#: .\dashboard\templates\facilitators\task_list.html:313
+msgid "Not synchronized"
+msgstr "Non synchronisé(e)"
+
+#: .\dashboard\templates\common\task-detail-dialog.html:245
+msgid "Link"
+msgstr "Lien"
+
+#: .\dashboard\templates\common\task-detail-dialog.html:253
+msgid "Download"
+msgstr "Télécharger"
+
+#: .\dashboard\templates\common\task-detail-dialog.html:273
+#: .\dashboard\templates\facilitators\task_list.html:326
+msgid "Not present"
+msgstr "Non présent(e)"
 
 #: .\dashboard\templates\common\under_construction.html:7
 #: .\dashboard\templates\common\under_construction_col.html:5
@@ -601,15 +929,15 @@ msgstr "Cette section est en cours de réalisation"
 msgid "Under construction"
 msgstr "En cours de réalisation"
 
-#: .\dashboard\templates\diagnostics\diagnostics.html:22
-#: .\dashboard\templates\facilitators\profile.html:147
+#: .\dashboard\templates\diagnostics\diagnostics.html:23
+#: .\dashboard\templates\facilitators\profile.html:149
 msgid "Filter by"
 msgstr "Filtrer par"
 
 #: .\dashboard\templates\diagnostics\diagnostics.html:53
 #: .\dashboard\templates\diagnostics\diagnostics.html:267
 #: .\dashboard\templates\diagnostics\diagnostics.html:316
-#: .\dashboard\templates\facilitators\list.html:201
+#: .\dashboard\templates\facilitators\list.html:171
 msgid "Region"
 msgstr "Région"
 
@@ -632,26 +960,26 @@ msgstr "Pourcentage"
 msgid "`+data.type+`"
 msgstr "`+data.type+`"
 
-#: .\dashboard\templates\facilitators\create.html:46
-#: .\dashboard\templates\facilitators\update.html:64
+#: .\dashboard\templates\facilitators\create.html:47
+#: .\dashboard\templates\facilitators\update.html:65
 msgid "Add administrative levels"
 msgstr "Ajouter des niveaux administratifs"
 
-#: .\dashboard\templates\facilitators\create.html:50
-#: .\dashboard\templates\facilitators\update.html:68
+#: .\dashboard\templates\facilitators\create.html:51
+#: .\dashboard\templates\facilitators\update.html:69
 #: .\dashboard\templates\form_builder\form_field\create.html:50
 msgid "ADD"
 msgstr "AJOUTER"
 
-#: .\dashboard\templates\facilitators\create.html:79
-#: .\dashboard\templates\facilitators\create.html:92
-#: .\dashboard\templates\facilitators\update.html:121
-#: .\dashboard\templates\facilitators\update.html:131
+#: .\dashboard\templates\facilitators\create.html:80
+#: .\dashboard\templates\facilitators\create.html:96
+#: .\dashboard\templates\facilitators\update.html:125
+#: .\dashboard\templates\facilitators\update.html:135
 msgid "Click to select location"
 msgstr "Cliquez pour sélectionner un lieu"
 
-#: .\dashboard\templates\facilitators\facilitator_list.html:12
-#: .\dashboard\templates\facilitators\facilitator_list.html:23
+#: .\dashboard\templates\facilitators\facilitator_list.html:15
+#: .\dashboard\templates\facilitators\facilitator_list.html:29
 #, fuzzy, python-format
 #| msgid ""
 #| "Red: <10%% ; Orange: <30%% ; Purple: <50%% ; Black: <70%% ; Blue sky: "
@@ -663,36 +991,33 @@ msgstr ""
 "Rouge : <10% ; Orange : <30% ; Violet : <50% ; Noir : <70% ; Bleu ciel : "
 "<90% ; Bleu : <100% ; Vert : 100%"
 
-#: .\dashboard\templates\facilitators\facilitator_list.html:12
+#: .\dashboard\templates\facilitators\facilitator_list.html:15
 msgid "Percent"
 msgstr "Pourcentage"
 
-#: .\dashboard\templates\facilitators\facilitator_list.html:29
-#: .\dashboard\templates\facilitators\facilitator_list.html:30
 #: .\dashboard\templates\facilitators\facilitator_list.html:35
+#: .\dashboard\templates\facilitators\facilitator_list.html:36
+#: .\dashboard\templates\facilitators\facilitator_list.html:41
 msgid "See profile"
 msgstr "Voir le profil"
 
-#: .\dashboard\templates\facilitators\facilitator_list.html:36
-msgid "Edit profile"
-msgstr "Editer le profil"
-
 #: .\dashboard\templates\facilitators\list.html:35
-#: .\dashboard\templates\facilitators\profile.html:166
+#: .\dashboard\templates\facilitators\profile.html:168
 msgid "Clear all filters"
 msgstr "Effacer tous les filtres"
 
-#: .\dashboard\templates\facilitators\list.html:205
+#: .\dashboard\templates\facilitators\list.html:175
 msgid "Cercle"
 msgstr "Cercle"
 
-#: .\dashboard\templates\facilitators\list.html:209
+#: .\dashboard\templates\facilitators\list.html:179
 msgid "Commune"
 msgstr "Commune"
 
-#: .\dashboard\templates\facilitators\list.html:213
-#: .\dashboard\templates\facilitators\profile.html:285
+#: .\dashboard\templates\facilitators\list.html:183
+#: .\dashboard\templates\facilitators\profile.html:287
 #: .\dashboard\templates\facilitators\task_list.html:23
+#: .\dashboard\templates\pending_actions\pending_action_list.html:12
 msgid "Village"
 msgstr "Village"
 
@@ -706,23 +1031,13 @@ msgstr "Animateur non désigné"
 msgid "Tel"
 msgstr "Tél"
 
-#: .\dashboard\templates\facilitators\profile.html:115
+#: .\dashboard\templates\facilitators\profile.html:117
 msgid "Last Activity"
 msgstr "Dernière activité"
 
-#: .\dashboard\templates\facilitators\profile.html:127
+#: .\dashboard\templates\facilitators\profile.html:129
 msgid "Facilitator Code"
 msgstr "Code de l'animateur"
-
-#: .\dashboard\templates\facilitators\profile.html:293
-#: .\dashboard\templates\facilitators\task_list.html:67
-#: .\dashboard\templates\tasks\task_detail.html:21
-msgid "Activity"
-msgstr "Activité"
-
-#: .\dashboard\templates\facilitators\profile.html:297
-msgid "Task"
-msgstr "Tâche"
 
 #: .\dashboard\templates\facilitators\task_list.html:22
 msgid "N°"
@@ -732,40 +1047,40 @@ msgstr "N°"
 msgid "Uncompleted"
 msgstr "Inachevée"
 
-#: .\dashboard\templates\facilitators\task_list.html:75
+#: .\dashboard\templates\facilitators\task_list.html:70
+msgid "ACTIVITY"
+msgstr "ACTIVITE"
+
+#: .\dashboard\templates\facilitators\task_list.html:71
+msgid "PHASE"
+msgstr "PHASE"
+
+#: .\dashboard\templates\facilitators\task_list.html:79
 msgid "No attachments"
 msgstr "Aucune pièce jointe"
 
-#: .\dashboard\templates\facilitators\task_list.html:95
+#: .\dashboard\templates\facilitators\task_list.html:99
 msgid "Completed on"
 msgstr "Achevée le"
 
-#: .\dashboard\templates\facilitators\task_list.html:106
+#: .\dashboard\templates\facilitators\task_list.html:110
 msgid "Proof of completion"
 msgstr "Preuve d'achèvement"
 
-#: .\dashboard\templates\facilitators\task_list.html:116
-#: .\dashboard\templates\facilitators\task_list.html:141
-msgid "Pending"
-msgstr "En attente"
-
-#: .\dashboard\templates\facilitators\task_list.html:309
-msgid "Not synchronized"
-msgstr "Non synchronisé(e)"
-
-#: .\dashboard\templates\facilitators\task_list.html:322
-msgid "Not present"
-msgstr "Non présent(e)"
-
-#: .\dashboard\templates\facilitators\task_list.html:364
+#: .\dashboard\templates\facilitators\task_list.html:367
 msgid "No tasks found"
 msgstr "Aucune tâche trouvée"
+
+#: .\dashboard\templates\facilitators\update.html:92
+msgid "CANCEL"
+msgstr "ANNULER"
 
 #: .\dashboard\templates\form_builder\detail.html:10
 msgid "Form Detail"
 msgstr "Détail du formulaire"
 
 #: .\dashboard\templates\form_builder\detail.html:31
+#: .\dashboard\templates\organism_type\organism_list.html:8
 msgid "Label"
 msgstr "Libellé"
 
@@ -860,33 +1175,66 @@ msgstr "Bienvenue"
 msgid "Logout"
 msgstr "Se déconnecter"
 
-#: .\dashboard\templates\layouts\sidebar.html:43
+#: .\dashboard\templates\layouts\sidebar.html:31
 msgid "Diagnostics"
 msgstr "Diagnostics"
 
-#: .\dashboard\templates\layouts\sidebar.html:65
-msgid "List Phases"
-msgstr "Liste Phases"
+#: .\dashboard\templates\layouts\sidebar.html:42
+msgid "Pending action"
+msgstr "Action en cours"
 
 #: .\dashboard\templates\layouts\sidebar.html:76
+msgid "List Phases"
+msgstr "Liste des Phases"
+
+#: .\dashboard\templates\layouts\sidebar.html:87
 msgid "List Forms"
 msgstr "Liste Formulaires"
 
-#: .\dashboard\templates\layouts\sidebar.html:87
-msgid "List Attachments"
-msgstr "Liste Pièces Jointes"
+#: .\dashboard\templates\layouts\sidebar.html:99
+msgid "Type Attachments"
+msgstr "Pièces jointes"
 
-#: .\dashboard\templates\layouts\sidebar.html:98
+#: .\dashboard\templates\layouts\sidebar.html:144
 msgid "Toggle Sidebar"
 msgstr "Barre latérale basculante"
+
+#: .\dashboard\templates\organism\detail.html:10
+#: .\dashboard\templates\organism_type\detail.html:10
+msgid "Organism Type Detail"
+msgstr "Détail du type d'organisme"
+
+#: .\dashboard\templates\organism\organism_list.html:10
+msgid "Acronym"
+msgstr "Sigle"
+
+#: .\dashboard\templates\organism\organism_list.html:11
+msgid "Address"
+msgstr ""
+
+#: .\dashboard\templates\pending_actions\pending_action_list.html:11
+msgid "ADC"
+msgstr "ADC"
+
+#: .\dashboard\templates\pending_actions\pending_action_list.html:14
+msgid "Status"
+msgstr "Statut"
 
 #: .\dashboard\templates\phases\list.html:13
 msgid "Add a Phase"
 msgstr "Ajouter une Phase"
 
-#: .\dashboard\templates\phases\phase_detail.html:44
+#: .\dashboard\templates\phases\phase_detail.html:49
 msgid "Activity List"
 msgstr "Liste des activités"
+
+#: .\dashboard\templates\projects\project_detail.html:48
+msgid "Phases List"
+msgstr "Liste des Phases"
+
+#: .\dashboard\templates\projects\project_detail.html:56
+msgid "Total Activities"
+msgstr "Nb. total Activités"
 
 #: .\dashboard\templates\projects\project_list.html:9
 msgid "Project Name"
@@ -900,8 +1248,8 @@ msgstr "ID CouchDB"
 msgid "Task Detail"
 msgstr "Détail de la tâche"
 
-#: .\dashboard\templates\tasks\task_detail.html:43
-#: .\dashboard\templates\tasks\task_detail.html:44
+#: .\dashboard\templates\tasks\task_detail.html:48
+#: .\dashboard\templates\tasks\task_detail.html:49
 msgid "Refresh"
 msgstr "Rafraîchir"
 
@@ -933,62 +1281,48 @@ msgstr "Comptable"
 msgid "User"
 msgstr "Utilisateur"
 
-#: .\process_manager\models.py:316
+#: .\process_manager\models.py:216
+msgid "Duration in hour"
+msgstr "Durée en heure"
+
+#: .\process_manager\models.py:333
 msgid "Related Couchdb id"
 msgstr "Id CouchDB"
 
-#: .\process_manager\models.py:411
+#: .\process_manager\models.py:428
 msgid "Unique identifier for the field"
 msgstr "Identifiant unique pour le champ"
 
-#: .\process_manager\models.py:412
+#: .\process_manager\models.py:429
 msgid "Field Label"
 msgstr "Étiquette du champ"
 
-#: .\process_manager\models.py:414
+#: .\process_manager\models.py:431
 msgid "Type of field"
 msgstr "Type de champ"
 
-#: .\process_manager\models.py:416
+#: .\process_manager\models.py:433
 msgid "Text to be displayed as help"
 msgstr "Texte à afficher comme aide"
 
-#: .\process_manager\models.py:417
+#: .\process_manager\models.py:434
 msgid "Is the field mandatory"
 msgstr "Le champ est-il obligatoire ?"
 
-#: .\process_manager\models.py:419
+#: .\process_manager\models.py:436
 msgid "For Select, enter list of Options, each on a new line."
 msgstr ""
 "Pour les champs de type Select, entrer une liste d'options, chacune sur une "
 "nouvelle ligne."
 
-#: .\process_manager\models.py:420
+#: .\process_manager\models.py:437
 msgid "Order in form"
 msgstr "Ordre dans le formulaire"
 
-#: .\process_manager\models.py:421
+#: .\process_manager\models.py:438
 msgid "Page to appear in form"
 msgstr "Page à faire apparaître dans le formulaire"
 
-#: .\process_manager\models.py:432
+#: .\process_manager\models.py:449
 msgid "Unique name for the Attachment"
 msgstr "Nom unique pour la pièce jointe"
-
-#~ msgid "You don't have access to this resource"
-#~ msgstr "Vous n'avez pas accès à cette ressource"
-
-#~ msgid "Your current password does not match. Please try again!!!"
-#~ msgstr "Votre mot de passe actuel ne correspond pas. Veuillez réessayer !!!"
-
-#~ msgid "Both passwords must be the same."
-#~ msgstr "Les deux mots de passe doivent être identiques."
-
-#~ msgid "Your password is successfully reset..."
-#~ msgstr "Votre mot de passe a été réinitialisé avec succès..."
-
-#~ msgid "Prefecture"
-#~ msgstr "Préfecture"
-
-#~ msgid "Canton"
-#~ msgstr "Canton"

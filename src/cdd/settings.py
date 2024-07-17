@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
 ]
 
 CREATED_APPS = [
@@ -71,6 +72,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'cdd.urls'
@@ -180,7 +183,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = '/'
 
-LOGIN_REDIRECT_URL = 'dashboard:facilitators:list'
+LOGIN_REDIRECT_URL = 'dashboard:diagnostics:diagnostics'
 
 LOGOUT_REDIRECT_URL = '/'
 
@@ -228,3 +231,34 @@ DIAGNOSTIC_MAP_ISO_CODE = env('DIAGNOSTIC_MAP_ISO_CODE')
 
 #Global variables
 OTHER_LANGUAGES = True
+
+CELERY_ACCEPT_CONTENT = ['json']
+
+CELERY_RESULT_BACKEND = 'django-db'
+
+CELERY_TASK_SERIALIZER = 'json'
+
+BROKER_TRANSPORT = "redis"
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost",
+    "http://localhost:8100",
+    "http://172.20.10.2:8100",
+    "http://192.168.100.20",
+    "http://10.118.1.52:8100"
+]
+
+# SEND EMAIL Configuration
+EMAIL_BACKEND = env('EMAIL_BACKEND')
+EMAIL_HOST = env('EMAIL_HOST')
+EMAIL_PORT = env('EMAIL_PORT')
+EMAIL_USE_TLS = env('EMAIL_USE_TLS')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+
+# Twilio
+# https://www.twilio.com/docs
+TWILIO_ACCOUNT_SID = env('TWILIO_ACCOUNT_SID')
+TWILIO_AUTH_TOKEN = env('TWILIO_AUTH_TOKEN')
+TWILIO_FROM_NUMBER = env('TWILIO_FROM_NUMBER')
+TWILIO_REGION = env('TWILIO_REGION')

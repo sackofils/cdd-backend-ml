@@ -50,8 +50,8 @@
                                 <td>{{ project.name }}</td>
                                 <td>{{ project.description }}</td>
                                 <td>{{ project.couch_id }}</td>
-                                <td>                                    
-                                    <a href="{% url 'dashboard:projects:update' project.pk %}"
+                                <td>
+                                    <a href="{% url 'dashboard:projects:update' id=project.pk %}"
                                        class="btn btn-primary btn-xs" title="{% translate 'Edit' %}">
                                         <span class="_web">Edit</span>
                                         <span class="_mobile"><i class="fa fa-edit"></i></span>

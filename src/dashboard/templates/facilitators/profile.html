@@ -54,15 +54,17 @@ input {
                             {% comment %}<span class="text-muted fs17">{% translate 'Administrative Level' %}:</span>
                             <span class="text-bold-family fs17">
                                 {% if facilitator_doc.name %}
-                                    {{ facilitator_doc.name }}
+                                    {{ facilitator_doc.sex|default_if_none:'' }} {{ facilitator_doc.name }}
                                 {% else %}
                                     {% translate 'No administrative level assigned' %}
                                 {% endif %}
                             </span>{% endcomment %}
                             <p class="mt-2 lh14 text-gray-light">
-                                {% translate 'Tel' %}: <span id="phone">{{ facilitator_doc.phone }}</span>
+                                <strong>{% translate 'Tel' %}:</strong>&nbsp;<span id="phone">{{ facilitator_doc.phone }}</span>
                                 <br>
-                                {% translate 'Email' %}: <span id="email">{{ facilitator_doc.email }}</span>
+                                <strong>{% translate 'Email' %}:</strong>&nbsp;<span id="email">{{ facilitator_doc.email }}</span>
+                                <br>
+                                <strong>{% translate 'Organism' %}:</strong>&nbsp;<span id="email">{{ facilitator_doc.organism }}</span>
                             </p>
                         </div>
                     </div>

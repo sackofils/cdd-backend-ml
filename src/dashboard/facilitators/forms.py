@@ -1,9 +1,10 @@
 from django import forms
+from django.contrib.auth.models import User
 from django.contrib.auth import password_validation
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-from authentication.models import Facilitator
+from authentication.models import Facilitator, Organism
 from dashboard.utils import (
     get_administrative_level_choices,
     get_administrative_levels_by_level,
@@ -37,11 +38,11 @@ class FilterTaskForm(forms.Form):
             if doc.get("type") == "facilitator":
                 query_result_administrativelevels = doc.get("administrative_levels")
             elif doc.get("type") == "phase" and not self.check_name(
-                query_result_phases, doc
+                    query_result_phases, doc
             ):
                 query_result_phases.append(doc)
             elif doc.get("type") == "activity" and not self.check_name(
-                query_result_activities, doc
+                    query_result_activities, doc
             ):
                 doc["phase_order"] = 0
                 for phase_obj in query_result_phases:
@@ -50,7 +51,7 @@ class FilterTaskForm(forms.Form):
                         break
                 query_result_activities.append(doc)
             elif doc.get("type") == "task" and not self.check_name(
-                query_result_tasks, doc
+                    query_result_tasks, doc
             ):
                 doc["phase_order"] = 0
                 doc["activity_order"] = 0
@@ -72,7 +73,7 @@ class FilterTaskForm(forms.Form):
         query_result_tasks = sorted(
             query_result_tasks,
             key=lambda obj: (
-                str(obj["phase_order"]) + str(obj["activity_order"]) + str(obj["order"])
+                    str(obj["phase_order"]) + str(obj["activity_order"]) + str(obj["order"])
             ),
         )
         query_result_administrativelevels = sorted(
@@ -128,6 +129,9 @@ class FacilitatorForm(forms.Form):
     administrative_level = forms.ChoiceField()
     administrative_levels = forms.JSONField(label="", required=False)
     sex = forms.ChoiceField(label=_('Sex'), choices=(("M.", "M."), ("Mme", "Mme")))
+    organism = forms.ChoiceField()
+    supervisor = forms.ChoiceField()
+    coordinator = forms.ChoiceField()
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
@@ -183,6 +187,11 @@ class FacilitatorForm(forms.Form):
         self.fields["administrative_level"].choices = administrative_level_choices
         self.fields["administrative_level"].widget.attrs["class"] = "region"
         self.fields["administrative_levels"].widget.attrs["class"] = "hidden"
+        self.fields["organism"].choices = ((x, x) for x in Organism.objects.all())
+        self.fields["supervisor"].choices = ((x.pk, f'{x.get_full_name()} - {x.email} - {x.user_profile.organism}') for x in
+                                              User.objects.filter(groups__name='Supervisor'))
+        self.fields["coordinator"].choices = ((x.pk, f'{x.get_full_name()} - {x.email}') for x in
+                                              User.objects.filter(groups__name='Coordinator'))
 
 
 class UpdateFacilitatorForm(forms.ModelForm):
@@ -201,6 +210,9 @@ class UpdateFacilitatorForm(forms.ModelForm):
     administrative_level = forms.ChoiceField(required=False)
     administrative_levels = forms.JSONField(label="", required=False)
     sex = forms.ChoiceField(label=_('Sex'), choices=(("M.", "M."), ("Mme", "Mme")))
+    organism = forms.ChoiceField()
+    supervisor = forms.ChoiceField()
+    coordinator = forms.ChoiceField()
 
     def clean(self):
         administrative_levels = self.cleaned_data["administrative_levels"]
@@ -229,6 +241,20 @@ class UpdateFacilitatorForm(forms.ModelForm):
         self.fields["administrative_level"].choices = administrative_level_choices
         self.fields["administrative_level"].widget.attrs["class"] = "region"
         self.fields["administrative_levels"].widget.attrs["class"] = "hidden"
+        self.fields["organism"].choices = ((x, x) for x in Organism.objects.all())
+        self.fields["supervisor"].choices = ((x.pk, f'{x.get_full_name()} - {x.email} - {x.user_profile.organism}') for x in
+                                              User.objects.filter(groups__name='Supervisor'))
+        self.fields["coordinator"].choices = ((x.pk, f'{x.get_full_name()} - {x.email} - {x.user_profile.organism}') for x in
+                                              User.objects.filter(groups__name='Coordinator'))
+
+        if self.instance.organism:
+            self.fields["organism"].initial = self.instance.organism
+
+        if self.instance.supervisor:
+            self.fields["supervisor"].initial = self.instance.supervisor.pk
+
+        if self.instance.coordinator:
+            self.fields["coordinator"].initial = self.instance.coordinator.pk
 
     class Meta:
         model = Facilitator

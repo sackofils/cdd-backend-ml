@@ -1,0 +1,24 @@
+{% extends 'layouts/base.html' %}
+{% load bootstrap4 static i18n %}
+
+{% block content %}
+
+<h4 class="bootstrap4">Delete Support</h4>
+<div class="row">
+  <div class="col-md-12">             
+      <div class="card p-4">
+        <h6>Are you sure you want to delete the Support: {{ support.name }}?</h6>
+        <form action="" method="POST">
+          {% csrf_token %}
+          <div class="card-footer">
+            <button  type="submit" class="btn btn-danger btn-sm rounded-xl" value="Delete">
+                {% translate "Delete" %}
+            </button>
+        </div> 
+        </form>
+      </div>
+  </div>
+</div>
+
+
+{% endblock %}

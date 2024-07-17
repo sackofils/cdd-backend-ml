@@ -28,11 +28,16 @@
                     {% translate 'Create Activity' %}
                 </a>
             </div>
+            <a href="{% url 'dashboard:projects:project_phase_list' id=phase.project_id %}"
+                class="btn btn-light btn-xs" title="{% translate 'Referesh' %}">
+                <span class="_web">{% translate 'Back' %}</span>
+                <span class="_mobile"><i class="fa fa-arrow-left"></i></span>
+            </a>
             <a href="{% url 'dashboard:phases:phase_Detail' phase.pk %}"
-                            class="btn btn-primary btn-xs" title="{% translate 'Referesh' %}">
-                            <span class="_web">{% translate 'Referesh' %}</span>
-                            <span class="_mobile"><i class="fa fa-eye"></i></span>
-                        </a>
+                class="btn btn-primary btn-xs" title="{% translate 'Referesh' %}">
+                <span class="_web">{% translate 'Referesh' %}</span>
+                <span class="_mobile"><i class="fa fa-eye"></i></span>
+            </a>
             {% endif %}
             </div>
             

@@ -29,12 +29,15 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-6">
+                                {% bootstrap_field form.organism %}
                                 {% bootstrap_field form.name %}
                                 {% bootstrap_field form.email %}
                                 {% bootstrap_field form.phone %}
                                 {% bootstrap_field form.sex %}
                             </div>
                             <div class="col-6 custom-field">
+                                {% bootstrap_field form.coordinator %}
+                                {% bootstrap_field form.supervisor %}
                                 {% bootstrap_field form.username %}
                                 {% bootstrap_field form.password1 %}
                                 {% bootstrap_field form.password2 %}
@@ -87,6 +90,18 @@
     <script type="text/javascript">
         $("#id_sex").select2({
             allowClear: false
+        });
+        $("#id_organism").select2({
+            placeholder: "{% translate 'Click to select organism' %}",
+            allowClear: true
+        });
+        $("#id_coordinator").select2({
+            placeholder: "{% translate 'Click to select coordinator' %}",
+            allowClear: true
+        });
+        $("#id_supervisor").select2({
+            placeholder: "{% translate 'Click to select supervisor' %}",
+            allowClear: true
         });
         $("#id_administrative_level").select2({
             placeholder: "{% translate 'Click to select location' %}",

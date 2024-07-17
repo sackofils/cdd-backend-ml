@@ -31,13 +31,27 @@ class NoSQLClient:
     def create_document(self, db, data, **kwargs):
         new_document = db.create_document(data, **kwargs)
         return new_document
-    
+
     def update_doc(self, db, id, doc_new: dict):
         try:
             doc = db.get(id)
             for k, v in doc_new.items():
                 if v:
                     doc[k] = v
+            db[id] = doc
+            db[id].save()
+        except Exception as exc:
+            print(exc)
+            return {}
+        return doc
+
+    def update_doc_uncontrolled(self, db, id, doc_new: dict):
+        try:
+            doc = db.get(id)
+            if not doc:
+                doc = db.get_design_document(id)
+            for k, v in doc_new.items():
+                doc[k] = v
             db[id] = doc
             db[id].save()
         except Exception as exc:
@@ -54,20 +68,21 @@ class NoSQLClient:
         try:
             from cloudant.document import Document
             _p = Document(db, doc_id)
-            
+
             for k, v in doc_new.items():
-                if k in list(dict_of_list_values.keys()): #if we have the attributes list to modify
+                if k in list(dict_of_list_values.keys()):  # if we have the attributes list to modify
                     attr = []
-                    for i in range(len(v)): #Range the interval of the list of the attribut
+                    for i in range(len(v)):  # Range the interval of the list of the attribut
                         elt = v[i].copy()
                         new_elt = v[i].copy()
 
-                        if k == "attachments" and attachments: #if we have the attachments to modify
-                            for elt_attach in attachments: #Go through the attachments
+                        if k == "attachments" and attachments:  # if we have the attachments to modify
+                            for elt_attach in attachments:  # Go through the attachments
                                 if elt_attach.get("name") and elt_attach.get("name") == elt.get("name"):
                                     elt = attachments[i]
 
-                        for _v in dict_of_list_values[k]: # Go through the attributs list of the doc attr than we going modify
+                        for _v in dict_of_list_values[
+                            k]:  # Go through the attributs list of the doc attr than we going modify
                             if elt.get(_v):
                                 elt[_v] = new_elt.get(_v)
                         attr.append(elt)
@@ -76,7 +91,7 @@ class NoSQLClient:
                     continue
 
                 _p.field_set(_p, k, v)
-                
+
             _p.save()
         except Exception as exc:
             print(exc)

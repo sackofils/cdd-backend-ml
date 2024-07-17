@@ -2,6 +2,7 @@
 {% load bootstrap4 static i18n %}
 
 {% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsonforms/3.0.0-rc.3/jsonforms.css">
     <div class="row">
         <div class="col-md-12">
 
@@ -15,10 +16,13 @@
                             <div class="col-6">
                                 {% bootstrap_field form.name %}
                                 {% bootstrap_field form.description %}
-                                {% bootstrap_field form.type %}
-                                {% bootstrap_field form.form %}
+                                {% bootstrap_field form.duration %}
                                 {% bootstrap_field form.form_type %}
                                 {% bootstrap_field form.attachments %}
+                            </div>
+                            <div class="col-6">
+                                {% bootstrap_field form.type %}
+                                {% bootstrap_field form.form %}
                             </div>
                         </div>
                     </div>
@@ -31,15 +35,46 @@
             </div>
         </div>
     </div>
+<!--
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h6>{% translate 'Forms previous' %}</h6>
+            </div>
+            <div class="card-content">
+                <div id="jsonforms"></div>
+            </div>
+        </div>
+    </div>
+</div>
+-->
 {% endblock content %}
 
 {% block javascript %}
     {{ block.super }}
+
+
 <script type="text/javascript">
+    function previousForm(data) {
+        if (data.length !== 0) {
+
+        }
+    }
+
     $(document).ready(function () {
         // By default we hide the two options (TextArea for JSON Form and select one list for forms)
         $('#id_form').parent().css('display', 'none');
         $('#id_form_type').parent().css('display', 'none');
+
+        $('#id_form').change(function(){
+            let value = $(this).val();
+            if (value) {
+                let parsed = JSON.parse(value)
+                console.log('form value', JSON.parse(value));
+                previousForm(parsed);
+            }
+        });
 
         $("#id_type").change(function(){
             if ($(this).length > 0) {

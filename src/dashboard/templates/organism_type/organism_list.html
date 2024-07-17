@@ -1,0 +1,61 @@
+{% load static i18n custom_tags %}
+
+<div class="card">
+    <div class="card-body table-responsive">
+        <table id="table" class="table">
+            <thead>
+                <tr>
+                    <th>{% translate 'Label' %}</th>
+                    <th>{% translate 'Description' %}</th>
+                    <th width="20%">{% translate 'Action' %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in entries %}
+                    <tr>
+                        <td>{{ entry.label }}</td>
+                        <td>{{ entry.description }}</td>
+                        <td>
+                            {% if user.is_superuser or user|has_group:"Admin" %}
+                                <a href="{% url 'dashboard:organism_type:update' entry.pk %}"
+                                    class="btn btn-primary btn-xs" title="{% translate 'Edit' %}">
+                                    <span class="_web">{% translate 'Edit' %}</span>
+                                    <span class="_mobile"><i class="fa fa-edit"></i></span>
+                                </a>
+                                <a href="{% url 'dashboard:organism_type:delete' entry.pk %}"
+                                    class="btn btn-danger btn-sx" title="{% translate 'Delete' %}">
+                                    <span class="_web">{% translate 'Delete' %}</span>
+                                    <span class="_mobile"><i class="fa fa-trash"></i></span>
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        {% get_current_language as lang %}
+
+        let table = $('#table').DataTable({
+            language: {
+                url: '{% static 'AdminLTE/plugins/datatables/locale/lang.json' %}'.replace('lang', '{{ lang }}')
+            },
+            dom: 'ltipr',
+            columnDefs: [{
+                targets: 1,
+                orderable: false,
+                searchable: false
+            }],
+            lengthMenu: [100, 200, 300],
+            pageLength: 100,
+            order: [[0, 'desc']]
+        });
+        $('#search').on('keyup', function() {
+            table.search($(this).val()).draw();
+        });
+    });
+</script>

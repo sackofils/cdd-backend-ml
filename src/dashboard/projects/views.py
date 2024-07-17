@@ -11,7 +11,7 @@ from datetime import datetime
 from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
 
-from process_manager.models import Project
+from process_manager.models import Project, Phase
 from dashboard.projects.forms import ProjectForm, UpdateProjectForm
 from dashboard.mixins import AJAXRequestMixin, PageMixin, JSONResponseMixin
 from no_sql_client import NoSQLClient
@@ -19,7 +19,8 @@ from no_sql_client import NoSQLClient
 from authentication.permissions import (
     CDDSpecialistPermissionRequiredMixin, SuperAdminPermissionRequiredMixin,
     AdminPermissionRequiredMixin
-    )
+)
+
 
 class ProjectMixin:
     doc = None
@@ -38,7 +39,8 @@ class ProjectMixin:
         except Exception:
             raise Http404
         return super().dispatch(request, *args, **kwargs)
-    
+
+
 class ProjectListView(PageMixin, LoginRequiredMixin, generic.ListView):
     model = Project
     queryset = Project.objects.all()
@@ -55,24 +57,24 @@ class ProjectListView(PageMixin, LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         return super().get_queryset()
-    
+
 
 class ProjectListTableView(LoginRequiredMixin, generic.ListView):
     template_name = 'projects/project_list.html'
     context_object_name = 'projects'
 
     def get_results(self):
-        projects = []        
+        projects = []
         projects = list(Project.objects.all())
         return projects
 
     def get_queryset(self):
-
         return self.get_results()
-    
+
     # def get_context_data(self, **kwargs):
     #     context = super().get_context_data(**kwargs)
     #     return context
+
 
 class CreateProjectFormView(PageMixin, LoginRequiredMixin, AdminPermissionRequiredMixin, generic.FormView):
     template_name = 'projects/create.html'
@@ -93,11 +95,19 @@ class CreateProjectFormView(PageMixin, LoginRequiredMixin, AdminPermissionRequir
 
     def form_valid(self, form):
         data = form.cleaned_data
-        project = Project(name=data['name'], description=data['description'])
+        project_count = 0
+        project_count = Project.objects.all().count()
+        orderNew = project_count + 1
+        project = Project(
+            name=data['name'],
+            description=data['description'],
+            order=orderNew
+        )
         project.save()
         return super().form_valid(form)
-    
-class UpdateProjectView(PageMixin, LoginRequiredMixin,AdminPermissionRequiredMixin, generic.UpdateView):
+
+
+class UpdateProjectView(PageMixin, LoginRequiredMixin, AdminPermissionRequiredMixin, generic.UpdateView):
     model = Project
     template_name = 'projects/update.html'
     title = gettext_lazy('Edit Project')
@@ -114,7 +124,7 @@ class UpdateProjectView(PageMixin, LoginRequiredMixin,AdminPermissionRequiredMix
             'title': title
         }
     ]
-    
+
     project_db = None
     project = None
     doc = None
@@ -143,13 +153,13 @@ class UpdateProjectView(PageMixin, LoginRequiredMixin,AdminPermissionRequiredMix
                         form.fields[label].value = self.doc[label]
                     except Exception as exc:
                         pass
-                    
+
                 ctx.setdefault('form', form)
 
         return ctx
 
     def post(self, request, *args, **kwargs):
-        
+
         if not self.project_db_name:
             raise Http404("We don't find the database name for the project.")
 
@@ -164,19 +174,20 @@ class UpdateProjectView(PageMixin, LoginRequiredMixin,AdminPermissionRequiredMix
         project.name = data['name']
         project.description = data['description']
         project.couch_id = data['couch_id']
-        project.save()   
-        doc = {          
+        project.save()
+        doc = {
             "name": data['name'],
             "type": "project",
             "description": data['description'],
             "sql_id": project.id
         }
         nsc = NoSQLClient()
-        query_result = self.project_db.get_query_result({"type": "project","_id": project.couch_id})[:]
+        query_result = self.project_db.get_query_result({"type": "project", "_id": project.couch_id})[:]
         self.doc = self.project_db[query_result[0]['_id']]
         nsc.update_doc(self.project_db, self.doc['_id'], doc)
         return redirect('dashboard:projects:list')
-    
+
+
 class ProjectDetailView(ProjectMixin, PageMixin, LoginRequiredMixin, generic.DetailView):
     template_name = 'projects/detail.html'
     context_object_name = 'project_doc'
@@ -200,63 +211,107 @@ class ProjectDetailView(ProjectMixin, PageMixin, LoginRequiredMixin, generic.Det
 
         project_docs = self.project_db.all_docs(include_docs=True)['rows']
         for doc in project_docs:
-            doc = doc.get('doc')        
+            doc = doc.get('doc')
         return context
 
     def get_object(self, queryset=None):
         return self.doc
 
-def update(request, id):
-  project = Project.objects.get(id=id)
-  template = loader.get_template('projects/update.html')
-  context = {
-    'project': project,
-  }
-  return HttpResponse(template.render(context, request))
-  
-def updaterecord(request, id):
-  name = request.POST['name']
-  description = request.POST['description']
-  couch_id = request.POST['couch_id']
 
-  project = Project.objects.get(id=id)
-  project.name = name
-  project.description = description
-  project.couch_id = couch_id
-  project.save()  
-  doc = None
-  _id = couch_id
-  doc = {          
-            "name": project.name,
-            "type": "project",
-            "description": request.POST['description'],
-            "sql_id": project.id
-        } 
-  try:
-      nsc = NoSQLClient()  
-      nsc_database = nsc.get_db("process_design")
-      query_result = nsc_database.get_query_result({"type": "project"})[:]
-      doc = nsc_database[query_result[0]['_id']] 
-      nsc.update_doc(nsc_database,doc['_id'], doc)
-  except Exception:
-      raise Http404
-  return redirect('dashboard:projects:list')
+def update(request, id):
+    project = Project.objects.get(id=id)
+    template = loader.get_template('projects/update.html')
+    context = {
+        'project': project,
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def updaterecord(request, id):
+    name = request.POST['name']
+    description = request.POST['description']
+    couch_id = request.POST['couch_id']
+
+    project = Project.objects.get(id=id)
+    project.name = name
+    project.description = description
+    project.couch_id = couch_id
+    project.save()
+    doc = None
+    _id = couch_id
+    doc = {
+        "name": project.name,
+        "type": "project",
+        "description": request.POST['description'],
+        "sql_id": project.id
+    }
+    try:
+        nsc = NoSQLClient()
+        nsc_database = nsc.get_db("process_design")
+        query_result = nsc_database.get_query_result({"type": "project"})[:]
+        doc = nsc_database[query_result[0]['_id']]
+        nsc.update_doc(nsc_database, doc['_id'], doc)
+    except Exception:
+        raise Http404
+    return redirect('dashboard:projects:list')
 
 
 def delete(request, id):
-  project = Project.objects.get(id=id)
-  
-  if request.method == 'POST':
-      nsc = NoSQLClient()
-      nsc_database = nsc.get_db("process_design")
-      new_document = nsc_database.get_query_result(
-            {"_id": project.couch_id}
-           )[0]
-      if new_document:
-          nsc.delete_document(nsc_database,project.couch_id)
-          project.delete()
+    project = Project.objects.get(id=id)
 
-          return redirect('dashboard:projects:list')
-      
-  return render(request,'projects/project_confirm_delete.html',
-                    {'project': project})
+    if request.method == 'POST':
+        nsc = NoSQLClient()
+        nsc_database = nsc.get_db("process_design")
+        new_document = nsc_database.get_query_result(
+            {"_id": project.couch_id}
+        )[0]
+        if new_document:
+            nsc.delete_document(nsc_database, project.couch_id)
+            project.delete()
+
+            return redirect('dashboard:projects:list')
+
+    return render(request, 'projects/project_confirm_delete.html',
+                  {'project': project})
+
+
+class ProjectPhaseListView(PageMixin, LoginRequiredMixin, generic.ListView):
+    template_name = 'phases/list.html'
+    context_object_name = 'phases'
+    active_level1 = 'projects'
+    title = gettext_lazy('Phases')
+    breadcrumb = [
+        {
+            'url': reverse_lazy('dashboard:projects:list'),
+            'title': gettext_lazy('Projects')
+        },
+        {
+            'url': '',
+            'title': title
+        }
+    ]
+
+    def get_results(self):
+        pk = self.kwargs['id']
+        phases = []
+        phases = list(Phase.objects.filter(project_id=pk).order_by('order'))
+        return phases
+
+    def get_queryset(self):
+        return self.get_results()
+
+    def get_context_data(self, **kwargs):
+        pk = self.kwargs['id']
+        project = Project.objects.get(pk=pk)
+        context = super().get_context_data(**kwargs)
+        context.setdefault('project', project)
+        return context
+
+def project_detail_view(request, id):
+    try:
+        project = Project.objects.get(id=id)
+        phases = list(Phase.objects.filter(project_id=project.id).order_by('order'))
+    except Project.DoesNotExist:
+        raise Http404('Project does not exist')
+
+    return render(request, 'projects/project_detail.html', context={'project': project, 'phases': phases})

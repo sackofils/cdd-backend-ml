@@ -32116,7 +32116,7 @@ a.text-muted:hover {
 }
 
 .toogle-sidebar-button {
-    position: absolute;
+    // position: absolute;
     display: inline-block;
     bottom: 50px;
     width: 100%;
@@ -32425,7 +32425,7 @@ a.text-muted:hover {
 .phase-title {
     font-family: poppinsbold;
     font-size: 13px;
-    line-height: 1;
+    line-height: 20px;
     vertical-align: text-top;
 }
 
@@ -33030,4 +33030,39 @@ a.text-muted:hover {
 
 .gray-color {
     color: #707070;
+}
+
+.dt-buttons {
+    margin-bottom: 15px !important;
+}
+
+.dt-buttons > .dt-button {
+        font-size: 0.875rem !important;
+        line-height: 1.5 !important;
+        border-radius: 7px !important;
+        background-color: #24c38b !important;
+        border-color: #24c38b !important;
+        box-shadow: none !important;
+        display: inline-block !important;
+        font-weight: 400 !important;
+        color: #ffffff !important;
+        text-align: center !important;
+        vertical-align: middle !important;
+        cursor: pointer !important;
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
+        user-select: none !important;
+        // background-color: transparent !important;
+        border: 1px solid transparent !important;
+        padding: 6px 16px 6px 16px !important;
+        // font-size: 1rem !important;
+        // line-height: 1.5 !important;
+        // border-radius: 15px !important !important;
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
+}
+
+.village-name {
+    font-size: 1.5rem;
+    text-transform: uppercase;
 }

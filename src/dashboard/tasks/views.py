@@ -26,7 +26,7 @@ class TaskListView(PageMixin, LoginRequiredMixin, generic.ListView):
     template_name = 'tasks/list.html'
     context_object_name = 'tasks'
     title = gettext_lazy('Tasks')
-    active_level1 = 'tasks'
+    active_level1 = 'projects'
     breadcrumb = [
         {
             'url': '',
@@ -58,19 +58,24 @@ class TaskListTableView(LoginRequiredMixin, generic.ListView):
 class CreateTaskFormView(PageMixin, LoginRequiredMixin, AdminPermissionRequiredMixin, generic.FormView):
     template_name = 'tasks/create.html'
     title = gettext_lazy('Create Task')
-    active_level1 = 'tasks'
+    active_level1 = 'projects'
     form_class = TaskForm
-    success_url = reverse_lazy('dashboard:tasks:list')
+    # success_url = reverse_lazy('dashboard:tasks:list')
     breadcrumb = [
-        {
-            'url': reverse_lazy('dashboard:tasks:list'),
-            'title': gettext_lazy('Tasks')
-        },
+        #{
+        #    'url': reverse_lazy('dashboard:tasks:list'),
+        #    'title': gettext_lazy('Tasks')
+        #},
         {
             'url': '',
             'title': title
         }
     ]
+
+    def get_success_url(self, **kwargs):
+        pk = self.kwargs['id']
+        return reverse('dashboard:activities:activity_Detail', args=[pk])
+
 
     def form_valid(self, form):
         data = form.cleaned_data
@@ -81,7 +86,7 @@ class CreateTaskFormView(PageMixin, LoginRequiredMixin, AdminPermissionRequiredM
         form_fields = []
         form_type = None
         if data['type'] == 'jsonforms':
-            form_fields = json.loads(data['form'])
+            form_fields = data['form']
         elif data['type'] == 'form':
             form_type = data['form_type']
             form_fields = form_type.json_schema if form_type else None
@@ -96,6 +101,7 @@ class CreateTaskFormView(PageMixin, LoginRequiredMixin, AdminPermissionRequiredM
             phase=activity.phase,
             activity=activity,
             order=data['order'],
+            duration=data['duration'],
             form=form_fields,
             form_type=form_type,
             attachments=attachments,
@@ -137,14 +143,14 @@ class UpdateTaskView(PageMixin, LoginRequiredMixin, AdminPermissionRequiredMixin
     model = Task
     template_name = 'tasks/update.html'
     title = gettext_lazy('Edit Task')
-    active_level1 = 'tasks'
+    active_level1 = 'projects'
     form_class = UpdateTaskForm
     # success_url = reverse_lazy('dashboard:projects:list')
     breadcrumb = [
-        {
-            'url': reverse_lazy('dashboard:tasks:list'),
-            'title': gettext_lazy('Tasks')
-        },
+        # {
+        #    'url': reverse_lazy('dashboard:tasks:list'),
+        #    'title': gettext_lazy('Tasks')
+        # },
         {
             'url': '',
             'title': title
@@ -218,6 +224,7 @@ class UpdateTaskView(PageMixin, LoginRequiredMixin, AdminPermissionRequiredMixin
         doc = {
             "name": data['name'],
             "description": data['description'],
+            "duration": data['duration'],
             "form": task.form,
             "attachments": task.attachments_json,
             "support_attachments": True if len(task.attachments_json) else False,
@@ -235,16 +242,17 @@ class UpdateTaskView(PageMixin, LoginRequiredMixin, AdminPermissionRequiredMixin
 
 
 class CreateTaskForm(PageMixin, LoginRequiredMixin, AdminPermissionRequiredMixin, generic.FormView):
-    template_name = 'tasks/create_task.html'
+    #template_name = 'tasks/create_task.html'
+    template_name = 'tasks/update.html'
     title = gettext_lazy('Create Task')
-    active_level1 = 'tasks'
+    active_level1 = 'projects'
     form_class = TaskForm
-    success_url = reverse_lazy('dashboard:tasks:list')
+    # success_url = reverse_lazy('dashboard:tasks:list')
     breadcrumb = [
-        {
-            'url': reverse_lazy('dashboard:tasks:list'),
-            'title': gettext_lazy('Tasks')
-        },
+        #{
+        #    'url': reverse_lazy('dashboard:tasks:list'),
+        #    'title': gettext_lazy('Tasks')
+        #},
         {
             'url': '',
             'title': title
@@ -264,7 +272,7 @@ class CreateTaskForm(PageMixin, LoginRequiredMixin, AdminPermissionRequiredMixin
         form_fields = []
         form_type = None
         if data['type'] == 'jsonforms':
-            form_fields = json.loads(data['form'])
+            form_fields = data['form']
         elif data['type'] == 'form':
             form_type = data['form_type']
             form_fields = form_type.json_schema if form_type else None
@@ -272,7 +280,10 @@ class CreateTaskForm(PageMixin, LoginRequiredMixin, AdminPermissionRequiredMixin
 
         attachments = data['attachments']
         attachments_json = [attachment.json_schema for attachment in attachments]
-        task = Task(
+        task_count = 0
+        task_count = Task.objects.filter(activity_id=activity.id).all().count()
+        orderNew = task_count + 1
+        task = Task.objects.create(
             name=data['name'],
             description=data['description'],
             project=activity.phase.project,
@@ -280,14 +291,12 @@ class CreateTaskForm(PageMixin, LoginRequiredMixin, AdminPermissionRequiredMixin
             activity=activity,
             form=form_fields,
             form_type=form_type,
+            order=orderNew,
+            duration=data['duration'],
             attachments_json=orderedAttachmentList(attachments_json)
         )
         if data['attachments']:
             task.attachments.set(data['attachments'])
-        task_count = 0
-        task_count = Task.objects.filter(activity_id=activity.id).all().count()
-        orderNew = task_count + 1
-        task.order = orderNew
         task.save()
 
         activity = Activity.objects.get(id=task.activity_id)

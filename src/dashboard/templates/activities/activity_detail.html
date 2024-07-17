@@ -30,11 +30,16 @@
                     {% translate 'Create Task' %}
                 </a>
             </div>
+            <a href="{% url 'dashboard:phases:phase_Detail' id=activity.phase_id %}"
+                class="btn btn-light btn-xs" title="{% translate 'Referesh' %}">
+                <span class="_web">{% translate 'Back' %}</span>
+                <span class="_mobile"><i class="fa fa-arrow-left"></i></span>
+            </a>
             <a href="{% url 'dashboard:activities:activity_Detail' activity.pk %}"   
-                                    class="btn btn-primary btn-xs" title="{% translate 'Referesh' %}">
-                                    <span class="_web">{% translate 'Referesh' %}</span>
-                                    <span class="_mobile"><i class="fa fa-eye"></i></span>
-                                </a>
+                class="btn btn-primary btn-xs" title="{% translate 'Referesh' %}">
+                <span class="_web">{% translate 'Referesh' %}</span>
+                <span class="_mobile"><i class="fa fa-eye"></i></span>
+            </a>
             {% endif %}                
             </div>
             
@@ -56,6 +61,7 @@
                     <tr>
                         <th>{% translate 'Order' %}</th>
                         <th>{% translate 'Name' %}</th>
+                        <th>{% translate 'Duration' %}</th>
                         <th width="60%">{% translate 'Action' %}</th>
                     </tr>
                     </thead>
@@ -64,6 +70,7 @@
                         <tr>
                             <td>{{ task.order }}</td>
                             <td>{{ task.name }}</td>
+                            <td>{{ task.duration }}</td>
                             <td>
                                 
                                 {% if user.is_superuser or user|has_group:"Admin" %}

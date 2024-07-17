@@ -10,9 +10,9 @@ from process_manager.models import Phase, Project, Activity, Task, FormType, Att
 from no_sql_client import NoSQLClient
 
 OPTIONS_LIST = (
-    ('', '-----------'),
-    ('form', _('Form')),
-    ('jsonforms', _('JSON Forms'))
+    #('', '-----------'),
+    #('form', _('Form')),
+    ('jsonforms', _('JSON Forms')),
 )
 
 
@@ -23,12 +23,9 @@ class TaskForm(forms.Form):
     # choices = tuple(Project.objects.all().values_list())
     name = forms.CharField(label=_("Name"))
     description = forms.CharField(label=_("Description"))
-    type = forms.ChoiceField(label=_("Form link option"), required=False, choices=OPTIONS_LIST)
+    duration = forms.IntegerField(label=_("Duration"))
+    type = forms.ChoiceField(label=_("Form definition type"), required=False, choices=OPTIONS_LIST)
     form = forms.JSONField(label=_("JSON Forms"), required=False)
-    # project = forms.ChoiceField(choices = [])
-    # activity = forms.ChoiceField(choices = [])
-    # order = forms.IntegerField()
-    # form = forms.JSONField(required=False)
     form_type = forms.ModelChoiceField(label=_("Form"), required=False, queryset=FormType.objects.distinct())
     attachments = forms.ModelMultipleChoiceField(label=_("Attachments"), queryset=AttachmentType.objects.distinct(),
                                                  required=False)
@@ -55,12 +52,9 @@ class UpdateTaskForm(forms.ModelForm):
     # choices = tuple(Project.objects.all().values_list())
     name = forms.CharField(label=_("Name"))
     description = forms.CharField(label=_("Description"))
-    type = forms.ChoiceField(label=_("Form link option"), required=False, choices=OPTIONS_LIST)
+    duration = forms.IntegerField(label=_("Duration"))
+    type = forms.ChoiceField(label=_("Form definition type"), required=False, choices=OPTIONS_LIST)
     form = forms.JSONField(label=_("JSON Forms"), required=False)
-    # couch_id = forms.CharField(required=False, disabled=True)
-    # activity = forms.ModelChoiceField(queryset=Activity.objects.distinct())
-    # form = forms.JSONField(required=False)
-    # order = forms.IntegerField()
     form_type = forms.ModelChoiceField(label=_("Form"), required=False, queryset=FormType.objects.distinct())
     attachments = forms.ModelMultipleChoiceField(label=_("Attachments"), queryset=AttachmentType.objects.distinct(),
                                                  required=False)
@@ -71,12 +65,12 @@ class UpdateTaskForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if self.instance.form_type:
-            self.fields['type'].initial = OPTIONS_LIST[1]
+            self.fields['type'].initial = OPTIONS_LIST[0]
 
         if not self.instance.form_type and self.instance.form:
-            self.fields['type'].initial = OPTIONS_LIST[2]
+            self.fields['type'].initial = OPTIONS_LIST[0]
         # self.fields['project'].queryset = [(x, x.name) for x in Project.objects.list()]
 
     class Meta:
         model = Task
-        fields = ['name', 'description', 'type', 'form', 'form_type', 'attachments']
+        fields = ['name', 'description', 'type', 'duration', 'form', 'form_type', 'attachments']

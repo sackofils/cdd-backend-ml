@@ -24,7 +24,7 @@
                             <span class="_web">View</span>
                             <span class="_mobile"><i class="fa fa-eye"></i></span>
                         </a>
-                        <a href="{% url 'dashboard:phases:update' phase.pk %}"
+                        <a href="{% url 'dashboard:phases:update' pk=phase.pk project_id=project.pk %}"
                             class="btn btn-primary btn-xs" title="{% translate 'Edit' %}">
                             <span class="_web">Edit</span>
                             <span class="_mobile"><i class="fa fa-edit"></i></span>

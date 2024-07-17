@@ -1,0 +1,25 @@
+{% load i18n bootstrap4 custom_tags %}
+<div class="modal fade modal-confirmation" id="modal_comment">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-primary text-center fs17 lh19 text-bold mb-4"
+                     style="padding: 0 45px 0 45px;">
+                    {% translate "Please enter a comment" %}
+                </div>
+                <div class="form-group">
+                        <textarea name="id_in_validation_comment" cols="40" rows="3" maxlength="65000"
+                                  class="form-control"
+                                  title="" required="" id="id_in_validation_comment" spellcheck="true"
+                                  placeholder="{% translate 'Add Comment' %}"></textarea>
+                </div>
+
+            </div>
+            <div class="modal-footer border-0">
+                <button id="btn-send-comment" type="submit" class="btn btn-xs btn-primary text-right">
+                    {% translate "Send" %}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

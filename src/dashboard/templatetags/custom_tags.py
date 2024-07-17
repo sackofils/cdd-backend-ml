@@ -1,5 +1,6 @@
 from datetime import datetime
 from django import template
+import base64
 from django.utils.translation import gettext_lazy
 
 from dashboard.utils import structure_the_words as utils_structure_the_words
@@ -118,9 +119,8 @@ def structure_the_fields(task):
                                 fields_values[field5] = value5
                 else:
                     fields_values[field] = value
-                    
-    return fields_values
 
+    return fields_values
 
 
 @register.filter(name="structureTheFieldsLabels")
@@ -130,10 +130,14 @@ def structure_the_fields_labels(task):
         i = 0
         form = task.get("form")
         for fields in task.get("form_response"):
-            fields_options = form[i].get('options').get('fields')
+            # print(form[i])
+            # print(fields)
+            fields_options = form[i].get('schema').get('properties')
             dict_values = {}
             for field, value in fields.items():
-                label = fields_options.get(field).get('label')
+                label = ''
+                if fields_options.get(field):
+                    label = fields_options.get(field).get('title')
                 if type(value) in (dict, list):
                     if type(value) == list:
                         _list1 = []
@@ -146,7 +150,8 @@ def structure_the_fields_labels(task):
                                         for l_field in value1:
                                             item2 = {}
                                             for field2, value2 in l_field.items():
-                                                item2[field2] = {'name': utils_structure_the_words(field2), 'value': value2}
+                                                item2[field2] = {'name': utils_structure_the_words(field2),
+                                                                 'value': value2}
                                             _list2.append(item2)
                                         item1[field1] = {'name': utils_structure_the_words(field1), 'value': _list2}
                                     else:
@@ -157,23 +162,28 @@ def structure_the_fields_labels(task):
                                                 for l_field in value3:
                                                     item4 = {}
                                                     for field4, value4 in l_field.items():
-                                                        item4[field4] = {'name': utils_structure_the_words(field4), 'value': value4}
+                                                        item4[field4] = {'name': utils_structure_the_words(field4),
+                                                                         'value': value4}
                                                     _list3.append(item4)
-                                                dict1[field3] = {'name': utils_structure_the_words(field3), 'value': _list3}
+                                                dict1[field3] = {'name': utils_structure_the_words(field3),
+                                                                 'value': _list3}
                                             else:
-                                                dict1[field3] = {'name': utils_structure_the_words(field3), 'value': value3}
+                                                dict1[field3] = {'name': utils_structure_the_words(field3),
+                                                                 'value': value3}
                                         item1[field1] = {'name': utils_structure_the_words(field1), 'value': dict1}
                                 else:
                                     item1[field1] = {'name': utils_structure_the_words(field1), 'value': value1}
                             _list1.append(item1)
-                        dict_values[field] = {'name': label if label else utils_structure_the_words(field), 'value': _list1}
+                        dict_values[field] = {'name': label if label else utils_structure_the_words(field),
+                                              'value': _list1}
                     else:
                         dict2 = {}
                         ii = 0
                         for field5, value5 in value.items():
                             fields1 = fields_options.get(field).get('fields')
                             try:
-                                label1 = fields1[field5].get('label') if fields1[field5].get('label') else utils_structure_the_words(field5)
+                                label1 = fields1[field5].get('label') if fields1[field5].get(
+                                    'label') else utils_structure_the_words(field5)
                             except Exception as ex:
                                 label1 = utils_structure_the_words(field5)
                             if type(value5) in (dict, list):
@@ -189,7 +199,9 @@ def structure_the_fields_labels(task):
                                     item6 = {}
                                     for field7, value7 in value5.items():
                                         try:
-                                            label2 = fields1[field5].get('fields').get(field7).get('label') if fields1[field5].get('fields').get(field7).get('label') else utils_structure_the_words(field7)
+                                            label2 = fields1[field5].get('fields').get(field7).get('label') if fields1[
+                                                field5].get('fields').get(field7).get(
+                                                'label') else utils_structure_the_words(field7)
                                         except Exception as ex:
                                             label2 = utils_structure_the_words(field7)
 
@@ -199,14 +211,18 @@ def structure_the_fields_labels(task):
                                                 for l_field in value7:
                                                     item7 = {}
                                                     for field8, value8 in l_field.items():
-                                                        item7[field8] = {'name': utils_structure_the_words(field8), 'value': value8}
+                                                        item7[field8] = {'name': utils_structure_the_words(field8),
+                                                                         'value': value8}
                                                     _list5.append(item7)
                                                 dict2[field5] = {'name': label2, 'value': _list5}
                                             else:
                                                 item8 = {}
                                                 for field9, value9 in value7.items():
                                                     try:
-                                                        label3 = fields1[field5].get('fields').get(field7).get('fields').get(field9).get('label') if fields1[field5].get('fields').get(field7).get('fields').get(field9).get('label') else utils_structure_the_words(field9)
+                                                        label3 = fields1[field5].get('fields').get(field7).get(
+                                                            'fields').get(field9).get('label') if fields1[field5].get(
+                                                            'fields').get(field7).get('fields').get(field9).get(
+                                                            'label') else utils_structure_the_words(field9)
                                                     except Exception as ex:
                                                         label3 = utils_structure_the_words(field9)
                                                     item6[field7] = {'name': label3, 'value': value9}
@@ -214,13 +230,13 @@ def structure_the_fields_labels(task):
                                         else:
                                             dict2[field7] = {'name': label2, 'value': value7}
 
-
                                         # item6[field7] = {'name': label2, 'value': value7}
                                     dict2[field5] = {'name': label1, 'value': item6}
                             else:
                                 dict2[field5] = {'name': label1, 'value': value5}
                             ii += 1
-                        dict_values[field] = {'name': label if label else utils_structure_the_words(field), 'value': dict2}
+                        dict_values[field] = {'name': label if label else utils_structure_the_words(field),
+                                              'value': dict2}
                 else:
                     dict_values[field] = {'name': label if label else utils_structure_the_words(field), 'value': value}
             fields_values.append(dict_values)
@@ -231,21 +247,25 @@ def structure_the_fields_labels(task):
 
 @register.filter(name="checkType")
 def check_type(elt, _type):
-    return  type(elt).__name__ == _type
+    return type(elt).__name__ == _type
+
 
 @register.filter(name="structureTheWords")
 def structure_the_words(word):
     return utils_structure_the_words(word)
 
+
 @register.filter(name="imgAWSS3Filter")
 def img_aws_s3_filter(uri):
     return uri.split("?")[0]
 
-@register.filter(name='has_group') 
-def has_group(user, group_name):
-    return user.groups.filter(name=group_name).exists() 
 
-@register.filter(name='get_group_high') 
+@register.filter(name='has_group')
+def has_group(user, group_name):
+    return user.groups.filter(name=group_name).exists()
+
+
+@register.filter(name='get_group_high')
 def get_group_high(user):
     """
     All Groups permissions
@@ -257,7 +277,7 @@ def get_group_high(user):
     """
     if user.is_superuser:
         return gettext_lazy("Principal Administrator").__str__()
-    
+
     if user.groups.filter(name="Admin").exists():
         return gettext_lazy("Administrator").__str__()
     if user.groups.filter(name="CDDSpecialist").exists():
@@ -267,5 +287,19 @@ def get_group_high(user):
     if user.groups.filter(name="Accountant").exists():
         return gettext_lazy("Accountant").__str__()
 
-
     return gettext_lazy("User").__str__()
+
+
+@register.filter(name='b64encode')
+def b64encode(value):
+    return base64.b64encode(value).decode('utf-8')
+
+
+@register.filter
+def is_image(content_type):
+    return content_type.startswith('image/')
+
+
+@register.filter
+def is_pdf(content_type):
+    return content_type == 'application/pdf'

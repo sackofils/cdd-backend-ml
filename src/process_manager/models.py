@@ -23,6 +23,7 @@ from collections import defaultdict
 class Project(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
+    order = models.IntegerField()
     couch_id = models.CharField(max_length=255, blank=True)
 
     def __str__(self):
@@ -33,7 +34,9 @@ class Project(models.Model):
         data = {
             "name": self.name,
             "type": "project",
+            "order": self.order,
             "description": self.description,
+            "capacity_attachments": [],
             "sql_id": self.id
         }
         nsc = NoSQLClient()
@@ -73,6 +76,7 @@ class Phase(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
     project = models.ForeignKey("Project", on_delete=models.CASCADE)
+    total_activities = models.IntegerField(default=0)
     couch_id = models.CharField(max_length=255, blank=True)
     order = models.IntegerField()
     form_type = models.ForeignKey("FormType", on_delete=models.CASCADE, blank=False, null=True)
@@ -90,6 +94,7 @@ class Phase(models.Model):
             "order": self.order,
             "capacity_attachments": [],
             "support_attachments": False,
+            "total_activities": self.total_activities,
             "project_id": self.project.couch_id,
             "sql_id": self.id,
             "form": form_fields
@@ -166,6 +171,17 @@ class Activity(models.Model):
         if not new_document:
             new_document = nsc.create_document(nsc_database, data)
             self.couch_id = new_document['_id']
+
+            phase = Phase.objects.get(id=self.phase_id)
+            phase.total_activities = Activity.objects.filter(phase_id=phase.id).all().count()
+            phase.save()
+            docu = {
+                "total_activities": phase.total_activities
+            }
+            query_result = nsc_database.get_query_result({"_id": self.phase.couch_id})[:]
+            doc = nsc_database[query_result[0]['_id']]
+            nsc.update_doc(nsc_database, doc['_id'], docu)
+
             self.save()
         return self
 
@@ -197,6 +213,7 @@ class Task(models.Model):
     phase = models.ForeignKey("Phase", on_delete=models.CASCADE)
     activity = models.ForeignKey("Activity", on_delete=models.CASCADE)
     order = models.IntegerField()
+    duration = models.IntegerField(default=1, help_text=_('Duration in hour'))
     form = models.JSONField(null=True, blank=True)
     couch_id = models.CharField(max_length=255, blank=True)
     form_type = models.ForeignKey("FormType", on_delete=models.CASCADE, blank=False, null=True)
@@ -264,6 +281,16 @@ class Task(models.Model):
             nsc.update_doc(nsc_database, doc['_id'], docu)
             self.save()
         return self
+
+    def is_attachments_exist(self):
+        is_provided = True
+        for attachment in self.attachments:
+            if attachment.attachment is None:
+                is_provided = False
+                break
+        return is_provided
+
+    is_attachments_provided = property(is_attachments_exist)
 
 
 User = get_user_model()

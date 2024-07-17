@@ -1,0 +1,18 @@
+{% extends 'layouts/base.html' %}
+{% load static i18n bootstrap4 custom_tags %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="fs28 lh35 text-primary text-bold-family mb-4" style="font-size: 16px !important;">
+                     {% translate 'Organism Type Detail' %}<br>
+                </div>
+                <p style="font-size: 16px !important;"><strong>Label:</strong> {{ object.label }}</p>
+                <p style="font-size: 16px !important;"><strong>Description:</strong> {{ object.description }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

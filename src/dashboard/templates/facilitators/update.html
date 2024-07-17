@@ -50,12 +50,15 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-6">
+                                {% bootstrap_field form.organism %}
                                 {% bootstrap_field form.name %}
                                 {% bootstrap_field form.email %}
+                                {% bootstrap_field form.supervisor %}
                             </div>
                             <div class="col-6">
                                 {% bootstrap_field form.phone %}
                                 {% bootstrap_field form.sex %}
+                                {% bootstrap_field form.coordinator %}
                             </div>
                         </div>
                         <hr />
@@ -87,6 +90,9 @@
                         <button  type="submit" class="btn btn-primary btn-sm rounded-xl" >
                             {% translate "SAVE" %}
                         </button>
+                        <a href="{% url 'dashboard:facilitators:list' %}" class="btn btn-ligth btn-sm rounded-xl" >
+                            {% translate "CANCEL" %}
+                        </a>
                     </div>
                 </form>
             </div>
@@ -131,9 +137,25 @@
             placeholder: "{% translate 'Click to select location' %}",
             allowClear: true
         });
+        $("#id_sex").select2({
+            allowClear: false
+        });
+        $("#id_organism").select2({
+            placeholder: "{% translate 'Click to select organism' %}",
+            allowClear: true
+        });
+        $("#id_coordinator").select2({
+            placeholder: "{% translate 'Click to select coordinator' %}",
+            allowClear: true
+        });
+        $("#id_supervisor").select2({
+            placeholder: "{% translate 'Click to select supervisor' %}",
+            allowClear: true
+        });
         $('b[role="presentation"]').hide();
         $('.select2-selection__arrow').append(
-            '<i class="fas fa-chevron-circle-down text-primary" style="margin-top:12px;"></i>');
+            '<i class="fas fa-chevron-circle-down text-primary" style="margin-top:12px;"></i>'
+        );
 
     </script>
 {% endblock select2 %}

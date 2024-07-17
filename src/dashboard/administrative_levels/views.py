@@ -4,12 +4,16 @@ from django.views import generic
 from dashboard.mixins import AJAXRequestMixin, JSONResponseMixin
 from dashboard.utils import get_child_administrative_levels, get_parent_administrative_level
 from no_sql_client import NoSQLClient
+from administrativelevels import models as administrativelevels_models
+from .functions import get_administrative_levels_under_json, \
+    get_cascade_administrative_levels_by_administrative_level_id
 
 
 class GetChoicesForNextAdministrativeLevelView(AJAXRequestMixin, LoginRequiredMixin, JSONResponseMixin, generic.View):
     def get(self, request, *args, **kwargs):
         parent_id = request.GET.get('parent_id')
         exclude_lower_level = request.GET.get('exclude_lower_level', None)
+        project_id = request.GET.get('project_id', 1)
 
         nsc = NoSQLClient()
         administrative_levels_db = nsc.get_db("administrative_levels")
@@ -39,3 +43,12 @@ class GetAncestorAdministrativeLevelsView(AJAXRequestMixin, LoginRequiredMixin, 
                     has_parent = False
 
         return self.render_to_json_response(ancestors, safe=False)
+
+
+class GetChoicesForNextAdministrativeLevelAllView(AJAXRequestMixin, LoginRequiredMixin, JSONResponseMixin,
+                                                  generic.View):
+    def get(self, request, *args, **kwargs):
+        return self.render_to_json_response(
+            get_cascade_administrative_levels_by_administrative_level_id(request.GET.get('parent_id')),
+            safe=False
+        )

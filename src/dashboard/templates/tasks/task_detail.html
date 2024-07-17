@@ -38,6 +38,11 @@
                        {% translate 'Create Form' %}
                     </a>
                 </div> -->
+                <a href="{% url 'dashboard:activities:activity_Detail' id=task.activity_id %}"
+                    class="btn btn-light btn-xs" title="{% translate 'Referesh' %}">
+                    <span class="_web">{% translate 'Back' %}</span>
+                    <span class="_mobile"><i class="fa fa-arrow-left"></i></span>
+                </a>
                 <a href="{% url 'dashboard:tasks:task_detail' task.pk %}"
                     class="btn btn-primary btn-xs"
                     title="{% translate 'Refresh' %}">
